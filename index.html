@@ -34,6 +34,7 @@ body{
 }
 button,input,select,textarea{font-family:inherit;font-size:inherit;color:inherit;border:none;background:none;outline:none}
 button{cursor:pointer}
+input[type=range]{background:transparent}
 .hide{display:none!important}
 
 /* ---------- Layout ---------- */
@@ -98,14 +99,18 @@ nav button.on{color:var(--acc)}
 #run{position:fixed;inset:0;z-index:100;background:var(--bg);display:none;flex-direction:column;
   padding-top:var(--safe-t)}
 #run.on{display:flex}
-.rtop{padding:11px 14px;display:flex;align-items:center;gap:12px;border-bottom:1px solid #FFFFFF0D;background:var(--bg2)}
+.rtop{padding:11px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #FFFFFF0D;background:var(--bg2)}
+.rtop .ib{width:30px;height:30px;flex:0 0 30px;border-radius:50%;border:1.6px solid var(--tx2);color:var(--tx2);
+  font:italic 700 15px/1 Georgia,'Times New Roman',serif;display:flex;align-items:center;justify-content:center;padding:0}
+.rtop .ib:active{background:var(--bg3)}
 .rtop .x{font-size:26px;color:var(--tx2);line-height:1;padding:0 4px}
 .rtop .info{flex:1;min-width:0}
 .rtop .nm{font-size:13.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .rtop .tm{font-size:11px;color:var(--tx2);font-variant-numeric:tabular-nums}
 .prog{height:3px;background:var(--bg3)}
 .prog i{display:block;height:100%;background:var(--acc);transition:width .3s}
-.rbody{flex:1;overflow-y:auto;padding:14px 14px 130px;-webkit-overflow-scrolling:touch}
+.rbody{flex:1;overflow-y:auto;padding:14px 14px calc(96px + var(--safe-b));-webkit-overflow-scrolling:touch}
+#run.resting .rbody{padding-bottom:calc(250px + var(--safe-b))}
 
 .cfg{background:linear-gradient(135deg,#22223A,#1A1A2C);border-radius:15px;padding:13px 15px;margin-bottom:14px;
   border-left:4px solid var(--gold)}
@@ -156,26 +161,32 @@ button.chip{border:none}
 .f input:focus{border-color:var(--acc)}
 .f .u{position:absolute;right:6px;top:50%;transform:translateY(-50%);font-size:9px;color:var(--tx3);font-weight:700;pointer-events:none}
 
-/* ---------- Rest timer ---------- */
-#rest{position:fixed;left:0;right:0;bottom:0;z-index:110;background:#12121Cf7;backdrop-filter:blur(20px);
-  border-top:1px solid #FFFFFF12;padding:13px 14px calc(13px + var(--safe-b));display:none}
+/* ---------- Rest timer (au-dessus de la barre de navigation de la séance) ---------- */
+#rest{position:fixed;left:0;right:0;bottom:calc(68px + var(--safe-b));z-index:110;background:#171726;
+  border-top:1px solid #FFFFFF18;padding:12px 14px;display:none;box-shadow:0 -8px 24px #0007}
 #rest.on{display:block}
-.rt{display:flex;align-items:center;gap:13px}
+.rt{display:flex;align-items:flex-start;gap:12px}
 .rt .ring{position:relative;width:56px;height:56px;flex-shrink:0}
 .rt .ring svg{transform:rotate(-90deg)}
 .rt .ring .v{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
   font-size:15px;font-weight:800;font-variant-numeric:tabular-nums}
 .rt .mid{flex:1;min-width:0}
-.rt .mid .a{font-size:10.5px;color:var(--tx2);font-weight:700;letter-spacing:.8px}
-.rt .mid .b{font-size:13.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.rt .acts{display:flex;gap:7px}
-.rt .acts button{background:var(--bg3);border-radius:10px;padding:9px 12px;font-size:12.5px;font-weight:700}
+.rt .mid .a{font-size:10px;color:var(--tx2);font-weight:800;letter-spacing:.7px;line-height:1.35}
+.rt .mid .b{font-size:14.5px;font-weight:800;line-height:1.3;margin-top:3px;word-wrap:break-word}
+.rt .mid .c{font-size:12.5px;color:var(--teal);font-weight:700;margin-top:3px;line-height:1.35}
+.rt .mid .d{font-size:11.5px;color:var(--gold);font-weight:700;margin-top:4px;line-height:1.35}
+.rt .acts{display:flex;flex-direction:column;gap:7px;flex:0 0 68px}
+.rt .acts button{background:var(--bg3);border-radius:10px;padding:9px 0;font-size:12.5px;font-weight:700;width:100%}
 .rt .acts button.go{background:var(--acc);color:#fff}
+#rest.fin{border-top-color:#27C77677;background:#122219}
+#rest.fin .mid .a{color:var(--green)}
+#rest.fin #rgRing{stroke:#27C776}
+#rest.fin .acts button.go{background:var(--green);color:#062814}
 
 /* ---------- Runner footer ---------- */
-.rfoot{position:fixed;left:0;right:0;bottom:0;z-index:105;padding:11px 14px calc(11px + var(--safe-b));
+.rfoot{position:fixed;left:0;right:0;bottom:0;z-index:105;padding:10px 14px calc(10px + var(--safe-b));
   background:#12121Cf2;backdrop-filter:blur(18px);border-top:1px solid #FFFFFF10;display:flex;gap:9px}
-.rfoot button{flex:1;border-radius:12px;padding:13px;font-weight:700;font-size:14.5px}
+.rfoot button{flex:1;border-radius:12px;height:48px;font-weight:700;font-size:14.5px}
 .rfoot .prev{background:var(--bg3);color:var(--tx2);flex:0 0 52px}
 .rfoot .next{background:var(--acc);color:#fff}
 .rfoot .fin{background:var(--green);color:#062814}
@@ -222,6 +233,8 @@ select.sel{width:100%;background:var(--bg3);border-radius:11px;padding:11px 12px
   background:var(--bg4);color:var(--tx);padding:11px 18px;border-radius:12px;font-size:13px;font-weight:600;
   opacity:0;transition:.25s;pointer-events:none;box-shadow:0 8px 28px #0009;max-width:88%;text-align:center}
 .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+body.running .toast{bottom:auto;top:calc(70px + var(--safe-t));transform:translateX(-50%) translateY(-10px)}
+body.running .toast.on{transform:translateX(-50%) translateY(0)}
 .pill{display:inline-flex;align-items:center;gap:5px;background:var(--bg3);border-radius:9px;padding:5px 10px;
   font-size:11px;font-weight:700;color:var(--tx2)}
 .sheet{position:fixed;inset:0;z-index:150;background:#000A;display:none;align-items:flex-end}
@@ -234,6 +247,58 @@ select.sel{width:100%;background:var(--bg3);border-radius:11px;padding:11px 12px
 .exline{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #FFFFFF0A;font-size:13.5px}
 .exline:last-child{border:none}
 .exline .r{color:var(--tx2);font-size:12px;font-variant-numeric:tabular-nums}
+
+/* ---- v2.0 ---- */
+.chip.tst{background:#16D6A822;color:var(--teal)}
+.sgap{display:block;width:100%;margin-top:9px;background:var(--green);color:#062814}
+.cfg .combo{margin-top:8px;padding-top:8px;border-top:1px solid #FFFFFF14;font-size:12px;color:var(--teal);line-height:1.6}
+.cfg .ptip{margin-top:7px;font-size:11.5px;color:#FFD79A;line-height:1.5}
+.rule{font-size:11.5px;color:var(--tx2);background:var(--bg2);border-radius:9px;padding:8px 11px;margin:-4px 0 12px;line-height:1.5}
+.setr.test{border:1px dashed #16D6A866;background:#0F2420}
+.setr.test.done{background:#132A1E;border-style:solid}
+.setr.test .n{background:var(--teal);color:#062814}
+.skt{background:var(--bg3);color:var(--tx2);border-radius:8px;padding:6px 10px;font-size:11.5px;font-weight:700;flex-shrink:0}
+.tnote{font-size:11.5px;color:#9FE8D5;line-height:1.5;margin:-2px 0 9px}
+.holds{display:flex;gap:8px;margin-bottom:9px}
+.holds .hold{flex:1;padding:9px 6px;font-size:13px}
+.ssec{font-size:12px;font-weight:800;color:var(--tx);margin:14px 0 7px}
+.cfgset{background:var(--bg3);border-radius:11px;padding:10px 11px;margin-bottom:8px}
+.cfgset .ct{font-size:11px;font-weight:800;color:var(--gold);letter-spacing:.6px;text-transform:uppercase;margin-bottom:6px;display:flex;justify-content:space-between;align-items:baseline;gap:8px;white-space:nowrap}
+.cfgset .ct span{color:var(--tx3);font-weight:600;text-transform:none;letter-spacing:0;font-size:10.5px;text-align:right}
+.lrow{display:flex;align-items:center;gap:8px;padding:6px 0}
+.lrow .ln{flex:1;min-width:0;font-size:12.5px}
+.lrow .ln div{font-size:10.5px;color:var(--tx3);margin-top:2px;line-height:1.4}
+.cfgset input{background:var(--bg)!important}
+.warn{font-size:11.5px;color:#FF9AA8;margin-top:6px}
+/* ---- v2.1 ---- */
+.sgc{border-radius:10px;padding:10px 12px;margin-bottom:12px;font-size:12.5px;line-height:1.5}
+.last{font-size:11.5px;color:var(--tx3);margin:-4px 0 12px}
+.blkh{font-size:12px;font-weight:800;color:var(--purple);letter-spacing:1px;margin-bottom:6px}
+.exh .bl{display:inline-block;font-size:10.5px;font-weight:800;color:#fff;background:var(--purple);border-radius:6px;padding:2px 7px;margin-bottom:5px}
+.round{font-size:10.5px;font-weight:800;color:var(--purple);letter-spacing:1.2px;margin:14px 0 7px;display:flex;align-items:center;gap:8px}
+.round::after{content:'';flex:1;height:1px;background:#9B6CE040}
+.sepb{width:100%;margin-top:14px;font-size:12.5px}
+.calnote{font-size:11px;color:var(--tx3);text-align:center;line-height:1.55;margin:4px 8px 6px}
+.xl{margin-top:4px}
+.xi{display:flex;align-items:center;gap:11px;padding:11px 4px;border-bottom:1px solid #FFFFFF0A;font-size:14px}
+.xi:last-child{border:none}
+.xi .k{flex:0 0 26px;height:22px;border-radius:7px;background:var(--bg3);color:var(--tx2);font-size:11px;font-weight:800;
+  display:flex;align-items:center;justify-content:center}
+.xi .nm{flex:1;min-width:0;line-height:1.35}
+.xi .ck{color:var(--green);font-weight:800}
+.xi.ok .nm{color:var(--tx2)}
+.xi.cur{background:#E9456014;border-radius:9px}
+.xi.cur .k{background:var(--acc);color:#fff}
+.xi.cur .nm{font-weight:700}
+.pblk{font-size:10.5px;font-weight:800;color:var(--purple);letter-spacing:.4px;margin:10px 0 0;padding:6px 9px;background:#9B6CE018;border-radius:8px}
+.exline.inblk{border-left:2px solid var(--purple);padding-left:8px}
+.exline.two{flex-direction:column;align-items:flex-start;gap:3px}
+.exline.two .r{padding-left:22px}
+.bh .exh .t{font-size:17px}
+.exline .num{display:inline-block;min-width:22px;font-size:11px;font-weight:800;color:var(--tx3)}
+.oldtag{font-size:10px;font-weight:700;color:var(--tx3);background:var(--bg3);border-radius:5px;padding:1px 6px}
+.cmb{font-size:11px;color:var(--teal);margin-top:4px;line-height:1.5}
+select.sel.sm{width:64px;flex:0 0 64px;padding:8px 22px 8px 10px;font-size:13px;background-position:right 8px center}
 </style>
 </head>
 <body>
@@ -297,6 +362,7 @@ select.sel{width:100%;background:var(--bg3);border-radius:11px;padding:11px 12px
   <div class="rtop">
     <button class="x" id="rClose">&times;</button>
     <div class="info"><div class="nm" id="rName">—</div><div class="tm" id="rTime">00:00</div></div>
+    <button class="ib" id="rInfo" aria-label="Exercices de la séance">i</button>
     <button class="btn sm sec" id="rSkip">Passer</button>
   </div>
   <div class="prog"><i id="rProg" style="width:0%"></i></div>
@@ -312,13 +378,18 @@ select.sel{width:100%;background:var(--bg3);border-radius:11px;padding:11px 12px
   <div class="rt">
     <div class="ring">
       <svg width="56" height="56"><circle cx="28" cy="28" r="24" stroke="#282840" stroke-width="5" fill="none"/>
-      <circle id="rgC" cx="28" cy="28" r="24" stroke="#E94560" stroke-width="5" fill="none"
+      <circle id="rgRing" cx="28" cy="28" r="24" stroke="#E94560" stroke-width="5" fill="none"
         stroke-linecap="round" stroke-dasharray="150.8" stroke-dashoffset="0"/></svg>
       <div class="v" id="rgT">0</div>
     </div>
-    <div class="mid"><div class="a">REPOS</div><div class="b" id="rgN">—</div></div>
+    <div class="mid">
+      <div class="a" id="rgA">REPOS</div>
+      <div class="b" id="rgB">—</div>
+      <div class="c" id="rgC"></div>
+      <div class="d hide" id="rgD"></div>
+    </div>
     <div class="acts">
-      <button id="rgAdd">+30s</button>
+      <button id="rgAdd">+30 s</button>
       <button class="go" id="rgSkip">Passer</button>
     </div>
   </div>
@@ -327,7 +398,6 @@ select.sel{width:100%;background:var(--bg3);border-radius:11px;padding:11px 12px
 <div class="sheet" id="sheet"><div class="inner" id="sheetIn"></div></div>
 <div class="toast" id="toast"></div>
 <script>
-
 window.onerror=function(msg,src,ln,col,err){
   var d=document.getElementById('storeWarn');
   if(d){d.classList.remove('hide');
@@ -336,131 +406,263 @@ window.onerror=function(msg,src,ln,col,err){
   return false;
 };
 /* ==========================================================================
-   ASYMÉTRIE · Suivi d'entraînement — v1.1
+   ASYMÉTRIE · Suivi d'entraînement — v2.1 (programme v6)
    Données 100 % locales. Aucun serveur, aucun compte, aucun traçage.
    ========================================================================== */
+const APP_VERSION='2.1';
 
-/* ---------- Groupes musculaires + cibles ACSM ---------- */
+/* ---------- Groupes musculaires ---------- */
 const MG = {
-  pect:{n:'Pectoraux',t:10,c:'#E94560'}, dos:{n:'Dos',t:10,c:'#3D7EFF'},
-  jamb:{n:'Jambes',t:10,c:'#16D6A8'},    epau:{n:'Épaules',t:10,c:'#F5A623'},
-  tri:{n:'Triceps',t:10,c:'#9B6CE0'},    bic:{n:'Biceps',t:10,c:'#FF8A5B'},
-  grip:{n:'Grip',t:9,c:'#5BC8FF'},       core:{n:'Core',t:0,c:'#7C8093'}
+  pect:{n:'Pectoraux'}, dos:{n:'Dos (dorsaux, rhomboïdes)'}, dpost:{n:'Deltoïde postérieur'},
+  epau:{n:'Épaules (deltoïdes latéral et antérieur)'}, tri:{n:'Triceps'}, bic:{n:'Biceps'},
+  avb:{n:'Avant-bras'}, quad:{n:'Quadriceps'}, isch:{n:'Ischio-jambiers / fessiers'},
+  mol:{n:'Mollets'}, abs:{n:'Abdominaux'},
+  /* groupes des anciens programmes (historique uniquement) */
+  core:{n:'Gainage',old:1}, lomb:{n:'Lombaires',old:1}
 };
 
-/* ---------- Programme (v2 — kit 20 kg) ---------- */
+/* ---------- Familles testées pour l'asymétrie (un test par famille) ---------- */
+const TK = {
+  elev:'Élévations latérales unilatérales', mil:'Développé militaire unilatéral assis', split:'Split squat',
+  mol:'Mollets unilatéraux debout sur une marche', row:'Rowing haltère unilatéral', curlinc:'Curl incliné unilatéral',
+  poignet:'Curl poignet unilatéral', bss:'Bulgarian Split Squat', ext:'Extension triceps unilatérale au-dessus de la tête',
+  curlpup:'Curl pupitre unilatéral sur le dossier du banc', poignetinv:'Curl poignet inversé unilatéral'
+};
+
+/* ---------- Programme v6 — kit 20 kg (copie exacte du PDF v6) ----------
+   Configuration : charges des barres A et B. Une configuration « paire »
+   (un exercice au moins à deux haltères) impose A = B.
+   Exercice :
+     bar  : 'A' | 'B' | 'AB' (deux haltères) | '' (poids de corps)
+     u    : unilatéral, cible repL G / repR D        rMin/rMax : fourchette (deux haltères)
+     bw   : poids de corps   p : prioritaire gauche   e : excentrique 4 s côté gauche
+     tk   : famille du test d'asymétrie               xtra : minutes de mise en place
+     blk / role : bloc enchaîné (1 puis 2, sans repos) ; le repos du bloc est celui du rôle 2
+     pg   : progression particulière ('pause' : crunch, 'leg' : leg curl → une jambe)   */
 const PROG = [
-{ id:'s1', n:'Séance 1', sub:'Push + Quadriceps', dur:41, col:1, expN:3,
-  desc:'Pectoraux, épaules, triceps, quadriceps',
+{ id:'s1', n:'Séance 1', sub:'Push + Quadriceps', col:1, expN:2,
+  desc:'Épaules, pectoraux, quadriceps, mollets, abdominaux',
   cfgs:[
-    { id:'s1c1', label:'2 haltères à 4 kg', plates:'2 kg de disques par barre', ex:[
-      {id:'e101',n:'Élévations latérales unilatérales',mg:'epau',sets:3,repL:12,repR:10,load:4,rest:60,u:1,p:1}]},
-    { id:'s1c2', label:'2 haltères à 10 kg', plates:'8 kg de disques par barre — tout le stock', ex:[
-      {id:'e102',n:'Développé couché haltères',mg:'pect',sets:3,repL:9,load:10,rest:90,pair:1},
-      {id:'e103',n:'Fente statique / Split squat',mg:'jamb',sets:3,repL:10,repR:8,load:10,rest:90,u:1,p:1,pair:1},
-      {id:'e104',n:'Développé couché prise serrée',mg:'tri',sets:3,repL:13,load:10,rest:90,pair:1}]},
-    { id:'s1c3', label:'2 haltères à 6 kg', plates:'4 kg de disques par barre', ex:[
-      {id:'e105',n:'Développé militaire assis',mg:'epau',sets:3,repL:11,load:6,rest:90,pair:1},
-      {id:'e106',n:'Développé incliné 30°',mg:'pect',sets:3,repL:13,load:6,rest:60,pair:1}]}
+    { id:'s1c1', A:4, B:6, ex:[
+      {id:'s1_elev',n:'Élévations latérales unilatérales',mg:'epau',bar:'A',sets:3,repL:12,repR:10,rest:60,u:1,p:1,tk:'elev'},
+      {id:'s1_mil',n:'Développé militaire unilatéral assis',mg:'epau',bar:'B',sets:3,repL:12,repR:10,rest:90,u:1,p:1,tk:'mil'}]},
+    { id:'s1c2', A:8, B:8, ex:[
+      {id:'s1_incl',n:'Développé incliné 30°',mg:'pect',bar:'AB',sets:3,rMin:8,rMax:12,rest:90}]},
+    { id:'s1c3', A:6, B:6, ex:[
+      {id:'s1_split',n:'Split squat',mg:'quad',bar:'AB',sets:3,repL:12,repR:10,rest:90,u:1,p:1,tk:'split'},
+      {id:'s1_ecarte',n:'Écarté couché à plat',mg:'pect',bar:'AB',sets:2,rMin:10,rMax:15,rest:60},
+      {id:'s1_mol',n:'Mollets unilatéraux debout sur une marche',mg:'mol',bar:'A',sets:2,repL:15,repR:12,rest:0,u:1,p:1,tk:'mol',blk:'A',role:1},
+      {id:'s1_crunch',n:'Crunch lesté',mg:'abs',bar:'B',sets:2,rMin:12,rMax:15,rest:60,blk:'A',role:2,pg:'pause'}]}
   ]},
-{ id:'s2', n:'Séance 2', sub:'Pull + Chaîne postérieure + Grip', dur:42, col:2, expN:2,
-  desc:'Dos, deltoïde postérieur, biceps, ischio-jambiers, grip',
+{ id:'s2', n:'Séance 2', sub:'Pull + Ischio-jambiers + Avant-bras', col:2, expN:2,
+  desc:'Dos, biceps, ischio-jambiers, épaules, avant-bras',
   cfgs:[
-    { id:'s2c1', label:'Barre A = 13 kg · Barre B = 7 kg', plates:'11 kg + 5 kg de disques — tout le stock', ex:[
-      {id:'e201',n:'Rowing haltère unilatéral',mg:'dos',sets:3,repL:10,repR:8,load:13,rest:90,u:1,p:1,e:1},
-      {id:'e202',n:'Curl biceps unilatéral assis',mg:'bic',sets:3,repL:12,repR:10,load:7,rest:60,u:1,p:1}]},
-    { id:'s2c2', label:'2 haltères à 10 kg', plates:'8 kg de disques par barre — tout le stock', ex:[
-      {id:'e203',n:'Romanian Deadlift',mg:'jamb',sets:3,repL:13,load:10,rest:90,pair:1},
-      {id:'e204',n:'Farmer Hold gauche',mg:'grip',sets:3,repL:45,load:10,rest:60,ho:1,p:1},
-      {id:'e205',n:'Farmer Hold droit',mg:'grip',sets:3,repL:25,load:10,rest:60,ho:1}]},
-    { id:'s2c3', label:'2 haltères à 4 kg', plates:'2 kg de disques par barre', ex:[
-      {id:'e206',n:'Oiseau buste penché (deltoïde postérieur)',mg:'dos',sets:3,repL:13,load:4,rest:60,pair:1},
-      {id:'e207',n:'Gainage planche',mg:'core',sets:3,repL:40,load:0,rest:60,ho:1,bw:1}]}
+    { id:'s2c1', A:12, B:6, ex:[
+      {id:'s2_row',n:'Rowing haltère unilatéral',mg:'dos',bar:'A',sets:3,repL:12,repR:10,rest:90,u:1,p:1,e:1,tk:'row'},
+      {id:'s2_curlinc',n:'Curl incliné unilatéral',mg:'bic',bar:'B',sets:3,repL:12,repR:10,rest:60,u:1,p:1,tk:'curlinc'}]},
+    { id:'s2c2', A:10, B:10, ex:[
+      {id:'s2_rdl',n:'Romanian Deadlift',mg:'isch',bar:'AB',sets:3,rMin:12,rMax:15,rest:90}]},
+    { id:'s2c3', A:4, B:4, ex:[
+      {id:'s2_elev',n:'Élévations latérales unilatérales',mg:'epau',bar:'A',sets:3,repL:12,repR:10,rest:0,u:1,p:1,tk:'elev',blk:'A',role:1},
+      {id:'s2_legcurl',n:'Leg curl glissé sur serviette',mg:'isch',bar:'',sets:2,rMin:8,rMax:15,rest:60,bw:1,blk:'A',role:2,pg:'leg'},
+      {id:'s2_oiseau',n:'Oiseau buste penché',mg:'dpost',bar:'AB',sets:2,rMin:12,rMax:15,rest:0,blk:'B',role:1},
+      {id:'s2_poignet',n:'Curl poignet unilatéral (paume vers le haut)',mg:'avb',bar:'A',sets:3,repL:15,repR:12,rest:60,u:1,p:1,tk:'poignet',blk:'B',role:2}]}
   ]},
-{ id:'s3', n:'Séance 3', sub:'Jambes + Dos + Bras', dur:45, col:3, expN:2,
-  desc:'Correction asymétrie jambes, 2e stimulus dorsal, bras et épaules',
+{ id:'s3', n:'Séance 3', sub:'Jambes + Dos + Bras', col:3, expN:2,
+  desc:'Jambes, dos, pectoraux, bras, mollets, avant-bras',
   cfgs:[
-    { id:'s3c1', label:'2 haltères à 10 kg', plates:'8 kg de disques par barre — tout le stock', ex:[
-      {id:'e301',n:'Bulgarian Split Squat',mg:'jamb',sets:3,repL:10,repR:8,load:10,rest:90,u:1,p:1,e:1,pair:1},
-      {id:'e302',n:'Rowing buste penché appui banc',mg:'dos',sets:3,repL:11,load:10,rest:90,pair:1},
-      {id:'e303',n:'Développé couché haltères',mg:'pect',sets:3,repL:11,load:10,rest:90,pair:1}]},
-    { id:'s3c2', label:'Barre A = 7 kg · Barre B = 4 kg', plates:'5 kg + 2 kg de disques', ex:[
-      {id:'e304',n:'Curl biceps unilatéral',mg:'bic',sets:3,repL:12,repR:10,load:7,rest:60,u:1,p:1},
-      {id:'e305',n:'Élévations latérales unilatérales',mg:'epau',sets:3,repL:12,repR:10,load:4,rest:60,u:1,p:1},
-      {id:'e306',n:'Kickback triceps unilatéral',mg:'tri',sets:3,repL:15,repR:12,load:4,rest:60,u:1,p:1},
-      {id:'e307',n:'Extension triceps nuque (2 mains, 1 haltère)',mg:'tri',sets:3,repL:13,load:7,rest:60}]}
+    { id:'s3c1', A:4, B:4, ex:[
+      {id:'s3_bss',n:'Bulgarian Split Squat',mg:'quad',bar:'AB',sets:3,repL:10,repR:8,rest:90,u:1,p:1,e:1,tk:'bss',xtra:0.25}]},
+    { id:'s3c2', A:10, B:10, ex:[
+      {id:'s3_rowbanc',n:'Rowing buste penché appui banc',mg:'dos',bar:'AB',sets:3,rMin:10,rMax:12,rest:90},
+      {id:'s3_couche',n:'Développé couché haltères',mg:'pect',bar:'AB',sets:3,rMin:8,rMax:12,rest:90}]},
+    { id:'s3c3', A:7, B:4, ex:[
+      {id:'s3_ext',n:'Extension triceps unilatérale au-dessus de la tête',mg:'tri',bar:'B',sets:3,repL:12,repR:10,rest:0,u:1,p:1,tk:'ext',blk:'A',role:1},
+      {id:'s3_curlpup',n:'Curl pupitre unilatéral sur le dossier du banc',mg:'bic',bar:'A',sets:2,repL:12,repR:10,rest:75,u:1,p:1,tk:'curlpup',blk:'A',role:2},
+      {id:'s3_mol',n:'Mollets unilatéraux debout sur une marche',mg:'mol',bar:'A',sets:2,repL:15,repR:12,rest:0,u:1,p:1,tk:'mol',blk:'B',role:1},
+      {id:'s3_poignetinv',n:'Curl poignet inversé unilatéral (paume vers le bas)',mg:'avb',bar:'B',sets:2,repL:15,repR:12,rest:60,u:1,p:1,tk:'poignetinv',blk:'B',role:2}]}
   ]}];
 
-const EXI={};
-PROG.forEach(s=>s.cfgs.forEach(c=>c.ex.forEach(e=>{EXI[e.id]={...e,sid:s.id,sname:s.n,cfg:c.label};})));
-const flatEx = s => s.cfgs.flatMap(c=>c.ex.map(e=>({...e,_cfg:c})));
+/* ---------- Anciens programmes : noms et groupes, pour relire l'historique ----------
+   Les identifiants e101… ont changé de sens d'une version à l'autre : chaque séance
+   enregistrée est rattachée à sa version (champ pv) et relue avec le bon catalogue.
+   to : exercice v6 équivalent (continuité des courbes)  tk : famille de test      */
+const OLD = {
+ v2:{lab:'prog. v2',s:{s1:'Push + Jambes',s2:'Pull + Chaîne postérieure + Grip',s3:'Jambes unilatéral + Push volume'},ex:{
+  e101:{n:'Élévations latérales unilatérales',mg:'epau',u:1,to:'s1_elev',tk:'elev'},
+  e102:{n:'Gainage planche',mg:'core',ho:1,bw:1},
+  e103:{n:'Développé couché haltères',mg:'pect',to:'s3_couche'},
+  e104:{n:'Fente statique / Split squat',mg:'quad',u:1,to:'s1_split',tk:'split'},
+  e105:{n:'Développé incliné 30°',mg:'pect',to:'s1_incl'},
+  e106:{n:'Développé militaire assis',mg:'epau'},
+  e107:{n:'Extension triceps assis',mg:'tri'},
+  e201:{n:'Rowing haltère unilatéral',mg:'dos',u:1,to:'s2_row',tk:'row'},
+  e202:{n:'Curl biceps unilatéral assis',mg:'bic',u:1},
+  e203:{n:'Romanian Deadlift',mg:'isch',to:'s2_rdl'},
+  e204:{n:'Superman au sol',mg:'lomb',ho:1,bw:1},
+  e205:{n:'Rowing buste penché appui banc',mg:'dos',to:'s3_rowbanc'},
+  e206:{n:'Farmer Hold gauche',mg:'avb',ho:1},
+  e207:{n:'Farmer Hold droit',mg:'avb',ho:1},
+  e208:{n:'Curl poignet unilatéral',mg:'avb',u:1,to:'s2_poignet',tk:'poignet'},
+  e301:{n:'Bulgarian Split Squat',mg:'quad',u:1,to:'s3_bss',tk:'bss'},
+  e302:{n:'Développé couché prise serrée',mg:'tri'},
+  e303:{n:'Gainage planche',mg:'core',ho:1,bw:1},
+  e304:{n:'Curl biceps unilatéral',mg:'bic',u:1},
+  e305:{n:'Élévations latérales unilatérales',mg:'epau',u:1,to:'s2_elev',tk:'elev'},
+  e306:{n:'Kickback triceps unilatéral',mg:'tri',u:1}}},
+ v3:{lab:'prog. v3',s:{s1:'Push + Quadriceps',s2:'Pull + Chaîne postérieure + Grip',s3:'Jambes unilatéral + Bras / Épaules'},ex:{
+  e101:{n:'Élévations latérales unilatérales',mg:'epau',u:1,to:'s1_elev',tk:'elev'},
+  e102:{n:'Développé couché haltères',mg:'pect',to:'s3_couche'},
+  e103:{n:'Fente statique / Split squat',mg:'quad',u:1,to:'s1_split',tk:'split'},
+  e104:{n:'Développé couché prise serrée',mg:'tri'},
+  e105:{n:'Développé militaire assis',mg:'epau'},
+  e106:{n:'Développé incliné 30°',mg:'pect',to:'s1_incl'},
+  e201:{n:'Rowing haltère unilatéral',mg:'dos',u:1,to:'s2_row',tk:'row'},
+  e202:{n:'Curl biceps unilatéral assis',mg:'bic',u:1},
+  e203:{n:'Romanian Deadlift',mg:'isch',to:'s2_rdl'},
+  e204:{n:'Rowing buste penché appui banc',mg:'dos',to:'s3_rowbanc'},
+  e205:{n:'Farmer Hold gauche',mg:'avb',ho:1},
+  e206:{n:'Farmer Hold droit',mg:'avb',ho:1},
+  e207:{n:'Superman au sol',mg:'lomb',ho:1,bw:1},
+  e301:{n:'Bulgarian Split Squat',mg:'quad',u:1,to:'s3_bss',tk:'bss'},
+  e302:{n:'Développé couché haltères',mg:'pect',to:'s3_couche'},
+  e303:{n:'Curl biceps unilatéral',mg:'bic',u:1},
+  e304:{n:'Élévations latérales unilatérales',mg:'epau',u:1,to:'s2_elev',tk:'elev'},
+  e305:{n:'Kickback triceps unilatéral',mg:'tri',u:1},
+  e306:{n:'Extension triceps nuque (2 mains, 1 haltère)',mg:'tri'},
+  e307:{n:'Gainage planche',mg:'core',ho:1,bw:1}}},
+ /* v4 (application 1.4) et v5 (application 2.0) : mêmes identifiants, la v5 en ajoute quatre (x5) */
+ v4:{lab:'prog. v4-v5',s:{s1:'Push + Quadriceps',s2:'Pull + Chaîne postérieure + Grip',s3:'Jambes + Dos + Bras'},ex:{
+  e101:{n:'Élévations latérales unilatérales',mg:'epau',u:1,to:'s1_elev',tk:'elev'},
+  e102:{n:'Développé couché haltères',mg:'pect',to:'s3_couche'},
+  e103:{n:'Fente statique / Split squat',mg:'quad',u:1,to:'s1_split',tk:'split'},
+  e104:{n:'Développé couché prise serrée',mg:'tri'},
+  e105:{n:'Développé militaire assis',mg:'epau'},
+  e106:{n:'Développé incliné 30°',mg:'pect',to:'s1_incl'},
+  e108:{n:'Développé militaire unilatéral assis',mg:'epau',u:1,to:'s1_mil',tk:'mil',x5:1},
+  e201:{n:'Rowing haltère unilatéral',mg:'dos',u:1,to:'s2_row',tk:'row'},
+  e202:{n:'Curl biceps unilatéral assis',mg:'bic',u:1},
+  e203:{n:'Romanian Deadlift',mg:'isch',to:'s2_rdl'},
+  e204:{n:'Farmer Hold gauche',mg:'avb',ho:1},
+  e205:{n:'Farmer Hold droit',mg:'avb',ho:1},
+  e206:{n:'Oiseau buste penché',mg:'dpost',to:'s2_oiseau'},
+  e207:{n:'Gainage planche',mg:'core',ho:1,bw:1},
+  e208:{n:'Farmer Hold unilatéral',mg:'avb',u:1,ho:1,x5:1},
+  e209:{n:'Pullover haltère sur banc',mg:'dos',x5:1},
+  e301:{n:'Bulgarian Split Squat',mg:'quad',u:1,to:'s3_bss',tk:'bss'},
+  e302:{n:'Rowing buste penché appui banc',mg:'dos',to:'s3_rowbanc'},
+  e303:{n:'Développé couché haltères',mg:'pect',to:'s3_couche'},
+  e304:{n:'Curl biceps unilatéral',mg:'bic',u:1},
+  e305:{n:'Élévations latérales unilatérales',mg:'epau',u:1,to:'s2_elev',tk:'elev'},
+  e306:{n:'Kickback triceps unilatéral',mg:'tri',u:1},
+  e307:{n:'Extension triceps nuque (2 mains)',mg:'tri'},
+  e308:{n:'Extension triceps unilatérale au-dessus de la tête',mg:'tri',u:1,to:'s3_ext',tk:'ext',x5:1}}}
+};
 
-
-/* ==========================================================================
-   ESTIMATION DE DURÉE
-   Calculée à partir des séries, répétitions et repos réels.
-   Majorée de 15 % pour l'installation, les transitions et les changements.
-   ========================================================================== */
-function exSeconds(e){
-  const work = e.ho ? e.repL
-             : e.repR ? (e.repL+e.repR)*2.5
-             : e.repL*3;
-  return e.sets*work + (e.sets-1)*e.rest + 20;   // +20 s de transition
-}
-function estSeconds(list){
-  let t=0, prev=null;
-  list.forEach(e=>{
-    const cid=e._cfg?e._cfg.id:e.cfgId;
-    if(prev&&cid&&prev!==cid)t+=90;              // changement de disques
-    if(cid)prev=cid;
-    t+=exSeconds(e);
-  });
-  return Math.round(t*1.15);
-}
-function estMinutes(list){return Math.max(1,Math.round(estSeconds(list)/60));}
-
-/* liste des exercices d'une séance, en mode complet ou express */
-function sessionEx(s,express){
-  const all=flatEx(s);
-  return express?all.slice(0,s.expN||s.cfgs[0].ex.length):all;
-}
+const EXI={}, CFG={};
+PROG.forEach(s=>s.cfgs.forEach((c,i)=>{
+  c.sid=s.id; c.idx=i+1;
+  c.pair = c.ex.some(e=>e.bar==='AB');
+  c.usesA= c.ex.some(e=>e.bar==='A'||e.bar==='AB');
+  c.usesB= c.ex.some(e=>e.bar==='B'||e.bar==='AB');
+  CFG[c.id]=c;
+  c.ex.forEach((e,k)=>{e.cid=c.id; e.sid=s.id; EXI[e.id]=e;});
+}));
+/* noms courts (lignes de série dans les blocs, rappels) */
+const SN={s1_elev:'Élévations latérales',s1_mil:'Militaire unilatéral',s1_incl:'Développé incliné',s1_split:'Split squat',
+  s1_ecarte:'Écarté',s1_mol:'Mollets',s1_crunch:'Crunch',s2_row:'Rowing unilatéral',s2_curlinc:'Curl incliné',
+  s2_rdl:'Romanian Deadlift',s2_elev:'Élévations latérales',s2_legcurl:'Leg curl',s2_oiseau:'Oiseau',s2_poignet:'Curl poignet',
+  s3_bss:'Bulgarian',s3_rowbanc:'Rowing appui banc',s3_couche:'Développé couché',s3_ext:'Extension triceps',
+  s3_curlpup:'Curl pupitre',s3_mol:'Mollets',s3_poignetinv:'Curl poignet inversé'};
+Object.keys(SN).forEach(k=>{if(EXI[k])EXI[k].sn=SN[k];});
+/* numérotation du PDF : 1, 2, 3… et A1 / A2 dans les blocs */
+PROG.forEach(s=>{let k=1;s.cfgs.forEach(c=>c.ex.forEach(e=>{e.num=e.blk?e.blk+e.role:String(k);k++;}));});
 
 /* ==========================================================================
    STOCKAGE
    ========================================================================== */
 const KEY='asym_track_v1';
-const DEF_PLATES=[{w:2,n:8}];          // 8 disques de 2 kg = 16 kg (modifiable)
+const DEF_PLATES=[{w:2,n:4},{w:1,n:8}];     // ton kit : 4 × 2 kg + 8 × 1 kg = 16 kg
 const DEF_BAR=2;
-let MEM=null, PERSIST=true;
+let MEM=null, PERSIST=true, NEED_SAVE=false;
 
-function blank(){return{workouts:[],custom:{},plates:DEF_PLATES.map(p=>({...p})),bar:DEF_BAR,
-  draft:null,created:Date.now()};}
+function blank(){return{workouts:[],ld:{},setsOv:{},alt:{},testEvery:14,vol:100,
+  plates:DEF_PLATES.map(p=>({...p})),bar:DEF_BAR,draft:null,created:Date.now(),mig6:1};}
 
+const V3_DAY='2026-09-11', V4_DAY='2026-09-12';   // dates de mise en service des programmes v3 et v4
+function dayStr(ts){const d=new Date(ts);return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());}
+const isV6 = k => !!EXI[k];
+/* version de programme d'une séance enregistrée */
+function detectVer(w){
+  const keys=Object.keys((w&&w.log)||{});
+  if(!keys.length||keys.every(isV6))return 'v6';
+  /* application 2.0 : version écrite dans la séance ; e108, e209, e308 n'existent qu'en v5 */
+  if(w.v==='2.0'||keys.some(k=>['e108','e209','e308'].includes(k)))return 'v4';
+  const day=dayStr(w.start||0), prior=day<V3_DAY?'v2':day<V4_DAY?'v3':'v4';
+  let best=null;
+  ['v2','v3','v4'].forEach(v=>{
+    const C=OLD[v].ex;let pen=0;
+    keys.forEach(k=>{
+      const e=C[k];if(!e){pen+=100;return;}
+      const dn=(w.log[k]||[]).filter(s=>s&&s.d);if(!dn.length)return;
+      const hasR=dn.some(s=>(s.rR||0)>0), big=dn.every(s=>(s.rL||0)>=20), noW=dn.every(s=>!((s.wL||0)>0));
+      if(!e.ho&&!!e.u!==hasR)pen+=3;
+      if(e.ho&&!big)pen+=3; if(!e.ho&&big)pen+=2;
+      if(!!e.bw!==noW)pen+=3;
+    });
+    if(!w.exp&&!w.part){   // séance complète : l'ancienne application enregistrait tous les exercices de la séance
+      const sp=(w.sid||'').slice(1);
+      Object.keys(C).forEach(k=>{if(k.charAt(1)===sp&&!C[k].x5&&!keys.includes(k))pen+=1;});
+    }
+    if(v===prior)pen-=2;
+    if(!best||pen<best.pen)best={v,pen};
+  });
+  return best.v;
+}
+function migrate(d){
+  if(!d||typeof d!=='object')d=blank();
+  if(!Array.isArray(d.workouts))d.workouts=[];
+  d.workouts=d.workouts.filter(w=>w&&typeof w==='object'&&w.log&&typeof w.log==='object');
+  ['ld','setsOv','alt'].forEach(k=>{if(!d[k]||typeof d[k]!=='object')d[k]={};});
+  if(d.testEvery==null)d.testEvery=14;
+  if(d.vol==null)d.vol=100;
+  if(Array.isArray(d.plates))d.plates=d.plates.filter(p=>p&&typeof p==='object'&&+p.w>0);
+  if(!Array.isArray(d.plates)||!d.plates.length)d.plates=DEF_PLATES.map(p=>({...p}));
+  if(d.bar==null)d.bar=DEF_BAR;
+  if(!d.mig6){
+    /* inventaire par défaut des anciennes versions (8 × 2 kg) → ton vrai kit */
+    if(JSON.stringify(d.plates.map(p=>({w:+p.w,n:+p.n})))==='[{"w":2,"n":8}]')d.plates=DEF_PLATES.map(p=>({...p}));
+    /* séance en cours d'une ancienne version : les séries validées sont archivées, rien n'est perdu */
+    const dr=d.draft;
+    if(dr&&dr.log&&typeof dr.log==='object'&&!Object.keys(dr.log).every(isV6)){
+      const n=woSets(dr);
+      if(n>0)d.workouts.push({sid:dr.sid,start:dr.start||Date.now(),end:(dr.start||Date.now())+n*150000,
+        log:dr.log,note:'Séance interrompue (ancienne version de l\'application)',exp:dr.exp||0,part:1,v:dr.v});
+      d.draft=null;
+    }
+    d.mig6=1;
+  }
+  d.workouts.forEach(w=>{if(!w.pv||!(w.pv in OLD||w.pv==='v6'))w.pv=detectVer(w);});
+  if(d.draft){
+    const s=PROG.find(x=>x.id===d.draft.sid);
+    if(!s||!d.draft.log||typeof d.draft.log!=='object'||!Object.keys(d.draft.log).every(isV6))d.draft=null;
+  }
+  return d;
+}
 function load(){
   try{
     const r=localStorage.getItem(KEY);
     localStorage.setItem(KEY+'_t','1');localStorage.removeItem(KEY+'_t');
     PERSIST=true;
-    const d=r?JSON.parse(r):blank();
-    if(!d.custom)d.custom={};
-    if(!d.plates||!d.plates.length)d.plates=DEF_PLATES.map(p=>({...p}));
-    if(d.bar==null)d.bar=DEF_BAR;
-    if(!d.workouts)d.workouts=[];
-    return d;
+    let d=null;try{d=r?JSON.parse(r):null;}catch(x){d=null;}
+    if(d&&typeof d==='object'&&!d.mig6)NEED_SAVE=true;   // première ouverture après la mise à jour
+    return migrate(d||blank());
   }catch(e){PERSIST=false;return MEM||(MEM=blank());}
 }
 function save(){
   if(!PERSIST){MEM=DB;return;}
   try{localStorage.setItem(KEY,JSON.stringify(DB));}
   catch(e){PERSIST=false;MEM=DB;warnStore();}
-}
-let DB=load();
-
-function warnStore(){
-  const w=$('#storeWarn');if(!w)return;
-  w.classList.remove('hide');
-  w.innerHTML='⚠️ <b>Stockage indisponible.</b> Tes séances ne seront pas conservées. '+
-    'Ouvre l\'application depuis son adresse https (GitHub Pages) plutôt qu\'en fichier local.';
 }
 
 /* ==========================================================================
@@ -471,168 +673,470 @@ const $$ = s=>[...document.querySelectorAll(s)];
 const pad = n=>String(n).padStart(2,'0');
 const esc = s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const r2=v=>Math.round(v*100)/100;
+const kgs=v=>String(r2(v));
+
+function woSets(w){if(!w)return 0;let n=0;Object.values(w.log||{}).forEach(a=>(a||[]).forEach(s=>{if(s&&s.d)n++;}));return n;}
+
+let DB=load();
+if(NEED_SAVE)save();
+
+function warnStore(){
+  const w=$('#storeWarn');if(!w)return;
+  w.classList.remove('hide');
+  w.innerHTML='⚠️ <b>Stockage indisponible.</b> Tes séances ne seront pas conservées. '+
+    'Ouvre l\'application depuis son adresse https (GitHub Pages) plutôt qu\'en fichier local.';
+}
 
 function toast(m,ms){const t=$('#toast');t.textContent=m;t.classList.add('on');
   clearTimeout(t._x);t._x=setTimeout(()=>t.classList.remove('on'),ms||2100);}
 function buzz(p){try{navigator.vibrate&&navigator.vibrate(p);}catch(e){}}
-function beep(n){
+
+/* ---------- Son : bips aigus et carrés, audibles par-dessus la musique ----------
+   Le contexte audio est débloqué au premier toucher. Les bips de fin de repos sont
+   programmés à l'avance dans le moteur audio : ils sonnent à l'heure même si le
+   navigateur ralentit les minuteries de la page.                                  */
+let AC=null, SCHED=[];
+function audio(){
   try{
-    const c=new (window.AudioContext||window.webkitAudioContext)();
-    for(let i=0;i<(n||1);i++){
-      const o=c.createOscillator(),g=c.createGain(),t0=c.currentTime+i*.22;
-      o.connect(g);g.connect(c.destination);o.frequency.value=880;o.type='sine';
-      g.gain.setValueAtTime(.001,t0);
-      g.gain.exponentialRampToValueAtTime(.25,t0+.02);
-      g.gain.exponentialRampToValueAtTime(.001,t0+.2);
-      o.start(t0);o.stop(t0+.24);
+    if(!AC){const C=window.AudioContext||window.webkitAudioContext;if(!C)return null;AC=new C();}
+    if(AC.state==='suspended'&&AC.resume){
+      const p=AC.resume();
+      if(p&&p.then)p.then(()=>{if(typeof onAudioUnlock==='function')onAudioUnlock();}).catch(()=>{});
     }
-  }catch(e){}
+    return AC;
+  }catch(e){return null;}
 }
+['pointerdown','touchstart','keydown'].forEach(t=>document.addEventListener(t,()=>{audio();},{capture:true,passive:true}));
+function volGain(){const v=DB.vol==null?100:DB.vol;return v<=0?0:Math.min(1,Math.pow(v/100,1.6));}
+function tone(c,t0,dur,freq,amp){
+  const o=c.createOscillator(),g=c.createGain();
+  o.type='square';o.frequency.setValueAtTime(freq,t0);
+  o.connect(g);g.connect(c.destination);
+  g.gain.setValueAtTime(0.0001,t0);
+  g.gain.exponentialRampToValueAtTime(Math.max(0.0002,amp),t0+0.008);
+  g.gain.setValueAtTime(Math.max(0.0002,amp),Math.max(t0+0.009,t0+dur-0.025));
+  g.gain.exponentialRampToValueAtTime(0.0001,t0+dur);
+  o.start(t0);o.stop(t0+dur+0.02);
+  return {o,g};
+}
+/* motifs : 'tick' (3-2-1) · 'end' (fin du repos, deux salves) */
+function playPattern(kind,at,keep){
+  const c=audio();if(!c||c.state!=='running')return false;   // jamais de bips en attente qui sonneraient plus tard
+  const a=volGain();if(!a)return true;
+  const t=at==null?c.currentTime+0.02:at, out=[];
+  if(kind==='tick')out.push(tone(c,t,0.14,1800,a*0.85));
+  else for(let r=0;r<2;r++)for(let k=0;k<4;k++)out.push(tone(c,t+r*0.95+k*0.19,0.17,k%2?2600:2000,a));
+  if(keep)SCHED.push(...out);
+  return true;
+}
+function beep(kind){return playPattern(kind||'tick');}
+function cancelSched(){SCHED.forEach(x=>{try{x.g.disconnect();}catch(e){}try{x.o.stop(0);}catch(e){}});SCHED=[];}
+/* programme les bips d'un repos qui finit à endTs ; renvoie false si l'audio est indisponible */
+function scheduleRestAudio(endTs){
+  cancelSched();
+  const c=audio();if(!c||c.state!=='running')return false;
+  const now=Date.now(),base=c.currentTime,at=ts=>base+(ts-now)/1000;
+  [3,2,1].forEach(k=>{const ts=endTs-k*1000;if(ts>now+60)playPattern('tick',at(ts),true);});
+  if(endTs>now+60)playPattern('end',at(endTs),true);
+  return true;
+}
+
 const MOIS=['jan','fév','mar','avr','mai','juin','juil','aoû','sep','oct','nov','déc'];
 function fmtDate(ts){const d=new Date(ts);return d.getDate()+' '+MOIS[d.getMonth()];}
 function fmtFull(ts){return new Date(ts).toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});}
-function mmss(s){return pad(Math.floor(s/60))+':'+pad(s%60);}
+function mmss(s){s=Math.max(0,Math.floor(s));return (s>=3600?Math.floor(s/3600)+':'+pad(Math.floor(s%3600/60)):pad(Math.floor(s/60)))+':'+pad(s%60);}
+function fmtAgo(s){s=Math.round(s);return s<60?s+' s':Math.floor(s/60)+' min'+(s%60?' '+pad(s%60):'');}
 function weekKey(ts){const d=new Date(ts);const t=new Date(d.getFullYear(),d.getMonth(),d.getDate());
   t.setDate(t.getDate()+4-(t.getDay()||7));const y=new Date(t.getFullYear(),0,1);
   return t.getFullYear()+'-W'+pad(Math.ceil(((t-y)/86400000+1)/7));}
 
-function exLoad(e){const c=DB.custom||(DB.custom={});return c[e.id]!=null?c[e.id]:e.load;}
 function setVol(s){let v=0;if(s.rL&&s.wL)v+=s.rL*s.wL;if(s.rR&&s.wR)v+=s.rR*s.wR;return v;}
-function woVol(w){if(!w)return 0;let v=0;Object.values(w.log||{}).forEach(a=>a.forEach(s=>{if(s.d)v+=setVol(s);}));return Math.round(v);}
-function woSets(w){if(!w)return 0;let n=0;Object.values(w.log||{}).forEach(a=>a.forEach(s=>{if(s.d)n++;}));return n;}
+function woVol(w){if(!w)return 0;let v=0;Object.values(w.log||{}).forEach(a=>(a||[]).forEach(s=>{if(s&&s.d)v+=setVol(s);}));return Math.round(v);}
 const doneWo = ()=>(DB.workouts||(DB.workouts=[])).filter(w=>w&&w.end);
+function woMinutes(w){return Math.round((w.act!=null?w.act:(w.end-w.start))/60000);}
 
 /* ==========================================================================
-   CALCULATEUR DE DISQUES
-   Trouve la meilleure combinaison réalisable avec l'inventaire disponible.
-   Les disques se répartissent également des deux côtés d'une barre → nombre pair.
+   EXERCICES EFFECTIFS — réglages appliqués (séries, variante)
    ========================================================================== */
-function plateList(){
-  return (DB.plates||[]).filter(p=>p.w>0&&p.n>0).sort((a,b)=>b.w-a.w);
+function effSets(e){const v=(DB.setsOv||{})[e.id];return v>0?v:e.sets;}
+/* alt : variante leg curl à une jambe */
+function effEx(e,alt){const x={...e,sets:effSets(e)};if(e.pg==='leg'&&(alt||DB.alt||{})[e.id])x.alt=1;return x;}
+const curEx = id=>EXI[id]?effEx(EXI[id]):null;
+const flatEx = (s,alt) => s.cfgs.flatMap(c=>c.ex.map(e=>({...effEx(e,alt),_cfg:c})));
+function sessionEx(s,express,alt){const all=flatEx(s,alt);return express?all.slice(0,s.expN):all;}
+const isU = e => !!(e.u||e.alt);                     // saisie gauche / droite
+function exName(e){return e.alt?e.n+' — une jambe':e.n;}
+/* exercice d'une séance enregistrée, quelle que soit sa version */
+function exW(w,id){
+  if(EXI[id])return w&&w.alt&&w.alt[id]?{...EXI[id],alt:1}:EXI[id];
+  const v=w&&w.pv&&OLD[w.pv];return v?(v.ex[id]||null):null;
 }
-function stockTotal(){return plateList().reduce((a,p)=>a+p.w*p.n,0);}
+function sessName(w){
+  const s=PROG.find(x=>x.id===w.sid);
+  if(w.pv&&OLD[w.pv])return (s?s.n:'Séance')+' · '+(OLD[w.pv].s[w.sid]||'');
+  return s?s.n+' · '+s.sub:'Séance';
+}
 
-function bestLoad(target,nDb){
-  const bar=DB.bar||0, P=plateList();
-  const need=target-bar;
-  if(need<-0.001)return {perDb:bar,combo:[],diff:Math.abs(target-bar),impossible:target<bar};
-  if(!P.length)return {perDb:bar,combo:[],diff:Math.abs(need)};
-  let best=null;const cur=new Array(P.length).fill(0);
-  (function rec(i,sum){
-    if(best&&best.diff===0)return;
-    if(sum-need>0.001&&sum-need>(best?best.diff:Infinity))return;   // élagage
+/* ==========================================================================
+   DISQUES — combinaisons avec charges décalées (un côté +1 kg au plus)
+   ========================================================================== */
+const OFFSET=1;
+function plateList(inv){
+  return (inv||DB.plates||[]).filter(p=>p.w>0&&p.n>0).map(p=>({w:+p.w,n:Math.floor(+p.n)})).sort((a,b)=>b.w-a.w);
+}
+function stockTotal(inv){return r2(plateList(inv).reduce((a,p)=>a+p.w*p.n,0));}
+
+/* meilleure composition d'UNE haltère (identique sur les nDb haltères), côté 1 ≥ côté 2.
+   Ordre de préférence : charge exacte, côtés égaux, moins de disques, côtés identiques, disques lourds. */
+function bestLoad(target,nDb,inv){
+  const bar=DB.bar||0, P=plateList(inv), need=r2(target-bar);
+  if(need<-0.001)return {perDb:bar,s1:[],s2:[],combo:[],diff:r2(bar-target),impossible:true};
+  const m=P.map(p=>Math.min(Math.floor(p.n/nDb),12));
+  let best=null;
+  const a=new Array(P.length).fill(0),b=a.slice();
+  const better=(x,y)=>{
+    for(const k of ['diff','off','np','mx']){if(Math.abs(x[k]-y[k])>1e-9)return x[k]<y[k];}
+    for(let i=0;i<P.length;i++){const u=x.a[i]+x.b[i],v=y.a[i]+y.b[i];if(u!==v)return u>v;}
+    return false;
+  };
+  (function rec(i,s1,s2,np,m1,m2){
+    if(best&&s1+s2-need>best.diff+1e-9)return;
     if(i===P.length){
-      const diff=Math.abs(sum-need);
-      if(!best||diff<best.diff-1e-9||
-         (Math.abs(diff-best.diff)<1e-9&&sum>best.sum))
-        best={diff,sum,combo:cur.slice()};
+      if(s1<s2-1e-9)return;
+      const off=r2(s1-s2);if(off>OFFSET+1e-9)return;
+      const c={diff:r2(Math.abs(s1+s2-need)),off,np,mx:Math.max(m1,m2),a:a.slice(),b:b.slice(),s1:r2(s1),s2:r2(s2)};
+      if(!best||better(c,best))best=c;
       return;
     }
-    const p=P[i], perDb=Math.floor(p.n/nDb), mx=perDb-(perDb%2);
-    for(let k=mx;k>=0;k-=2){cur[i]=k;rec(i+1,sum+k*p.w);}
-    cur[i]=0;
-  })(0,0);
-  return {
-    perDb:Math.round((bar+best.sum)*100)/100,
-    diff:Math.round(best.diff*100)/100,
-    combo:P.map((p,i)=>({w:p.w,perDb:best.combo[i],perSide:best.combo[i]/2}))
-            .filter(x=>x.perDb>0)
-  };
+    for(let x=0;x<=m[i];x++)for(let y=0;x+y<=m[i];y++){
+      a[i]=x;b[i]=y;rec(i+1,s1+x*P[i].w,s2+y*P[i].w,np+x+y,m1+x,m2+y);
+    }
+    a[i]=0;b[i]=0;
+  })(0,0,0,0,0,0);
+  const side=arr=>P.flatMap((p,i)=>Array(arr[i]).fill(p.w));
+  return {perDb:r2(bar+best.s1+best.s2),diff:best.diff,off:best.off,s1:side(best.a),s2:side(best.b),
+    combo:P.map((p,i)=>({w:p.w,c1:best.a[i],c2:best.b[i]})).filter(x=>x.c1+x.c2>0)};
 }
+/* charge maximale montable pour nDb haltères */
+function maxLoad(nDb,inv){return bestLoad((DB.bar||0)+stockTotal(inv)/nDb+0.001,nDb,inv).perDb;}
+/* plus petite charge exacte au-dessus de cur */
+function nextUp(cur,nDb,inv){
+  const mx=maxLoad(nDb,inv);
+  for(let v=r2(cur+0.25);v<=mx+1e-9;v=r2(v+0.25)){const r=bestLoad(v,nDb,inv);if(r.diff<0.01&&r.perDb>cur+0.01)return r;}
+  return null;
+}
+/* inventaire restant après avoir monté r sur nDb haltères */
+function invMinus(r,nDb,inv){
+  const P=plateList(inv);
+  r.combo.forEach(c=>{const p=P.find(x=>Math.abs(x.w-c.w)<1e-9);if(p)p.n-=(c.c1+c.c2)*nDb;});
+  return P.filter(p=>p.n>0);
+}
+function fmtSide(arr){
+  if(!arr.length)return 'rien';
+  const cnt={};arr.forEach(w=>cnt[w]=(cnt[w]||0)+1);
+  return Object.keys(cnt).map(Number).sort((x,y)=>y-x).map(w=>cnt[w]>1?`${cnt[w]} × ${kgs(w)} kg`:`${kgs(w)} kg`).join(' + ');
+}
+function sameSide(r){return r.s1.length===r.s2.length&&r.s1.every((w,i)=>Math.abs(w-r.s2[i])<1e-9);}
 function comboText(r){
-  if(!r.combo.length)return 'barre seule';
-  return r.combo.map(c=>`${c.perSide} × ${c.w} kg`).join(' + ')+' par côté';
+  if(!r||(!r.s1.length&&!r.s2.length))return 'barre seule';
+  return sameSide(r)?fmtSide(r.s1)+' de chaque côté'
+    :fmtSide(r.s1)+' d\'un côté, '+fmtSide(r.s2)+' de l\'autre (prise décalée)';
 }
 
 /* ==========================================================================
-   PROGRESSION AUTOMATIQUE (double progression)
+   CONFIGURATIONS — charges des barres (source unique de toutes les charges)
    ========================================================================== */
-function lastPerf(eid){
-  const ws=doneWo().filter(w=>(w.log||{})[eid]).sort((a,b)=>b.start-a.start);
-  if(!ws.length)return null;
-  const arr=ws[0].log[eid].filter(s=>s.d);
-  return arr.length?arr:null;
+function barLoad(c,b){
+  const L=DB.ld||{};
+  if(c.pair){const v=L[c.id+':P'];return v!=null?v:c.A;}
+  const v=L[c.id+':'+b];return v!=null?v:(c[b]!=null?c[b]:0);
 }
-function smallestStep(){
-  const P=plateList();
-  if(!P.length)return 1;
-  return Math.min(...P.map(p=>p.w))*2;   // 1 disque de chaque côté
+function setBarLoad(c,b,v){
+  DB.ld=DB.ld||{};
+  DB.ld[c.pair?c.id+':P':c.id+':'+b]=v;save();
 }
-/* Double progression — la même règle que le PDF v4.
-   Sur les exercices unilatéraux, c'est le CÔTÉ GAUCHE qui décide :
-   tant qu'il n'atteint pas sa cible, la charge ne monte pas.
-   renvoie {lvl:'hold'|'stay'|'up'|'ceiling', txt} */
-function suggestNext(e){
-  const prev=lastPerf(e.id);
-  if(!prev)return null;
-  const tgtL=e.repL||0, tgtR=e.repR||0;
+function exLoad(e){if(e.bw)return 0;const c=CFG[e.cid];return barLoad(c,e.bar==='AB'?'A':e.bar);}
+function exNdb(e){const c=CFG[e.cid];return (e.bar==='AB'||c.pair)?2:1;}
+function cfgPlatesKg(c){
+  const bw=DB.bar||0;let t=0;
+  if(c.pair)return r2(2*Math.max(0,barLoad(c,'A')-bw));
+  if(c.usesA)t+=Math.max(0,barLoad(c,'A')-bw);
+  if(c.usesB)t+=Math.max(0,barLoad(c,'B')-bw);
+  return r2(t);
+}
+function cfgLabel(c){
+  const a=barLoad(c,'A'),b=barLoad(c,'B');
+  if(c.pair)return `2 haltères à ${kgs(a)} kg`;
+  if(c.usesA&&c.usesB)return `Barre A = ${kgs(a)} kg · Barre B = ${kgs(b)} kg`;
+  if(c.usesA)return `1 haltère à ${kgs(a)} kg`;
+  if(c.usesB)return `1 haltère à ${kgs(b)} kg`;
+  return 'Poids de corps';
+}
+/* combinaisons à monter : la barre B se compose avec ce qui reste après la barre A */
+function cfgCombos(c){
+  if(c.pair)return [{b:'P',lab:'Chaque haltère',r:bestLoad(barLoad(c,'A'),2)}];
+  const out=[];let inv=null;
+  if(c.usesA){const ra=bestLoad(barLoad(c,'A'),1);out.push({b:'A',lab:'Barre A',r:ra});inv=invMinus(ra,1);}
+  if(c.usesB)out.push({b:'B',lab:'Barre B',r:bestLoad(barLoad(c,'B'),1,inv)});
+  return out;
+}
+function cfgFeasible(c){return cfgPlatesKg(c)<=stockTotal()+0.01&&cfgCombos(c).every(x=>x.r.diff<0.01);}
+/* même texte que le PDF : « Chaque haltère : 2 kg + 1 kg de chaque côté — 12 kg de disques sur 16 » */
+function cfgPlatesTxt(c){
+  const kg=cfgPlatesKg(c),st=stockTotal();
+  const parts=cfgCombos(c).map(x=>`${x.lab} : ${comboText(x.r)}`+(x.r.diff>0.01?` (réel ${kgs(x.r.perDb)} kg)`:''));
+  return parts.join(' · ')+` — ${kgs(kg)} kg de disques sur ${kgs(st)}`+(kg>st+0.01?' — ⚠ dépasse ton stock':'');
+}
+function barUsers(c,b){return c.ex.filter(x=>!x.bw&&(x.bar===b||x.bar==='AB'));}
+function plateChanges(list){
+  let n=0,prev=null;
+  list.forEach(e=>{if(prev&&prev!==e.cid)n++;prev=e.cid;});
+  return n;
+}
+/* libellés du PDF */
+function loadText(e){
+  if(e.bw)return 'poids de corps';
+  const c=CFG[e.cid],l=kgs(exLoad(e));
+  if(e.bar==='AB')return `2 × ${l} kg`;
+  if(c.pair)return `${l} kg (1 haltère)`;
+  return c.usesA&&c.usesB?`${l} kg (barre ${e.bar})`:`${l} kg`;
+}
+function restText(e){
+  if(e.blk&&e.role===1)return 'enchaîner';
+  if(e.blk&&e.role===2)return `${e.rest} s après le tour`;
+  return `${e.rest} s`;
+}
 
-  /* le côté gauche commande */
-  const nL=prev.filter(s=>(s.rL||0)>=tgtL).length;
-  const allL = nL===prev.length;
-  const anyL = nL>0;
+/* ==========================================================================
+   CIBLES
+   ========================================================================== */
+/* [min, max] : la charge monte quand le max est atteint partout (min = cible − 2 en unilatéral) */
+function repTargets(e){
+  if(e.u)return {L:[e.repL-2,e.repL],R:[e.repR-2,e.repR]};
+  if(e.alt)return {L:[e.rMin,e.rMax],R:[e.rMin,e.rMax]};
+  return {L:[e.rMin,e.rMax]};
+}
+function targetText(e){
+  if(e.u)return `${e.repL} G / ${e.repR} D`;
+  if(e.alt)return `${e.rMin}-${e.rMax} par jambe`;
+  return `${e.rMin}-${e.rMax}`;
+}
 
-  if(!anyL)
-    return {lvl:'hold',
-      txt:`Cible non atteinte à gauche la dernière fois. Garde la même charge et vise ${tgtL}`+
-          `${e.ho?' s':' répétitions'} sur chaque série. Si ça bloque encore, descends d'un cran.`};
-
-  if(!allL)
-    return {lvl:'stay',
-      txt:`${nL} série${nL>1?'s':''} sur ${prev.length} à la cible gauche. Garde la charge et ajoute `+
-          `des répétitions jusqu'à atteindre ${tgtL}${e.ho?' s':''} partout.`};
-
-  if(e.u && tgtR){
-    const allR=prev.every(s=>(s.rR||0)>=tgtR);
-    if(!allR)
-      return {lvl:'stay',
-        txt:`Gauche est à la cible, droite non. Garde la charge : ne monte pas tant que les deux côtés `+
-            `ne suivent pas, sinon tu creuses l'écart.`};
+/* ==========================================================================
+   DURÉES — rythme mesuré sur tes séances (minutes), recalé ensuite sur les nouvelles
+   ========================================================================== */
+const PACE={U:2.15,B:1.2,BW:1.0,EXC:0.3,CHG:2.0,TRANS:0.25,SOLO:60};
+function workMin(e){
+  let w=e.bw?(e.alt?PACE.U:PACE.BW):(e.u?PACE.U:PACE.B);
+  if(e.e)w+=PACE.EXC;if(e.xtra)w+=e.xtra;return w;
+}
+function restOf(e){return e.rest||PACE.SOLO;}        // un exercice de bloc fait seul : 60 s
+const blkKey = e => e.cid+':'+e.blk;
+/* durée brute d'une liste (dans l'ordre), blocs compris, sep = blocs faits séparément */
+function rawMinutes(list,sep){
+  let t=0,prev=null;
+  for(let i=0;i<list.length;i++){
+    const e=list[i],n=list[i+1];
+    if(prev&&e.cid!==prev)t+=PACE.CHG;
+    prev=e.cid;
+    if(e.blk&&e.role===1&&n&&n.blk===e.blk&&n.cid===e.cid&&!(sep||{})[blkKey(e)]){
+      const r=n.rest/60;
+      for(let k=0;k<Math.max(e.sets,n.sets);k++){
+        if(k<e.sets)t+=workMin(e);
+        if(k<n.sets)t+=workMin(n)+PACE.TRANS;
+        t+=r;
+      }
+      i++;continue;
+    }
+    t+=e.sets*(workMin(e)+restOf(e)/60);
   }
+  return t;
+}
+/* calibrage : médiane (durée active réelle / durée estimée) sur tes 6 dernières séances v6 */
+function calInfo(){
+  const q=doneWo().filter(w=>w.pv==='v6'&&w.est>=8&&w.act>=8*60000).sort((a,b)=>b.start-a.start).slice(0,6);
+  if(q.length<2)return {f:1,n:q.length,ok:false};
+  const r=q.map(w=>w.act/60000/w.est).sort((a,b)=>a-b),h=r.length/2;
+  const med=r.length%2?r[Math.floor(h)]:(r[h-1]+r[h])/2;
+  return {f:clamp(med,0.75,1.5),n:q.length,ok:true,raw:med};
+}
+function estMinutes(list,sep){return Math.max(1,Math.round(rawMinutes(list,sep)*calInfo().f));}
 
-  /* les deux côtés sont à la cible → on monte */
-  if(e.bw||e.ho)
-    return {lvl:'up',
-      txt:`Objectif atteint partout → tiens ${tgtL+5} s cette fois`+
-          `${e.u?`, et ${(tgtR||tgtL)+5} s à droite`:''}.`};
-
-  const step=smallestStep(), cur=exLoad(e), nDb=e.pair?2:1;
-  const r=bestLoad(Math.round((cur+step)*100)/100,nDb);
-  if(r.diff>step*1.5||r.perDb<=cur)
-    return {lvl:'ceiling',
-      txt:`Objectif atteint partout, mais ton kit est saturé sur cet exercice. Passe aux leviers sans `+
-          `matériel, dans cet ordre : pause de 2 s en position d'étirement, puis une série `+
-          `supplémentaire, puis plus d'amplitude.`};
-
-  return {lvl:'up',
-    txt:`Objectif atteint partout → monte à ${r.perDb} kg (${comboText(r)}) et redescends au bas de `+
-        `la fourchette de répétitions.`};
+/* ==========================================================================
+   HISTORIQUE D'EXERCICE
+   ========================================================================== */
+const normalSets = arr => (arr||[]).filter(s=>s&&s.d&&!s.t);
+/* toutes les séances d'un exercice v6, anciennes versions équivalentes comprises */
+function histEntries(id){
+  const out=[];
+  doneWo().forEach(w=>{
+    const lg=w.log||{};
+    if(w.pv==='v6'){if(lg[id])out.push({w,arr:lg[id],old:0,e:exW(w,id)});}
+    else Object.keys(lg).forEach(k=>{const e=exW(w,k);if(e&&e.to===id)out.push({w,arr:lg[k],old:1,e});});
+  });
+  return out.sort((a,b)=>a.w.start-b.w.start);
+}
+/* dernière perf (même programme) ; same = même charge et même variante qu'aujourd'hui */
+function lastSame(e){
+  const ws=doneWo().filter(w=>w.pv==='v6'&&(w.log||{})[e.id]).sort((a,b)=>b.start-a.start);
+  for(const w of ws){
+    const arr=normalSets(w.log[e.id]);if(!arr.length)continue;
+    const alt=!!(w.alt||{})[e.id];
+    const same=e.bw?alt===!!e.alt:Math.abs((arr[0].wL||0)-exLoad(e))<0.01;
+    return {arr,same,w};
+  }
+  return null;
+}
+/* dernière fois, toutes versions (affichage) */
+function lastAny(id){
+  const h=histEntries(id);
+  for(let i=h.length-1;i>=0;i--){const a=normalSets(h[i].arr);if(a.length)return {...h[i],arr:a};}
+  return null;
 }
 
 /* ==========================================================================
-   RECORDS PERSONNELS
+   PROGRESSION — double progression + stock de disques partagé
    ========================================================================== */
-function prFor(eid){
-  let mxLoad=0,mxVol=0;
-  doneWo().forEach(w=>{
-    const a=(w.log||{})[eid];if(!a)return;
-    a.filter(s=>s.d).forEach(s=>{
-      mxLoad=Math.max(mxLoad,s.wL||0,s.wR||0);
-      mxVol=Math.max(mxVol,(s.rL||0)*(s.wL||0),(s.rR||0)*(s.wR||0));
+function repStatus(e){
+  const lp=lastSame(e);if(!lp)return null;
+  const T=repTargets(e);
+  if(!lp.same)return {st:'new',T};
+  const sets=lp.arr;
+  const L=sets.map(s=>s.rL||0);
+  if(L.some(v=>v<T.L[0]))return {st:'hold',T};
+  if(L.some(v=>v<T.L[1]))return {st:'stay',T};
+  if(T.R){const R=sets.map(s=>s.rR||0);
+    if(R.some(v=>v<T.R[0]))return {st:'holdR',T};
+    if(R.some(v=>v<T.R[1]))return {st:'stayR',T};}
+  return {st:'ready',T};
+}
+const LEVERS='Leviers sans matériel, dans cet ordre : 1) pause de 2 s en position étirée, '+
+  '2) une série de plus, 3) amplitude plus grande.';
+function lowText(e){return e.u?`${e.repL-2} G / ${e.repR-2} D`:`${e.rMin}`;}
+
+/* renvoie {lvl:'hold'|'stay'|'up'|'coupled'|'ceiling', txt, apply?} */
+function suggestNext(e){
+  const r=repStatus(e);if(!r)return null;
+  const T=r.T, g=isU(e)?' à gauche':'';
+  if(r.st==='new')return {lvl:'stay',txt:e.bw
+    ?`Nouvelle variante depuis ta dernière séance : repars du bas de la cible (${e.rMin}) et remonte.`
+    :`Charge changée depuis ta dernière séance (${kgs(exLoad(e))} kg) : repars du bas de la cible (${lowText(e)}) et remonte.`};
+  if(r.st==='hold')return {lvl:'hold',txt:`Moins de ${T.L[0]} répétitions${g} sur au moins une série. Garde la même charge`+
+     (e.bw||e.pg?'.':' ; si ça bloque 3 séances de suite, descends d\'un cran.')};
+  if(r.st==='stay')return {lvl:'stay',txt:`Dans la cible, pas encore en haut. Garde la charge et ajoute des répétitions `+
+    `jusqu'à ${T.L[1]}${g} sur toutes les séries.`};
+  if(r.st==='holdR')return {lvl:'hold',txt:`Le côté droit est passé sous ${T.R[0]} répétitions. Garde la charge et vérifie la technique à droite.`};
+  if(r.st==='stayR')return {lvl:'stay',txt:`Gauche en haut de la cible, droite pas encore (${T.R[1]}). `+
+    `Garde la charge : on ne monte pas tant que les deux côtés ne suivent pas.`};
+
+  /* cible atteinte partout */
+  if(e.pg==='pause')return {lvl:'up',txt:`${e.rMax} répétitions partout → ajoute une pause de 2 s en haut, puis une descente plus lente. `+
+    `La charge du crunch suit l'haltère B de la configuration.`};
+  if(e.pg==='leg')return e.alt?{lvl:'ceiling',txt:`${e.rMax} répétitions par jambe partout. ${LEVERS}`}
+    :{lvl:'up',txt:`${e.rMax} répétitions sur toutes les séries → passe à une jambe, gauche d'abord.`,
+      apply:{kind:'alt',id:e.id,v:1,lab:'leg curl à une jambe'}};
+  const c=CFG[e.cid], cl=exLoad(e), nDb=exNdb(e);
+  let inv=null, share='';
+  if(!c.pair){
+    const ob=e.bar==='A'?'B':'A';
+    if(ob==='A'?c.usesA:c.usesB){
+      const ol=barLoad(c,ob);inv=invMinus(bestLoad(ol,1),1);
+      share=` La barre ${ob} (${barUsers(c,ob).map(x=>x.n).join(', ')}) occupe déjà `+
+            `${kgs(Math.max(0,ol-(DB.bar||0)))} kg de disques dans cette configuration.`;
+    }
+  }
+  const rr=nextUp(cl,nDb,inv);
+  if(!rr)return {lvl:'ceiling',txt:`Cible atteinte partout, mais ${share?'le stock disponible pour cette barre est épuisé.'+share
+      :`ton kit est au maximum sur cet exercice (${kgs(maxLoad(nDb))} kg).`} ${LEVERS}`};
+  const coupled=(c.pair?c.ex:barUsers(c,e.bar)).filter(x=>x.id!==e.id&&!x.bw&&x.pg!=='pause').map(x=>curEx(x.id));
+  const notReady=coupled.filter(x=>{const s=repStatus(x);return !s||s.st!=='ready';});
+  const who=c.pair?'la paire d\'haltères':'la barre '+e.bar;
+  if(notReady.length)
+    return {lvl:'coupled',txt:`Prêt à monter à ${kgs(rr.perDb)} kg, mais ${who} sert aussi à : `+
+      `${notReady.map(x=>x.n).join(', ')}. Monte quand ${notReady.length>1?'ces exercices seront prêts':'cet exercice sera prêt'} `+
+      `aussi, sinon tu ajoutes un changement de disques. En attendant : pause de 2 s en position étirée.`};
+  return {lvl:'up',txt:`Cible atteinte partout → monte à ${kgs(rr.perDb)} kg (${comboText(rr)})`+
+    (coupled.length?`. Cela change aussi : ${coupled.map(x=>x.n).join(', ')} — prêts eux aussi`:'')+
+    `. Repars ensuite du bas de la cible (${lowText(e)} répétitions).`,
+    apply:{kind:'load',cid:c.id,bar:c.pair?'A':e.bar,v:rr.perDb,lab:`${who} → ${kgs(rr.perDb)} kg`}};
+}
+function applySuggestion(a){
+  if(!a)return;
+  if(a.kind==='load'){setBarLoad(CFG[a.cid],a.bar,a.v);toast('Charge mise à jour : '+kgs(a.v)+' kg');}
+  if(a.kind==='alt'){DB.alt=DB.alt||{};if(a.v)DB.alt[a.id]=1;else delete DB.alt[a.id];save();
+    toast(a.v?'Variante une jambe activée':'Variante deux jambes');}
+}
+
+/* ==========================================================================
+   TEST D'ASYMÉTRIE
+   1re série de chaque exercice prioritaire, à intervalle régulier :
+   même charge des deux côtés, maximum de répétitions propres, gauche d'abord.
+   ========================================================================== */
+function testEvery(){return DB.testEvery==null?14:DB.testEvery;}
+function gapOf(s){
+  const vL=(s.rL||0)*(s.wL||1), vR=(s.rR||0)*(s.wR||1);
+  if(!vL||!vR)return null;
+  return Math.round((vR-vL)/((vL+vR)/2)*100);
+}
+function testsOf(tk){
+  const out=[];
+  doneWo().slice().sort((a,b)=>a.start-b.start).forEach(w=>{
+    Object.entries(w.log||{}).forEach(([id,arr])=>{
+      const e=exW(w,id);if(!e||e.tk!==tk)return;
+      (arr||[]).forEach(s=>{if(s&&s.d&&s.t){const g=gapOf(s);
+        if(g!=null)out.push({ts:w.start,rL:s.rL,rR:s.rR,wL:s.wL,wR:s.wR,gap:g,id,old:w.pv!=='v6'});}});
     });
   });
-  return {mxLoad,mxVol};
+  return out;
+}
+function lastTestTs(tk){const t=testsOf(tk);return t.length?t[t.length-1].ts:0;}
+function testDue(tk){
+  const n=testEvery();if(!n)return false;
+  const t=lastTestTs(tk);
+  return !t||Date.now()-t>=(n-0.5)*86400e3;
+}
+function daysUntilTest(tk){
+  const n=testEvery();if(!n)return null;
+  const t=lastTestTs(tk);if(!t)return 0;
+  return Math.max(0,Math.ceil((t+(n-0.5)*86400e3-Date.now())/86400e3));
+}
+/* écart global = moyenne du dernier test de chaque famille (tests de moins de 90 jours) */
+function globalAsym(){
+  const g=[];
+  Object.keys(TK).forEach(k=>{const t=testsOf(k);
+    if(t.length&&Date.now()-t[t.length-1].ts<90*86400e3)g.push(t[t.length-1].gap);});
+  if(!g.length)return null;
+  return {g:Math.round(g.reduce((a,b)=>a+b,0)/g.length),n:g.length};
+}
+function asymAdvice(g){
+  if(g==null)return null;
+  if(Math.abs(g)<5)return {c:'#27C776',t:'Écart sous 5 % : objectif atteint. Réduis progressivement le surplus gauche '+
+    '(11 G / 10 D, puis 10 G / 10 D) pour revenir à un volume égal.'};
+  if(g>15)return {c:'#E94560',t:'Écart important. Garde la priorité gauche et la règle 12 G / 10 D. '+
+    'La correction demande généralement 8 à 12 semaines.'};
+  if(g>0)return {c:'#F5A623',t:'Bonne trajectoire. Continue le protocole actuel sans augmenter le surplus gauche.'};
+  return {c:'#3D7EFF',t:'Le côté gauche dépasse désormais le droit. Reviens à des répétitions égales des deux côtés '+
+    'pour ne pas créer l\'écart inverse.'};
 }
 
 /* ==========================================================================
-   VOLUME RÉALISÉ
+   RECORDS · VOLUME
    ========================================================================== */
+function prFor(id){
+  let mxLoad=0,mxVol=0;
+  histEntries(id).forEach(h=>(h.arr||[]).filter(s=>s&&s.d).forEach(s=>{
+    mxLoad=Math.max(mxLoad,s.wL||0,s.wR||0);
+    mxVol=Math.max(mxVol,(s.rL||0)*(s.wL||0),(s.rR||0)*(s.wR||0));
+  }));
+  return {mxLoad,mxVol};
+}
 function volumeDone(fromTs){
   const v={};
   doneWo().filter(w=>!fromTs||w.start>=fromTs).forEach(w=>{
-    Object.entries(w.log||{}).forEach(([eid,arr])=>{
-      const e=EXI[eid];if(!e)return;
-      const n=arr.filter(s=>s.d).length;
+    Object.entries(w.log||{}).forEach(([id,arr])=>{
+      const e=exW(w,id);if(!e)return;
+      const n=(arr||[]).filter(s=>s&&s.d).length;
       if(n)v[e.mg]=(v[e.mg]||0)+n;
     });
   });
@@ -641,10 +1145,12 @@ function volumeDone(fromTs){
 function volumePlanned(){
   const v={};PROG.forEach(s=>flatEx(s).forEach(e=>{v[e.mg]=(v[e.mg]||0)+e.sets;}));return v;
 }
+function freqPlanned(mg){return PROG.filter(s=>flatEx(s).some(e=>e.mg===mg)).length;}
 function weekStart(){
   const d=new Date();const day=(d.getDay()||7)-1;
   d.setHours(0,0,0,0);d.setDate(d.getDate()-day);return d.getTime();
 }
+
 /* ==========================================================================
    NAVIGATION
    ========================================================================== */
@@ -665,7 +1171,7 @@ $$('nav button').forEach(b=>b.onclick=()=>go(b.dataset.s));
    ACCUEIL
    ========================================================================== */
 function nextSessionId(){
-  const d=doneWo().sort((a,b)=>b.start-a.start);
+  const d=doneWo().filter(w=>PROG.some(s=>s.id===w.sid)).sort((a,b)=>b.start-a.start);
   if(!d.length)return 's1';
   const i=PROG.findIndex(s=>s.id===d[0].sid);
   return PROG[(i+1)%PROG.length].id;
@@ -680,17 +1186,9 @@ function streakWeeks(){
   }
   return n;
 }
-function globalAsym(){
-  let sg=0,sd=0;
-  doneWo().slice(-12).forEach(w=>{
-    Object.entries(w.log||{}).forEach(([eid,arr])=>{
-      const e=EXI[eid];if(!e||!e.u)return;
-      arr.forEach(s=>{if(!s.d)return;
-        if(s.rL&&s.wL)sg+=s.rL*s.wL;if(s.rR&&s.wR)sd+=s.rR*s.wR;});
-    });
-  });
-  if(!sg||!sd)return null;
-  return Math.round((sd-sg)/((sg+sd)/2)*100);
+function dueTestsIn(s){
+  const seen=new Set();
+  return flatEx(s).filter(e=>e.tk&&e.p&&testDue(e.tk)&&!seen.has(e.tk)&&seen.add(e.tk));
 }
 
 function renderHome(){
@@ -704,47 +1202,59 @@ function renderHome(){
   const tot=done.reduce((a,w)=>a+woVol(w),0);
   $('#kVol').textContent=tot>9999?(tot/1000).toFixed(1)+'k':tot;
   const as=globalAsym();
-  $('#kAsym').textContent=as==null?'—':(as>0?'+':'')+as+'%';
+  $('#kAsym').textContent=as==null?'—':(as.g>0?'+':'')+as.g+'%';
   $('#streakN').textContent=streakWeeks();
 
-  /* --- reprise de séance interrompue --- */
   let top='';
   const dr=DB.draft;
-  if(dr&&Date.now()-dr.start<12*3600e3&&woSets(dr)>0){
+  if(dr&&!W&&woSets(dr)===0&&!canAutoResume()){DB.draft=null;save();}
+  if(DB.draft&&!W&&woSets(DB.draft)>0){
     const s=PROG.find(x=>x.id===dr.sid);
     top=`<div class="card" style="border:1px solid #F5A62355;background:#241E10">
       <div class="card-t" style="color:var(--gold)">Séance en cours</div>
-      <div style="font-size:14px;font-weight:700;margin-bottom:3px">${s?s.n+' · '+esc(s.sub):'Séance'}</div>
+      <div style="font-size:14px;font-weight:700;margin-bottom:3px">${s?s.n+' · '+esc(s.sub):'Séance'}${dr.exp?' ⚡':''}</div>
       <div style="font-size:12px;color:var(--tx2);margin-bottom:12px">
-        Commencée ${fmtDate(dr.start)} · ${woSets(dr)} séries déjà validées</div>
+        Commencée le ${fmtDate(dr.start)} · ${woSets(dr)} série${woSets(dr)>1?'s':''} déjà validée${woSets(dr)>1?'s':''}</div>
       <div class="btn-row">
         <button class="btn sm" style="flex:1" id="resBtn">Reprendre</button>
         <button class="btn gho sm" style="flex:0 0 auto" id="dropBtn">Abandonner</button>
       </div></div>`;
   }
 
-  /* --- semaine en cours --- */
+  const bad=PROG.flatMap(s=>s.cfgs).filter(c=>!cfgFeasible(c));
+  if(bad.length)top+=`<div class="card" style="border:1px solid #F5A62355">
+    <div class="card-t" style="color:var(--gold)">Disques à vérifier</div>
+    <div style="font-size:12.5px;color:var(--tx2);line-height:1.55">${bad.length} configuration${bad.length>1?'s ne sont':' n\'est'}
+      pas montable${bad.length>1?'s':''} exactement avec l'inventaire enregistré. Renseigne tes vrais disques :
+      les combinaisons et les suggestions de charge en dépendent.</div>
+    <button class="btn sec sm" style="width:100%;margin-top:10px" id="goMat">Réglages › Mon matériel</button></div>`;
+
   const ws=weekStart();
   const wk=done.filter(w=>w.start>=ws);
   const vol=volumeDone(ws), plan=volumePlanned();
-  const totDone=Object.values(vol).reduce((a,b)=>a+b,0);
+  const totDone=Object.keys(plan).reduce((a,k)=>a+Math.min(vol[k]||0,plan[k]),0);
   const totPlan=Object.values(plan).reduce((a,b)=>a+b,0);
   const pct=totPlan?Math.round(totDone/totPlan*100):0;
   top+=`<div class="card"><div class="card-t">Cette semaine</div>
     <div style="display:flex;align-items:baseline;gap:9px;margin-bottom:9px">
       <div style="font-size:30px;font-weight:800;letter-spacing:-1.2px;color:${wk.length>=3?'var(--green)':'var(--acc)'}">${wk.length}<span style="font-size:16px;color:var(--tx3)">/3</span></div>
-      <div style="font-size:12.5px;color:var(--tx2);flex:1">séance${wk.length>1?'s':''} · ${totDone} séries réalisées</div>
+      <div style="font-size:12.5px;color:var(--tx2);flex:1">séance${wk.length>1?'s':''} · ${Object.values(vol).reduce((a,b)=>a+b,0)} séries réalisées</div>
     </div>
     <div class="vb"><div class="bar"><i style="width:${clamp(pct,0,100)}%;background:${pct>=90?'#27C776':pct>=50?'#F5A623':'#E94560'}"></i></div></div>
     <div style="font-size:11px;color:var(--tx3);margin-top:7px">${pct}% du volume hebdomadaire planifié</div></div>`;
 
   $('#nextWrap').innerHTML=top+sessCard(PROG.find(s=>s.id===nextSessionId()),true);
-  $('#allSess').innerHTML=PROG.map(s=>sessCard(s,false)).join('');
+  const ci=calInfo();
+  $('#allSess').innerHTML=PROG.map(s=>sessCard(s,false)).join('')+
+    `<div class="calnote">${ci.ok?`Durées recalées sur ton rythme réel (${ci.n} dernières séances).`
+      :'Durées estimées sur ton rythme mesuré ; elles se recaleront après 2 séances complètes.'}
+      Échauffement non compté.</div>`;
 
   $$('#sc-home [data-start]').forEach(b=>b.onclick=()=>startWorkout(b.dataset.start));
   $$('#sc-home [data-exp]').forEach(b=>b.onclick=()=>startWorkout(b.dataset.exp,true));
   $$('#sc-home [data-peek]').forEach(b=>b.onclick=()=>peek(b.dataset.peek));
-  const rb=$('#resBtn');if(rb)rb.onclick=resumeDraft;
+  const gm=$('#goMat');if(gm)gm.onclick=()=>go('set');
+  const rb=$('#resBtn');if(rb)rb.onclick=()=>resumeDraft(false);
   const db=$('#dropBtn');if(db)db.onclick=()=>{
     if(confirm('Abandonner définitivement cette séance en cours ?')){DB.draft=null;save();renderHome();}
   };
@@ -753,16 +1263,18 @@ function renderHome(){
 function sessCard(s,primary){
   const ex=flatEx(s), nSets=ex.reduce((a,e)=>a+e.sets,0), nPrio=ex.filter(e=>e.p).length;
   const last=doneWo().filter(w=>w.sid===s.id).sort((a,b)=>b.start-a.start)[0];
-  const expList=sessionEx(s,true), nExp=expList.length, mExp=estMinutes(expList);
-  const mFull=estMinutes(ex);
+  const expList=sessionEx(s,true), nExp=expList.length;
+  const tests=dueTestsIn(s).length, ch=plateChanges(ex), nb=new Set(ex.filter(e=>e.blk).map(blkKey)).size;
   return `<div class="sess" data-c="${s.col}">
     <div class="row"><div style="min-width:0">
       <h3>${s.n} · ${esc(s.sub)}</h3>
-      <div class="meta">${ex.length} exercices · ${nSets} séries · ~${mFull} min</div>
+      <div class="meta">${ex.length} exercices · ${nSets} séries · ~${estMinutes(ex)} min</div>
     </div></div>
     <div class="chips">
-      <span class="chip">${s.cfgs.length} configurations</span>
+      <span class="chip">${ch} changement${ch>1?'s':''} de disques</span>
+      ${nb?`<span class="chip">${nb} bloc${nb>1?'s':''} ⇄</span>`:''}
       <span class="chip acc">${nPrio} prioritaires G</span>
+      ${tests?`<span class="chip tst">${tests} série${tests>1?'s':''} test</span>`:''}
       ${last?`<span class="chip ok">Fait le ${fmtDate(last.start)}</span>`:''}
     </div>
     <div class="btn-row" style="margin-top:13px">
@@ -770,28 +1282,30 @@ function sessCard(s,primary){
       <button class="btn gho sm" data-peek="${s.id}" style="flex:0 0 auto">Détail</button>
     </div>
     <button class="btn gho sm" data-exp="${s.id}" style="width:100%;margin-top:8px">
-      ⚡ Version express — ${nExp} exercice${nExp>1?'s':''}, ~${mExp} min</button>
+      ⚡ Version express — ${nExp} exercice${nExp>1?'s':''}, ~${estMinutes(expList)} min</button>
   </div>`;
 }
 
 function peek(sid){
-  const s=PROG.find(x=>x.id===sid);
-  let h=`<h2>${s.n} · ${esc(s.sub)}</h2><div class="sh-sub">${esc(s.desc)} · ~${estMinutes(flatEx(s))} min</div>`;
+  const s=PROG.find(x=>x.id===sid),all=flatEx(s);
+  let h=`<h2>${s.n} · ${esc(s.sub)}</h2><div class="sh-sub">${esc(s.desc)} · ~${estMinutes(all)} min</div>`;
   s.cfgs.forEach((c,i)=>{
-    h+=`<div class="cfg" style="margin-top:${i?14:4}px"><div class="h">CONFIGURATION ${i+1}</div>
-      <div class="s">${esc(c.label)}</div><div class="p">${esc(c.plates)}</div></div>`;
-    c.ex.forEach(e=>{
-      const r=e.ho?(e.repR?`${e.repL}s / ${e.repR}s`:`${e.repL}s`):(e.repR?`${e.repL}G / ${e.repR}D`:`${e.repL}`);
-      h+=`<div class="exline"><div>${e.p?'<span style="color:var(--acc2)">◄ </span>':''}${esc(e.n)}
-        ${e.e?'<span class="tag e" style="margin-left:5px">EXC 4s</span>':''}</div>
-        <div class="r">${e.sets} × ${r}${e.bw?'':' · '+exLoad(e)+'kg'}</div></div>`;
+    h+=`<div class="cfg" style="margin-top:${i?14:4}px"><div class="h">CONFIGURATION ${c.idx}</div>
+      <div class="s">${esc(cfgLabel(c))}</div><div class="p">${esc(cfgPlatesTxt(c))}</div></div>`;
+    const ex=all.filter(e=>e.cid===c.id);
+    ex.forEach((e,k)=>{
+      if(e.blk&&e.role===1){const b=ex[k+1];
+        h+=`<div class="pblk">⇄ BLOC ${e.blk} — ${e.blk}1 puis ${e.blk}2 sans repos, puis repos · ${Math.max(e.sets,b?b.sets:0)} tours</div>`;}
+      h+=`<div class="exline two${e.blk?' inblk':''}"><div><span class="num">${e.num}</span>${e.p?'<span style="color:var(--acc2)">◄ </span>':''}${esc(exName(e))}
+        ${e.e?'<span class="tag e" style="margin-left:5px">EXC 4 s</span>':''}</div>
+        <div class="r">${e.sets} × ${targetText(e)} · ${loadText(e)} · ${restText(e)}</div></div>`;
     });
   });
   h+=`<button class="btn" style="margin-top:18px" onclick="closeSheet();startWorkout('${s.id}')">Démarrer cette séance</button>
       <button class="btn gho" style="margin-top:8px" onclick="closeSheet()">Fermer</button>`;
   openSheet(h);
 }
-function openSheet(h){$('#sheetIn').innerHTML=h;$('#sheet').classList.add('on');}
+function openSheet(h){$('#sheetIn').innerHTML=h;$('#sheet').classList.add('on');$('#sheetIn').scrollTop=0;}
 function closeSheet(){$('#sheet').classList.remove('on');}
 $('#sheet').onclick=e=>{if(e.target.id==='sheet')closeSheet();};
 
@@ -814,12 +1328,12 @@ function renderHist(){
     h+=`<div class="empty"><div class="ic">📋</div><p>${all.length?'Aucune séance pour ce filtre.':'Aucune séance enregistrée.<br>Lance ta première séance depuis l\'accueil.'}</p></div>`;
   }else{
     h+=ws.map(w=>{
-      const s=PROG.find(x=>x.id===w.sid),d=new Date(w.start);
-      const mins=Math.round((w.end-w.start)/60000);
+      const d=new Date(w.start);
+      const nt=Object.values(w.log||{}).reduce((a,arr)=>a+(arr||[]).filter(x=>x&&x.d&&x.t).length,0);
       return `<div class="hrow" data-w="${w.start}">
         <div class="d"><div class="dd">${d.getDate()}</div><div class="mm">${MOIS[d.getMonth()]}</div></div>
-        <div class="i"><div class="a">${s?s.n+' · '+esc(s.sub):'Séance'}${w.exp?' ⚡':''}</div>
-          <div class="b">${woSets(w)} séries · ${woVol(w)} kg · ${mins} min</div></div>
+        <div class="i"><div class="a">${esc(sessName(w))}${w.exp?' ⚡':''}</div>
+          <div class="b">${woSets(w)} séries · ${woVol(w)} kg · ${woMinutes(w)} min${nt?` · ${nt} test${nt>1?'s':''}`:''}${w.pv!=='v6'?' · <span class="oldtag">'+OLD[w.pv].lab+'</span>':''}</div></div>
         <div style="color:var(--tx3);font-size:19px">›</div></div>`;
     }).join('');
   }
@@ -828,22 +1342,27 @@ function renderHist(){
   $$('#histList [data-w]').forEach(r=>r.onclick=()=>detail(+r.dataset.w));
 }
 
+function setText(e,x){
+  if(!e||!x)return '—';
+  const u=e.ho?' s':'';
+  if(e.u||e.alt||(x.rR>0&&!e.ho&&e.bw))return e.bw?`G ${x.rL||0}${u} · D ${x.rR||0}${u}`
+    :`G ${x.rL||0}${u} × ${kgs(x.wL||0)} kg &nbsp;·&nbsp; D ${x.rR||0}${u} × ${kgs(x.wR||0)} kg`;
+  if(e.bw)return `${x.rL||0}${u}`;
+  return `${x.rL||0}${u} × ${kgs(x.wL||0)} kg`;
+}
 function detail(start){
   const w=DB.workouts.find(x=>x.start===start);if(!w)return;
-  const s=PROG.find(x=>x.id===w.sid);
-  const mins=Math.round((w.end-w.start)/60000);
-  let h=`<h2>${s?s.n+' · '+esc(s.sub):'Séance'}${w.exp?' ⚡':''}</h2>
-    <div class="sh-sub">${fmtFull(w.start)} · ${mins} min · ${woVol(w)} kg de tonnage</div>`;
+  let h=`<h2>${esc(sessName(w))}${w.exp?' ⚡':''}</h2>
+    <div class="sh-sub">${fmtFull(w.start)} · ${woMinutes(w)} min · ${woVol(w)} kg de tonnage${w.pv!=='v6'?' · '+OLD[w.pv].lab:''}</div>`;
   Object.entries(w.log||{}).forEach(([eid,arr])=>{
-    const e=EXI[eid];if(!e)return;
-    const dn=arr.filter(x=>x.d);if(!dn.length)return;
-    h+=`<div style="margin-top:13px;font-weight:700;font-size:14px">${e.p?'<span style="color:var(--acc2)">◄ </span>':''}${esc(e.n)}</div>`;
-    dn.forEach((x,i)=>{
-      let t;
-      if(e.u)t=`G ${x.rL||0}${e.ho?'s':''} × ${x.wL||0}kg &nbsp;·&nbsp; D ${x.rR||0}${e.ho?'s':''} × ${x.wR||0}kg`;
-      else if(e.bw)t=`${x.rL||0}${e.ho?'s':''}`;
-      else t=`${x.rL||0}${e.ho?'s':''} × ${x.wL||0} kg`;
-      h+=`<div class="exline"><div style="color:var(--tx2);font-size:12.5px">Série ${i+1}</div><div class="r">${t}</div></div>`;
+    const e=exW(w,eid);if(!e)return;
+    const dn=(arr||[]).filter(x=>x&&x.d);if(!dn.length)return;
+    h+=`<div style="margin-top:13px;font-weight:700;font-size:14px">${e.p?'<span style="color:var(--acc2)">◄ </span>':''}${esc(exName(e))}</div>`;
+    let k=0;
+    dn.forEach(x=>{
+      const g=x.t?gapOf(x):null;if(!x.t)k++;
+      h+=`<div class="exline"><div style="color:var(--tx2);font-size:12.5px">${x.t?'<b style="color:var(--teal)">Test</b>':'Série '+k}</div>
+        <div class="r">${setText(e,x)}${g!=null?` · écart ${g>0?'+':''}${g}%`:''}</div></div>`;
     });
   });
   if(w.note)h+=`<div class="card" style="margin-top:14px"><div class="card-t">Note</div>${esc(w.note)}</div>`;
@@ -873,7 +1392,7 @@ function lineChart(series){
   for(let i=0;i<=3;i++){
     const v=mn+(mx-mn)*i/3,y=Y(v);
     g+=`<line x1="${pl}" y1="${y}" x2="${W-pr}" y2="${y}" stroke="#FFFFFF0C"/>
-        <text x="${pl-5}" y="${y+3}" text-anchor="end">${Math.round(v)}</text>`;
+        <text x="${pl-5}" y="${y+3}" text-anchor="end">${mx-mn<4?(Math.round(v*10)/10):Math.round(v)}</text>`;
   }
   if(mn<0&&mx>0){const y=Y(0);g+=`<line x1="${pl}" y1="${y}" x2="${W-pr}" y2="${y}" stroke="#FFFFFF35" stroke-dasharray="3 3"/>`;}
   series.forEach(s=>{
@@ -881,7 +1400,7 @@ function lineChart(series){
     const d=s.pts.map((p,i)=>(i?'L':'M')+X(i)+' '+Y(p.y)).join(' ');
     if(s.fill)g+=`<path d="${d} L${X(s.pts.length-1)} ${H-pb} L${X(0)} ${H-pb} Z" fill="${s.c}18"/>`;
     g+=`<path d="${d}" stroke="${s.c}" stroke-width="2.4" fill="none" stroke-linejoin="round" stroke-linecap="round"/>`;
-    s.pts.forEach((p,i)=>{g+=`<circle cx="${X(i)}" cy="${Y(p.y)}" r="3.2" fill="${s.c}" stroke="#0F0F1A" stroke-width="1.6"/>`;});
+    s.pts.forEach((p,i)=>{g+=`<circle cx="${X(i)}" cy="${Y(p.y)}" r="3.2" fill="${p.old?'#0F0F1A':s.c}" stroke="${p.old?s.c:'#0F0F1A'}" stroke-width="1.6"/>`;});
   });
   const lb=series[0].pts;
   if(lb.length){
@@ -891,20 +1410,39 @@ function lineChart(series){
   return `<svg class="chart" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">${g}</svg>`;
 }
 
+/* ---------- Carte de suggestion (partagée runner / progression) ---------- */
+const SG_STYLE={
+  hold:['#2A1A1A','var(--acc)','#FFC8CF','■ Garder la charge'],
+  stay:['#2A2113','var(--gold)','#FFE3AE','→ Continuer'],
+  up:['#12261C','var(--green)','#B8F0D0','↑ Progresser'],
+  coupled:['#221A33','var(--purple)','#DCCBFF','⇄ Charge partagée'],
+  ceiling:['#1A2333','var(--blue)','#C3D8FF','⚑ Kit saturé']};
+let SG_MAP={};
+function sgCard(sg,key){
+  if(!sg)return '';
+  key=key||'x';
+  if(sg.apply)SG_MAP[key]=sg.apply;
+  const P=SG_STYLE[sg.lvl]||SG_STYLE.up;
+  return `<div class="sgc" style="background:${P[0]};border-left:3px solid ${P[1]};color:${P[2]}">
+    <b style="color:${P[1]}">${P[3]}</b><br>${esc(sg.txt)}
+    ${sg.apply?`<button class="btn sm sgap" data-apply="${key}">Appliquer : ${esc(sg.apply.lab)}</button>`:''}</div>`;
+}
+function bindApply(root,after){
+  $$(root+' [data-apply]').forEach(b=>b.onclick=()=>{const a=SG_MAP[b.dataset.apply];applySuggestion(a);after&&after(a);});
+}
+
 /* ==========================================================================
    PROGRESSION
    ========================================================================== */
-function exHistory(eid){
-  const out=[];
-  doneWo().sort((a,b)=>a.start-b.start).forEach(w=>{
-    const arr=(w.log||{})[eid];if(!arr)return;
-    const dn=arr.filter(s=>s.d);if(!dn.length)return;
-    let vol=0,mxL=0,mxR=0,rL=0,rR=0;
-    dn.forEach(s=>{vol+=setVol(s);mxL=Math.max(mxL,s.wL||0);mxR=Math.max(mxR,s.wR||0);
-      rL+=s.rL||0;rR+=s.rR||0;});
-    out.push({ts:w.start,vol:Math.round(vol),mxL,mxR,rL,rR,sets:dn.length});
-  });
-  return out;
+function exHistory(id){
+  return histEntries(id).map(h=>{
+    const dn=(h.arr||[]).filter(s=>s&&s.d);if(!dn.length)return null;
+    let vol=0,mx=0;
+    dn.forEach(s=>{vol+=setVol(s);mx=Math.max(mx,s.wL||0,s.wR||0);});
+    const U=h.e&&(h.e.u||h.e.alt);
+    return {ts:h.w.start,vol:Math.round(vol),mx,sets:dn.length,old:h.old,bw:h.e&&h.e.bw,
+      reps:normalSets(dn).map(s=>U?`${s.rL}/${s.rR}`:`${s.rL}`).join(' · ')};
+  }).filter(Boolean);
 }
 function renderProg(){
   const sel=$('#exSel');
@@ -915,11 +1453,13 @@ function renderProg(){
     sel.innerHTML=h;
     sel.onchange=()=>{DB._lastEx=sel.value;drawProg(sel.value);};
   }
-  if(DB._lastEx)sel.value=DB._lastEx;
+  if(DB._lastEx&&EXI[DB._lastEx])sel.value=DB._lastEx;
   drawProg(sel.value);
 }
 function drawProg(eid){
-  const e=EXI[eid],hist=exHistory(eid),b=$('#progBody');
+  const e=curEx(eid),hist=exHistory(eid),b=$('#progBody');
+  if(!e){b.innerHTML='';return;}
+  SG_MAP={};
   if(!hist.length){
     b.innerHTML=`<div class="empty"><div class="ic">📈</div>
       <p>Aucune donnée pour <b>${esc(e.n)}</b>.<br>Enregistre une séance contenant cet exercice.</p></div>`;
@@ -927,349 +1467,511 @@ function drawProg(eid){
   }
   const last=hist[hist.length-1],first=hist[0];
   const dv=first.vol?Math.round((last.vol-first.vol)/first.vol*100):0;
-  const pr=prFor(eid);
-  const sg=suggestNext(e);
-
+  const pr=prFor(eid),anyOld=hist.some(x=>x.old);
   let h=`<div class="grid g3">
-    <div class="st"><div class="v acc">${last.vol}</div><div class="l">Tonnage dernier</div></div>
-    <div class="st"><div class="v tl">${pr.mxLoad}</div><div class="l">Record charge (kg)</div></div>
-    <div class="st"><div class="v ${dv>=0?'gd':'bl'}">${dv>=0?'+':''}${dv}%</div><div class="l">Évolution</div></div>
+    <div class="st"><div class="v acc">${e.bw?last.sets:last.vol}</div><div class="l">${e.bw?'Séries dernier':'Tonnage dernier'}</div></div>
+    <div class="st"><div class="v tl">${e.bw?'—':kgs(pr.mxLoad)}</div><div class="l">Record charge (kg)</div></div>
+    <div class="st"><div class="v ${dv>=0?'gd':'bl'}">${e.bw?'—':(dv>=0?'+':'')+dv+'%'}</div><div class="l">Évolution</div></div>
   </div>`;
-
-  if(sg){const PC={hold:['#2A1A1A','#E9456055','var(--acc)','Garder la charge'],
-                   stay:['#2A2113','#F5A62355','var(--gold)','Continuer'],
-                   up:['#12261C','#27C77640','var(--green)','Progresser'],
-                   ceiling:['#1A2333','#3D7EFF44','var(--blue)','Kit saturé']}[sg.lvl]||
-                  ['#12261C','#27C77640','var(--green)','Progression'];
-    h+=`<div class="card" style="background:${PC[0]};border:1px solid ${PC[1]}">
-      <div class="card-t" style="color:${PC[2]}">${PC[3]}</div>
-      <div style="font-size:13px;line-height:1.55">${esc(sg.txt)}</div></div>`;}
-
-  h+=`<div class="card"><div class="card-t">Tonnage par séance (kg)</div>
-    ${lineChart([{c:'#E94560',fill:1,pts:hist.map(x=>({y:x.vol,l:fmtDate(x.ts)}))}])}
-    <div class="lg"><span><i style="background:#E94560"></i>Volume total (reps × charge)</span></div></div>`;
-
-  if(e.u)h+=`<div class="card"><div class="card-t">Répétitions cumulées · gauche vs droite</div>
-    ${lineChart([{c:'#E94560',pts:hist.map(x=>({y:x.rL,l:fmtDate(x.ts)}))},
-                 {c:'#3D7EFF',pts:hist.map(x=>({y:x.rR,l:fmtDate(x.ts)}))}])}
-    <div class="lg"><span><i style="background:#E94560"></i>Gauche</span>
-      <span><i style="background:#3D7EFF"></i>Droite</span></div></div>`;
-
+  h+=sgCard(suggestNext(e),e.id);
+  if(!e.bw)h+=`<div class="card"><div class="card-t">Tonnage par séance (kg)</div>
+    ${lineChart([{c:'#E94560',fill:1,pts:hist.map(x=>({y:x.vol,l:fmtDate(x.ts),old:x.old}))}])}
+    <div class="lg"><span><i style="background:#E94560"></i>Volume total (répétitions × charge)</span>
+    ${anyOld?'<span>○ ancien programme</span>':''}</div></div>`;
+  if(e.tk){
+    const t=testsOf(e.tk);
+    h+=`<div class="card"><div class="card-t">Séries test · ${esc(TK[e.tk])}</div>`+
+      (t.length?lineChart([{c:'#E94560',pts:t.map(x=>({y:x.rL,l:fmtDate(x.ts)}))},
+                           {c:'#3D7EFF',pts:t.map(x=>({y:x.rR,l:fmtDate(x.ts)}))}])+
+        `<div class="lg"><span><i style="background:#E94560"></i>Gauche</span>
+         <span><i style="background:#3D7EFF"></i>Droite</span><span>répétitions max à charge égale</span></div>`
+       :`<div style="font-size:12.5px;color:var(--tx3)">Aucun test encore. Le premier se fera automatiquement sur la 1re série.</div>`)+
+      `</div>`;
+  }
   h+=`<div class="card"><div class="card-t">Détail des séances</div>`;
-  hist.slice().reverse().slice(0,10).forEach(x=>{
-    h+=`<div class="exline"><div style="font-size:12.5px;color:var(--tx2)">${fmtDate(x.ts)}</div>
-      <div class="r">${x.sets} séries · ${x.vol} kg${e.u?` · G${x.rL}/D${x.rR}`:''}</div></div>`;
+  hist.slice().reverse().slice(0,12).forEach(x=>{
+    h+=`<div class="exline"><div style="font-size:12.5px;color:var(--tx2)">${fmtDate(x.ts)}${x.old?' <span class="oldtag">ancien</span>':''}</div>
+      <div class="r">${x.reps||'—'}${x.bw?'':' · '+kgs(x.mx)+' kg'}</div></div>`;
   });
   h+=`</div>`;
   b.innerHTML=h;
+  bindApply('#progBody',()=>drawProg(eid));
 }
 
 /* ==========================================================================
-   ASYMÉTRIE
+   ASYMÉTRIE — mesurée uniquement par les séries test
    ========================================================================== */
 function renderAsym(){
-  const seen=new Set(),list=[];
-  Object.values(EXI).filter(e=>e.u).forEach(e=>{if(!seen.has(e.n)){seen.add(e.n);list.push(e);}});
-  const g=globalAsym();
+  const G=globalAsym();
   let b='';
-
+  const g=G?G.g:null;
   const col=g==null?'var(--tx3)':Math.abs(g)<5?'var(--green)':Math.abs(g)<15?'var(--gold)':'var(--acc)';
   b+=`<div class="card"><div class="card-t">Écart global gauche / droite</div>
     <div style="display:flex;align-items:baseline;gap:9px">
-      <div style="font-size:36px;font-weight:800;letter-spacing:-1.5px;color:${col}">
-        ${g==null?'—':(g>0?'+':'')+g+'%'}</div>
-      <div style="font-size:12.5px;color:var(--tx2);flex:1">
-        ${g==null?'Enregistre des séances avec exercices unilatéraux.'
-          :g>0?'Le côté droit produit encore plus de volume que le gauche.'
-          :'Le côté gauche a rattrapé ou dépassé le droit.'}</div></div>`;
+      <div style="font-size:36px;font-weight:800;letter-spacing:-1.5px;color:${col}">${g==null?'—':(g>0?'+':'')+g+'%'}</div>
+      <div style="font-size:12.5px;color:var(--tx2);flex:1">${g==null?'Aucune série test enregistrée pour l\'instant.'
+        :g>0?`La droite reste plus forte. Moyenne de ${G.n} exercice${G.n>1?'s':''} testé${G.n>1?'s':''}.`
+        :`Le gauche a rattrapé ou dépassé la droite. Moyenne de ${G.n} exercice${G.n>1?'s':''}.`}</div></div>`;
+  const ad=asymAdvice(g);
+  if(ad)b+=`<div style="margin-top:13px;padding:11px 12px;background:${ad.c}18;border-radius:11px;
+    border-left:3px solid ${ad.c};font-size:12.5px;line-height:1.6">${ad.t}</div>`;
+  b+=`</div>`;
 
-  if(g!=null){
-    let adv,ac;
-    if(Math.abs(g)<5){adv='Écart sous 5 % : objectif atteint. Tu peux réduire progressivement le surplus de répétitions à gauche et revenir à un volume égal des deux côtés.';ac='#27C776';}
-    else if(g>15){adv='Écart important. Maintiens la priorité gauche en début de séance et l\'excentrique de 4 secondes. La correction demande généralement 8 à 12 semaines.';ac='#E94560';}
-    else if(g>0){adv='Bonne trajectoire. Continue le protocole actuel sans augmenter le surplus gauche.';ac='#F5A623';}
-    else {adv='Le côté gauche dépasse désormais le droit. Reviens à un volume équilibré pour éviter de créer l\'asymétrie inverse.';ac='#3D7EFF';}
-    b+=`<div style="margin-top:13px;padding:11px 12px;background:${ac}18;border-radius:11px;
-      border-left:3px solid ${ac};font-size:12.5px;line-height:1.6">${adv}</div>`;
-  }
-  b+=`<div style="font-size:11.5px;color:var(--tx3);margin-top:11px;line-height:1.55">
-      Calculé sur les 12 dernières séances. Un écart positif signifie que la droite domine encore.</div></div>`;
+  const n=testEvery();
+  b+=`<div class="card"><div class="card-t">Comment l'écart est mesuré</div>
+    <div style="font-size:12.5px;line-height:1.65;color:var(--tx2)">
+    La règle 12 G / 10 D donne environ 20 % de répétitions en plus à gauche : comparer les séries normales
+    mesurerait la prescription, pas ta force. L'écart vient donc d'une <b>série test</b> : la 1re série de chaque
+    exercice prioritaire, ${n?`tous les <b>${n} jours</b>`:'<b>désactivée</b>'}. Même charge des deux côtés, gauche d'abord,
+    tempo normal, maximum de répétitions propres — on s'arrête quand la technique se dégrade.</div>
+    <div style="font-size:11.5px;color:var(--tx3);margin-top:9px">Écart = (droite − gauche) / moyenne des deux.
+    Positif : la droite domine. Fréquence modifiable dans Réglages.</div></div>`;
 
-  list.forEach(e=>{
-    const ids=Object.values(EXI).filter(x=>x.n===e.n).map(x=>x.id);
-    const hist=[];
-    doneWo().sort((a,b2)=>a.start-b2.start).forEach(w=>{
-      let vL=0,vR=0,got=0;
-      ids.forEach(id=>{
-        const arr=(w.log||{})[id];if(!arr)return;
-        arr.filter(s=>s.d).forEach(s=>{got=1;
-          vL+=(s.rL||0)*(s.wL||0);vR+=(s.rR||0)*(s.wR||0);});
-      });
-      if(got)hist.push({ts:w.start,vL,vR});
-    });
-    if(!hist.length)return;
-    const gaps=hist.map(x=>{const t=(x.vL+x.vR)/2;return{y:t?Math.round((x.vR-x.vL)/t*100):0,l:fmtDate(x.ts)};});
-    const cur=gaps[gaps.length-1].y;
-    const c=Math.abs(cur)<5?'#27C776':Math.abs(cur)<15?'#F5A623':'#E94560';
-    const trend=gaps.length>1?gaps[gaps.length-1].y-gaps[0].y:null;
-    b+=`<div class="card"><div class="card-t">${esc(e.n)}</div>
+  Object.entries(TK).forEach(([k,name])=>{
+    const t=testsOf(k), du=daysUntilTest(k);
+    const st=du==null?'tests désactivés':du===0?'<b style="color:var(--teal)">test prévu à la prochaine séance</b>':`prochain test dans ${du} j`;
+    if(!t.length){
+      b+=`<div class="card"><div class="card-t">${esc(name)}</div>
+        <div style="font-size:12.5px;color:var(--tx3)">Pas encore testé · ${st}</div></div>`;
+      return;
+    }
+    const last=t[t.length-1], c=Math.abs(last.gap)<5?'#27C776':Math.abs(last.gap)<15?'#F5A623':'#E94560';
+    const trend=t.length>1?last.gap-t[0].gap:null;
+    b+=`<div class="card"><div class="card-t">${esc(name)}</div>
       <div style="display:flex;align-items:center;gap:11px;margin-bottom:4px">
-        <div style="font-size:26px;font-weight:800;color:${c};letter-spacing:-1px">${cur>0?'+':''}${cur}%</div>
-        <div style="font-size:11.5px;color:var(--tx2)">écart actuel<br>${hist.length} séance${hist.length>1?'s':''}
-        ${trend!==null?`<br><span style="color:${trend<0?'var(--green)':'var(--tx3)'}">${trend<0?'▼':'▲'} ${Math.abs(trend)} pts depuis le début</span>`:''}</div>
+        <div style="font-size:26px;font-weight:800;color:${c};letter-spacing:-1px">${last.gap>0?'+':''}${last.gap}%</div>
+        <div style="font-size:11.5px;color:var(--tx2)">G ${last.rL} rép · D ${last.rR} rép à ${kgs(last.wL)} kg<br>${t.length} test${t.length>1?'s':''} · ${st}
+        ${trend!==null?`<br><span style="color:${Math.abs(last.gap)<Math.abs(t[0].gap)?'var(--green)':'var(--tx3)'}">${trend<0?'▼':'▲'} ${Math.abs(trend)} pts depuis le 1er test</span>`:''}</div>
       </div>
-      ${lineChart([{c,fill:1,pts:gaps}])}
-      <div class="lg"><span>Écart volume D − G (%) · 0 = équilibre</span></div></div>`;
+      ${t.length>1?lineChart([{c,fill:1,pts:t.map(x=>({y:x.gap,l:fmtDate(x.ts)}))}])+
+        '<div class="lg"><span>Écart D − G (%) · 0 = équilibre</span></div>':''}</div>`;
   });
-
-  if(!doneWo().length)
-    b+=`<div class="empty"><div class="ic">⚖️</div><p>Enregistre tes premières séances<br>pour suivre l'évolution de l'asymétrie.</p></div>`;
   $('#asymBody').innerHTML=b;
 }
+
 /* ==========================================================================
    RUNNER DE SÉANCE
+   Étapes : un exercice seul, ou un bloc (A1 puis A2 sans repos, puis repos), par tours.
+   Minuteries horodatées : le repos continue en temps réel quand l'application passe
+   en arrière-plan (appel, autre application) ; le chronomètre de séance, lui, se met
+   en pause hors écran. La séance est enregistrée en continu et reprise
+   automatiquement si l'application est rouverte dans les 2 heures.
    ========================================================================== */
-let W=null, EX=[], IDX=0, TK=null, WL=null;
+let W=null, EX=[], STEPS=[], IDX=0, TK_INT=null, WL=null, REST_AUDIO=false, LAST_SAVE=0;
+const RESUME_MS=2*3600e3;
+const CIRC=2*Math.PI*24;
 
-/* ---------- Wake lock : garder l'écran allumé ---------- */
-async function wlOn(){
-  try{if('wakeLock' in navigator && !WL)WL=await navigator.wakeLock.request('screen');}catch(e){}
-}
+async function wlOn(){try{if('wakeLock' in navigator&&!WL)WL=await navigator.wakeLock.request('screen');}catch(e){}}
 function wlOff(){try{if(WL){WL.release();WL=null;}}catch(e){}}
-document.addEventListener('visibilitychange',()=>{
-  if(document.visibilityState==='visible'&&W)wlOn();
-});
+const visible=()=>document.visibilityState!=='hidden';
 
-/* ---------- Brouillon (reprise après interruption) ---------- */
-function saveDraft(){
+/* ---------- Chronomètre de séance : temps passé dans l'application ---------- */
+function activeMs(){if(!W)return 0;return (W.active||0)+(W.visSince?Math.max(0,Date.now()-W.visSince):0);}
+function pauseClock(){if(W&&W.visSince){W.active=(W.active||0)+Math.max(0,Date.now()-W.visSince);W.visSince=null;}}
+function resumeClock(){if(W&&!W.visSince)W.visSince=Date.now();}
+
+document.addEventListener('visibilitychange',()=>{
   if(!W)return;
-  DB.draft={...W,idx:IDX,exp:W.exp||0};
-  save();
+  if(!visible()){pauseClock();saveDraft();}
+  else{resumeClock();WL=null;wlOn();
+    if(W.rest&&Date.now()<W.rest.end)REST_AUDIO=scheduleRestAudio(W.rest.end);
+    tick();}
+});
+window.addEventListener('pagehide',()=>{if(W){pauseClock();saveDraft();}});
+window.addEventListener('pageshow',()=>{if(W&&visible()){resumeClock();tick();}});
+/* le son se débloque au premier toucher : on reprogramme les bips du repos en cours */
+function onAudioUnlock(){if(W&&W.rest&&Date.now()<W.rest.end)REST_AUDIO=scheduleRestAudio(W.rest.end);}
+
+/* ---------- Étapes ---------- */
+function buildSteps(){
+  const st=[];
+  for(let i=0;i<EX.length;i++){
+    const e=EX[i],n=EX[i+1];
+    if(e.blk&&e.role===1&&n&&n.blk===e.blk&&n.cid===e.cid&&!(W.sep||{})[blkKey(e)]){st.push({k:'b',a:e,b:n});i++;}
+    else st.push({k:'s',e});
+  }
+  return st;
 }
-function resumeDraft(){
+const stepEx = st => st.k==='b'?[st.a,st.b]:[st.e];
+function rounds(st){return Math.max(W.log[st.a.id].length,W.log[st.b.id].length);}
+/* ordre d'exécution des séries d'une étape */
+function stepOrder(st){
+  if(st.k==='s')return W.log[st.e.id].map((_,i)=>[st.e,i]);
+  const na=W.log[st.a.id].length,nb=W.log[st.b.id].length,out=[];
+  for(let r=0;r<Math.max(na,nb);r++){if(r<na)out.push([st.a,r]);if(r<nb)out.push([st.b,r]);}
+  return out;
+}
+function stepOf(id){return STEPS.findIndex(st=>stepEx(st).some(x=>x.id===id));}
+/* prochaine série à faire, à partir de l'étape from */
+function nextPending(from){
+  for(let k=0;k<STEPS.length;k++){
+    const s=(from+k)%STEPS.length;
+    for(const [e,i] of stepOrder(STEPS[s]))if(!W.log[e.id][i].d)return {s,e,i};
+  }
+  return null;
+}
+
+/* séries pré-remplies : charge = configuration actuelle, répétitions = dernière séance à la même charge */
+function buildLog(e){
+  const L=exLoad(e), lp=lastSame(e), pn=lp&&lp.same?lp.arr:[], U=isU(e);
+  return Array.from({length:e.sets},(_,i)=>{
+    const p=pn[i]||pn[pn.length-1]||null;
+    let rL,rR=0;
+    if(U){rL=p&&p.rL?p.rL:(e.u?e.repL:e.rMin);rR=p&&p.rR?p.rR:(e.u?e.repR:e.rMin);}
+    else rL=p&&p.rL?p.rL:e.rMin;
+    return {d:0,rL,wL:L,rR:U?rR:0,wR:U?L:0};
+  });
+}
+function markTests(){
+  const seen={};
+  EX.forEach(e=>{
+    if(!e.tk||!e.p||seen[e.tk]||(W.skipT||{})[e.tk]||!testDue(e.tk))return;
+    seen[e.tk]=1;
+    const s=W.log[e.id][0];
+    if(s&&!s.d){s.t=1;s.rL=0;s.rR=0;}
+  });
+}
+/* ajuste les séries enregistrées au programme courant (séries modifiées dans les réglages) */
+function fitLogs(){
+  EX.forEach(e=>{
+    let a=W.log[e.id];
+    if(!Array.isArray(a)){W.log[e.id]=buildLog(e);return;}
+    if(a.length<e.sets)a=W.log[e.id]=a.concat(buildLog(e).slice(a.length));
+    while(a.length>e.sets&&!a[a.length-1].d)a.pop();
+    const U=isU(e);
+    a.forEach(s=>{if(!s.d){if(U&&!s.rR)s.rR=e.u?e.repR:e.rMin;if(U&&!s.wR)s.wR=s.wL;if(!U){s.rR=0;s.wR=0;}}});
+  });
+}
+
+function saveDraft(){if(!W)return;W.lastSeen=Date.now();DB.draft={...W,idx:IDX};save();}
+function canAutoResume(){
+  const d=DB.draft;
+  return !!(d&&!d.closed&&PROG.some(s=>s.id===d.sid)&&Date.now()-(d.lastSeen||d.start||0)<RESUME_MS);
+}
+function resumeDraft(auto){
   const d=DB.draft;if(!d)return;
   const s=PROG.find(x=>x.id===d.sid);if(!s){DB.draft=null;save();return;}
-  EX=sessionEx(s,d.exp);
-  W={sid:d.sid,start:d.start,end:null,log:d.log,note:d.note||'',exp:d.exp||0};
-  IDX=clamp(d.idx||0,0,EX.length-1);
+  const now=Date.now();
+  W={sid:d.sid,start:d.start||now,end:null,log:d.log||{},note:d.note||'',exp:d.exp||0,
+     pr:d.pr||{},skipT:d.skipT||{},sep:d.sep||{},alt:d.alt||{...(DB.alt||{})},
+     /* temps actif jusqu'au dernier enregistrement ; le temps hors écran ne compte pas */
+     active:(d.active||0)+(d.visSince&&d.lastSeen?Math.max(0,d.lastSeen-d.visSince):0),
+     visSince:visible()?now:null,lastSeen:now,rest:d.rest||null};
+  if(W.rest&&now-W.rest.end>15*60e3)W.rest=null;
+  if(W.rest){W.rest.seen=0;}
+  EX=sessionEx(s,W.exp,W.alt);
+  fitLogs();
+  STEPS=buildSteps();
+  IDX=clamp(d.idx||0,0,STEPS.length-1);
   openRunner(s);
-  toast('Séance reprise');
+  saveDraft();
+  toast(auto?'Séance reprise là où tu l\'avais laissée':'Séance reprise');
 }
 function openRunner(s){
   $('#rName').textContent=s.n+' · '+s.sub+(W.exp?' ⚡':'');
-  $('#run').classList.add('on');
-  clearInterval(TK);
-  TK=setInterval(()=>$('#rTime').textContent=mmss(Math.floor((Date.now()-W.start)/1000)),1000);
-  $('#rTime').textContent=mmss(Math.floor((Date.now()-W.start)/1000));
-  wlOn();drawEx();
+  $('#run').classList.add('on');document.body.classList.add('running');
+  clearInterval(TK_INT);TK_INT=setInterval(tick,1000);
+  REST_AUDIO=W.rest&&Date.now()<W.rest.end?scheduleRestAudio(W.rest.end):false;
+  wlOn();drawStep();tick();
 }
-
 function startWorkout(sid,express){
   if(DB.draft&&woSets(DB.draft)>0&&!confirm('Une séance est déjà en cours. La remplacer ?'))return;
   const s=PROG.find(x=>x.id===sid);if(!s)return;
-  EX=sessionEx(s,express);
-  IDX=0;
-  W={sid,start:Date.now(),end:null,log:{},note:'',exp:express?1:0};
-  EX.forEach(e=>{
-    const prev=lastPerf(e.id);
-    W.log[e.id]=Array.from({length:e.sets},(_,i)=>{
-      const p=prev&&prev[i];
-      return {d:0,rL:p?p.rL:(e.repL||0),wL:p?p.wL:(e.bw?0:exLoad(e)),
-              rR:p?p.rR:(e.repR||0),wR:p?p.wR:(e.bw?0:exLoad(e))};
-    });
-  });
+  const now=Date.now();
+  W={sid,start:now,end:null,log:{},note:'',exp:express?1:0,pr:{},skipT:{},sep:{},alt:{...(DB.alt||{})},
+     active:0,visSince:visible()?now:null,lastSeen:now,rest:null};
+  EX=sessionEx(s,express,W.alt);IDX=0;
+  EX.forEach(e=>{W.log[e.id]=buildLog(e);});
+  markTests();
+  STEPS=buildSteps();
   openRunner(s);
+  saveDraft();
+}
+function tick(){
+  if(!W)return;
+  $('#rTime').textContent=mmss(activeMs()/1000);
+  paintRest();
+  if(visible()&&Date.now()-LAST_SAVE>10000){LAST_SAVE=Date.now();saveDraft();}
 }
 
-function drawEx(){
-  if(!W||!EX.length)return;
-  stopHold();
-  const e=EX[IDX],cfg=e._cfg,log=W.log[e.id];
-  const S=PROG.find(s=>s.id===W.sid);
-  const cfgIdx=S.cfgs.findIndex(c=>c.id===cfg.id)+1;
-  const changed=IDX>0&&EX[IDX-1]._cfg.id!==cfg.id;
-  const nDb=e.pair?2:1;
-  const pl=e.bw?null:bestLoad(exLoad(e),nDb);
-
-  let h=`<div class="cfg"${changed?' style="border-left-color:var(--acc)"':''}>
-    <div class="h">${changed?'⚠ CHANGEMENT DE DISQUES · ':''}CONFIGURATION ${cfgIdx}</div>
-    <div class="s">${esc(cfg.label)}</div><div class="p">${esc(cfg.plates)}</div>
-    ${pl?`<div style="margin-top:8px;padding-top:8px;border-top:1px solid #FFFFFF14;font-size:12px;color:var(--teal)">
-      🔧 ${nDb===2?'Chaque haltère':'Haltère'} : ${comboText(pl)}
-      ${pl.diff>0.01?`<span style="color:var(--gold)"> (réel ${pl.perDb} kg)</span>`:''}</div>`:''}
+/* ---------- Affichage ---------- */
+function cfgCard(c,changed,ex){
+  const combos=cfgCombos(c);
+  const who=ex.filter(e=>!e.bw&&!(c.pair&&e.bar==='AB')).map(e=>
+    (ex.length>1?`${e.num} : `:'cet exercice : ')+`<b>${e.bar==='AB'?'les deux haltères':c.pair?'1 haltère':'barre '+e.bar}</b>`).join(' · ');
+  return `<div class="cfg"${changed?' style="border-left-color:var(--acc)"':''}>
+    <div class="h">${changed?'⚠ CHANGEMENT DE DISQUES · ':''}CONFIGURATION ${c.idx}</div>
+    <div class="s">${esc(cfgLabel(c))}</div>
+    <div class="combo">${combos.map(x=>`🔧 ${x.lab} : ${comboText(x.r)}`+
+      (x.r.diff>0.01?` <span style="color:var(--gold)">(réel ${kgs(x.r.perDb)} kg)</span>`:'')).join('<br>')}</div>
+    <div class="p">${kgs(cfgPlatesKg(c))} kg de disques sur ${kgs(stockTotal())}${who?' · '+who:''}</div>
   </div>`;
-
-  h+=`<div class="exh"><div class="t">${esc(e.n)}</div><div class="tags">
-    <span class="tag l">${e.sets} séries</span>
-    ${e.bw?'<span class="tag l">Poids de corps</span>':`<span class="tag l">${exLoad(e)} kg</span>`}
+}
+function exHead(e,lab){
+  return `<div class="exh">${lab?`<div class="bl">${lab}</div>`:''}<div class="t">${esc(exName(e))}</div><div class="tags">
+    <span class="tag l">${W.log[e.id].length} séries · ${targetText(e)}</span>
+    <span class="tag l">${e.bw?'Poids de corps':loadText(e)}</span>
+    ${lab?'':`<span class="tag l">Repos ${restOf(e)} s</span>`}
     ${e.p?'<span class="tag p">◄ PRIORITÉ GAUCHE</span>':''}
-    ${e.e?'<span class="tag e">EXCENTRIQUE 4s · GAUCHE</span>':''}
-    ${e.ho?'<span class="tag g">TENUE — minuteur intégré</span>':''}
+    ${e.e?'<span class="tag e">EXCENTRIQUE 4 s · GAUCHE</span>':''}
   </div></div>`;
-
-  const sg=suggestNext(e);
-  if(sg){const P={hold:['#2A1A1A','var(--acc)','#FFC8CF','■ Garder la charge'],
-                  stay:['#2A2113','var(--gold)','#FFE3AE','→ Continuer'],
-                  up:['#12261C','var(--green)','#B8F0D0','↑ Progresser'],
-                  ceiling:['#1A2333','var(--blue)','#C3D8FF','⚑ Kit saturé']}[sg.lvl]||
-                 ['#12261C','var(--green)','#B8F0D0','↑ Progression'];
-    h+=`<div style="background:${P[0]};border-left:3px solid ${P[1]};border-radius:10px;
-      padding:10px 12px;margin-bottom:12px;font-size:12.5px;line-height:1.5;color:${P[2]}">
-      <b style="color:${P[1]}">${P[3]}</b><br>${esc(sg.txt)}</div>`;}
-
-  const prev=lastPerf(e.id);
-  if(prev){
-    const p=prev[0];
-    h+=`<div style="font-size:11.5px;color:var(--tx3);margin-bottom:11px">Dernière fois : ${
-      e.u?`G ${p.rL}×${p.wL}kg · D ${p.rR}×${p.wR}kg`
-        :e.bw?`${p.rL}${e.ho?'s':''}`:`${p.rL}${e.ho?'s':''} × ${p.wL}kg`}</div>`;
+}
+function lastLine(e){
+  const la=lastAny(e.id);if(!la)return '';
+  return `<div class="last">Dernière fois${la.old?' (ancien programme)':''} : ${setText(la.e,la.arr[0])}</div>`;
+}
+function setRow(e,i,lab){
+  const s=W.log[e.id][i],U=isU(e);
+  const val=f=>s.t&&!s[f]?'':s[f];
+  const ph=s.t?' placeholder="max"':'';
+  const name=lab?`<b>${esc(e.sn||e.n)}</b> · `:'';
+  let h=`<div class="setr ${s.d?'done':''} ${s.t?'test':''}" data-e="${e.id}" data-i="${i}">
+    <div class="top"><div class="n">${s.t?'T':lab||i+1}</div>
+      <div class="hint">${s.t?`${name}<b>SÉRIE TEST</b> · max propre, même charge`
+        :`${name}${lab?'':'Cible : '}${targetText(e)}${e.bw?'':' · '+kgs(exLoad(e))+' kg'}`}</div>
+      ${s.t&&!s.d?`<button class="skt" data-skip="${i}" data-e="${e.id}">Passer</button>`:''}
+      <button class="chk" data-t="${i}" data-e="${e.id}" aria-label="Valider la série"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></button>
+    </div>`;
+  if(s.t)h+=`<div class="tnote">Gauche d'abord, tempo normal identique des deux côtés${e.e?' (pas d\'excentrique lent sur cette série)':''}. Arrête-toi dès que la technique se dégrade.</div>`;
+  const inp=(f,mode)=>`<div class="f"><input type="number" inputmode="${mode==='kg'?'decimal':'numeric'}"${mode==='kg'?' step="0.5"':''} data-e="${e.id}" data-f="${f}" data-i="${i}" value="${mode==='kg'?s[f]:val(f)}"${mode==='kg'?'':ph}><span class="u">${mode==='kg'?'kg':'rép'}</span></div>`;
+  if(U){
+    h+=`<div class="inps">
+      <div class="side L"><div class="lb">◄ GAUCHE</div><div class="fields">${inp('rL')}${e.bw?'':inp('wL','kg')}</div></div>
+      <div class="side R"><div class="lb">DROITE ►</div><div class="fields">${inp('rR')}${e.bw?'':inp('wR','kg')}</div></div></div>`;
+  }else{
+    h+=`<div class="inps"><div class="side" style="border-left:3px solid var(--tx3)">
+      <div class="lb">SÉRIE</div><div class="fields">${inp('rL')}${e.bw?'':inp('wL','kg')}</div></div></div>`;
   }
-
-  log.forEach((s,i)=>{
-    const unit=e.ho?'s':'rép';
-    h+=`<div class="setr ${s.d?'done':''}" data-i="${i}">
-      <div class="top"><div class="n">${i+1}</div>
-        <div class="hint">Cible : ${e.u?`${e.repL}${e.ho?'s':''} G / ${e.repR}${e.ho?'s':''} D`:`${e.repL}${e.ho?'s':''}`}${e.bw?'':' · '+exLoad(e)+' kg'}</div>
-        ${e.ho?`<button class="hold" data-hold="${i}">▶ ${e.repL}s</button>`:''}
-        <button class="chk" data-t="${i}"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></button>
-      </div>`;
-    if(e.u){
-      h+=`<div class="inps">
-        <div class="side L"><div class="lb">◄ GAUCHE</div><div class="fields">
-          <div class="f"><input type="number" inputmode="numeric" data-f="rL" data-i="${i}" value="${s.rL}"><span class="u">${unit}</span></div>
-          <div class="f"><input type="number" inputmode="decimal" step="0.5" data-f="wL" data-i="${i}" value="${s.wL}"><span class="u">kg</span></div>
-        </div></div>
-        <div class="side R"><div class="lb">DROITE ►</div><div class="fields">
-          <div class="f"><input type="number" inputmode="numeric" data-f="rR" data-i="${i}" value="${s.rR}"><span class="u">${unit}</span></div>
-          <div class="f"><input type="number" inputmode="decimal" step="0.5" data-f="wR" data-i="${i}" value="${s.wR}"><span class="u">kg</span></div>
-        </div></div></div>`;
-    }else{
-      h+=`<div class="inps"><div class="side" style="border-left:3px solid var(--tx3)">
-        <div class="lb">SÉRIE</div><div class="fields">
-          <div class="f"><input type="number" inputmode="numeric" data-f="rL" data-i="${i}" value="${s.rL}"><span class="u">${unit}</span></div>
-          ${e.bw?'':`<div class="f"><input type="number" inputmode="decimal" step="0.5" data-f="wL" data-i="${i}" value="${s.wL}"><span class="u">kg</span></div>`}
-        </div></div></div>`;
-    }
-    h+=`</div>`;
-  });
-
-  $('#rBody').innerHTML=h;
+  return h+`</div>`;
+}
+function singleHtml(e){
+  let h=exHead(e);
+  if(isU(e))h+=`<div class="rule">Gauche d'abord, puis droite sans pause. Le repos se prend après les deux côtés.</div>`;
+  h+=sgCard(suggestNext(e),e.id)+lastLine(e);
+  W.log[e.id].forEach((_,i)=>{h+=setRow(e,i);});
+  if(e.blk&&(W.sep||{})[blkKey(e)]){
+    const o=EX.find(x=>x.cid===e.cid&&x.blk===e.blk&&x.id!==e.id);
+    if(o)h+=`<button class="btn gho sm sepb" data-unsep="${blkKey(e)}">⇄ Refaire en bloc avec ${esc(o.sn||o.n)}</button>`;
+  }
+  return h;
+}
+function blockHtml(st){
+  const a=st.a,b=st.b,R=rounds(st),L=a.blk,na=W.log[a.id].length,nb=W.log[b.id].length;
+  const last=na===nb?'':` Dernier tour : ${esc((na>nb?a:b).sn||(na>nb?a:b).n).toLowerCase()} seul.`;
+  let h=`<div class="blkh">⇄ BLOC ${L} · ${R} tours</div>
+    <div class="rule">${L}1 puis ${L}2 sans repos (le temps de changer d'haltère), puis ${b.rest}&nbsp;s de repos.${last}
+    ${isU(a)||isU(b)?' Unilatéral : gauche d\'abord, puis droite sans pause.':''}</div>`;
+  h+=`<div class="bh">`+exHead(a,L+'1')+sgCard(suggestNext(a),a.id)+lastLine(a);
+  h+=exHead(b,L+'2')+sgCard(suggestNext(b),b.id)+lastLine(b)+`</div>`;
+  for(let r=0;r<R;r++){
+    h+=`<div class="round">TOUR ${r+1}/${R}</div>`;
+    if(r<na)h+=setRow(a,r,L+'1');
+    if(r<nb)h+=setRow(b,r,L+'2');
+  }
+  h+=`<button class="btn gho sm sepb" data-sep="${blkKey(a)}">Faire séparément : ${esc(a.sn||a.n)}, puis ${esc(b.sn||b.n)}</button>`;
+  return h;
+}
+function drawStep(){
+  if(!W||!STEPS.length)return;
+  IDX=clamp(IDX,0,STEPS.length-1);
+  const st=STEPS[IDX],ex=stepEx(st),c=CFG[ex[0].cid];
+  const prev=IDX>0?stepEx(STEPS[IDX-1])[0].cid:null,changed=prev&&prev!==c.id;
+  SG_MAP={};
+  $('#rBody').innerHTML=cfgCard(c,changed,ex)+(st.k==='b'?blockHtml(st):singleHtml(st.e));
   $('#rBody').scrollTop=0;
-  $('#rProg').style.width=Math.round(IDX/EX.length*100)+'%';
+  $('#rProg').style.width=Math.round(IDX/STEPS.length*100)+'%';
   $('#rPrev').disabled=IDX===0;
-  const lastEx=IDX===EX.length-1,nx=$('#rNext');
-  nx.textContent=lastEx?'Terminer la séance':'Exercice suivant';
-  nx.className=lastEx?'fin':'next';
+  const lastSt=IDX===STEPS.length-1,nx=$('#rNext');
+  nx.textContent=lastSt?'Terminer la séance':'Exercice suivant';
+  nx.className=lastSt?'fin':'next';
 
-  $$('#rBody [data-t]').forEach(b=>b.onclick=()=>toggleSet(+b.dataset.t));
-  $$('#rBody [data-hold]').forEach(b=>b.onclick=()=>startHold(+b.dataset.hold));
+  $$('#rBody [data-t]').forEach(b=>b.onclick=()=>toggleSet(b.dataset.e,+b.dataset.t));
+  $$('#rBody [data-skip]').forEach(b=>b.onclick=()=>skipTest(b.dataset.e,+b.dataset.skip));
+  $$('#rBody [data-sep]').forEach(b=>b.onclick=()=>setSep(b.dataset.sep,true));
+  $$('#rBody [data-unsep]').forEach(b=>b.onclick=()=>setSep(b.dataset.unsep,false));
+  bindApply('#rBody',a=>{
+    if(a&&a.kind==='alt'){W.alt={...(DB.alt||{})};refreshEx();}
+    EX.forEach(e=>{const L=exLoad(e);W.log[e.id].forEach(s=>{if(!s.d){s.wL=L;if(isU(e))s.wR=L;}});});
+    saveDraft();drawStep();
+  });
   $$('#rBody input').forEach(inp=>{
-    inp.onchange=()=>{const v=parseFloat(inp.value);
-      W.log[EX[IDX].id][+inp.dataset.i][inp.dataset.f]=isNaN(v)?0:v;saveDraft();};
+    inp.onchange=()=>{const v=parseFloat(inp.value),i=+inp.dataset.i,f=inp.dataset.f,a=W.log[inp.dataset.e];
+      if(a&&a[i]){a[i][f]=isNaN(v)?0:v;saveDraft();}};
     inp.onfocus=()=>inp.select();
   });
 }
-
-/* ---------- Minuteur de tenue (gainage, Farmer Hold) ---------- */
-let HT=null,HLeft=0,HIdx=-1;
-function startHold(i){
-  if(!W||!EX[IDX])return;
-  const e=EX[IDX];
-  if(HIdx===i){stopHold();return;}
-  stopHold();
-  HIdx=i;
-  const inp=$(`#rBody input[data-f="rL"][data-i="${i}"]`);
-  const target=Math.max(1,parseInt(inp?inp.value:e.repL)||e.repL);
-  HLeft=target;
-  const btn=$(`#rBody [data-hold="${i}"]`);
-  const paint=()=>{if(btn){btn.textContent='■ '+HLeft+'s';btn.classList.add('run');}};
-  paint();
-  HT=setInterval(()=>{
-    HLeft--;
-    if(HLeft<=3&&HLeft>0)beep(1);
-    if(HLeft<=0){
-      clearInterval(HT);HT=null;
-      beep(2);buzz([160,80,160]);
-      if(btn){btn.textContent='✓ '+target+'s';btn.classList.remove('run');}
-      HIdx=-1;
-      const st=W.log[e.id][i];
-      if(!st.d)toggleSet(i);
-      toast('Tenue terminée');
-    }else paint();
-  },1000);
+/* recalcule les exercices (variante changée) en gardant l'étape courante */
+function refreshEx(){
+  const s=PROG.find(x=>x.id===W.sid),curId=stepEx(STEPS[IDX])[0].id;
+  EX=sessionEx(s,W.exp,W.alt);fitLogs();
+  STEPS=buildSteps();IDX=Math.max(0,stepOf(curId));
 }
-function stopHold(){
-  if(HT){clearInterval(HT);HT=null;}
-  if(HIdx>=0){
-    const b=$(`#rBody [data-hold="${HIdx}"]`);
-    if(b&&EX[IDX]){b.classList.remove('run');b.textContent='▶ '+EX[IDX].repL+'s';}
-  }
-  HIdx=-1;
+function setSep(key,on){
+  if(!W)return;
+  const curId=stepEx(STEPS[IDX])[0].id;
+  W.sep=W.sep||{};if(on)W.sep[key]=1;else delete W.sep[key];
+  STEPS=buildSteps();IDX=Math.max(0,stepOf(curId));
+  saveDraft();drawStep();
+  toast(on?'Exercices séparés : toutes les séries du premier, puis le second':'Bloc reconstitué');
+}
+function skipTest(id,i){
+  if(!W||!W.log[id])return;
+  const e=EX.find(x=>x.id===id),s=W.log[id][i];if(!e||!s)return;
+  const f=buildLog(e)[i]||buildLog(e)[0];
+  s.t=0;s.rL=f.rL;s.rR=f.rR;
+  W.skipT=W.skipT||{};W.skipT[e.tk]=1;
+  saveDraft();drawStep();toast('Test reporté à la prochaine séance');
 }
 
 /* ---------- Validation d'une série ---------- */
-function toggleSet(i){
-  if(!W||!EX[IDX])return;
-  const e=EX[IDX],s=W.log[e.id][i];
+function toggleSet(id,i){
+  if(!W||!W.log[id])return;
+  const e=EX.find(x=>x.id===id),s=W.log[id][i];if(!e||!s)return;
+  if(!s.d&&s.t&&(!(s.rL>0)||(isU(e)&&!(s.rR>0)))){
+    toast('Série test : saisis ton maximum des deux côtés',2600);return;}
   s.d=s.d?0:1;
-  const row=$(`#rBody .setr[data-i="${i}"]`);
+  const row=$(`#rBody .setr[data-e="${id}"][data-i="${i}"]`);
   if(row)row.classList.toggle('done',!!s.d);
   if(s.d){
     buzz(28);
-    /* record personnel */
-    const pr=prFor(e.id);
-    const best=Math.max((s.rL||0)*(s.wL||0),(s.rR||0)*(s.wR||0));
-    if(pr.mxVol>0&&best>pr.mxVol){toast('🏆 Nouveau record sur cet exercice !',2600);buzz([60,50,60,50,120]);}
-    const isLast=i===W.log[e.id].length-1;
-    const rest=e.rest||60;
-    startRest(rest,isLast?(EX[IDX+1]?'Suivant : '+EX[IDX+1].n:'Dernier exercice'):`${e.n} · série ${i+2}`);
+    W.pr=W.pr||{};
+    const pr=prFor(id),best=Math.max((s.rL||0)*(s.wL||0),(s.rR||0)*(s.wR||0));
+    if(!W.pr[id]&&pr.mxVol>0&&best>pr.mxVol){W.pr[id]=1;toast('🏆 Nouveau record sur cet exercice !',2600);buzz([60,50,60,50,120]);}
+    afterSet(e,i);
   }else stopRest();
   saveDraft();
 }
-
-/* ---------- Chronomètre de repos ---------- */
-let RT=null,RLeft=0,RTot=0;
-function startRest(sec,label){
-  stopRest();RTot=RLeft=sec;
-  $('#rgN').textContent=label;$('#rest').classList.add('on');tickRest();
-  RT=setInterval(()=>{RLeft--;tickRest();
-    if(RLeft<=3&&RLeft>0)beep(1);
-    if(RLeft<=0){stopRest();beep(2);buzz([120,60,120]);toast('Repos terminé');}},1000);
+/* repos après une série : aucun entre A1 et A2 d'un même tour ; sinon repos de l'exercice (ou du bloc) */
+function afterSet(e,i){
+  const si=stepOf(e.id),st=STEPS[si];
+  if(st.k==='b'&&e.id===st.a.id){
+    const sb=W.log[st.b.id][i];
+    if(sb&&!sb.d){
+      stopRest();toast('Enchaîne : '+exName(st.b),2200);
+      const r=$(`#rBody .setr[data-e="${st.b.id}"][data-i="${i}"]`);
+      if(r&&r.scrollIntoView)try{r.scrollIntoView({behavior:'smooth',block:'center'});}catch(x){}
+      return;
+    }
+  }
+  const nx=nextPending(si);
+  if(!nx){stopRest();toast('Dernière série validée — tu peux terminer la séance',2600);return;}
+  startRest(st.k==='b'?st.b.rest:restOf(e),restLabel(nx,si));
 }
-function tickRest(){
-  $('#rgT').textContent=Math.max(0,RLeft);
-  $('#rgC').style.strokeDashoffset=2*Math.PI*24*(1-Math.max(0,RLeft)/RTot);
+/* ce qui vient après le repos : nom complet, charge, cible, changement de disques */
+function restLabel(nx,si){
+  const e=nx.e,i=nx.i,st=STEPS[nx.s],s=W.log[e.id][i];
+  let a;
+  if(nx.s===si)a=st.k==='b'?`PUIS TOUR ${i+1}/${rounds(st)} · ${e.num}`:`PUIS SÉRIE ${i+1}/${W.log[e.id].length}`;
+  else if(nx.s>si)a=st.k==='b'?`PUIS BLOC ${e.blk} · ${e.num}`:'PUIS EXERCICE SUIVANT';
+  else a='PUIS SÉRIE NON VALIDÉE';
+  const from=stepEx(STEPS[si])[0].cid;
+  return {a,b:exName(e),
+    c:(e.bw?'poids de corps':loadText(e))+' · '+(s&&s.t?'série test : max propre':targetText(e)),
+    d:e.cid!==from?'🔧 Changement de disques : '+cfgLabel(CFG[e.cid]):''};
 }
-function stopRest(){clearInterval(RT);RT=null;$('#rest').classList.remove('on');}
-$('#rgSkip').onclick=stopRest;
-$('#rgAdd').onclick=()=>{RLeft+=30;RTot=Math.max(RTot,RLeft);tickRest();};
 
-/* ---------- Navigation runner ---------- */
-$('#rPrev').onclick=()=>{if(!W)return;if(IDX>0){IDX--;stopRest();drawEx();saveDraft();}};
-$('#rNext').onclick=()=>{if(!W)return;if(IDX<EX.length-1){IDX++;stopRest();drawEx();saveDraft();}else finish();};
-$('#rSkip').onclick=()=>{if(!W)return;if(IDX<EX.length-1){IDX++;stopRest();drawEx();saveDraft();}else finish();};
+/* ---------- Repos (horodaté) ---------- */
+function startRest(sec,lab){
+  if(!W)return;
+  W.rest={end:Date.now()+sec*1000,tot:sec,a:lab.a,b:lab.b,c:lab.c,d:lab.d||''};
+  REST_AUDIO=scheduleRestAudio(W.rest.end);
+  paintRest();saveDraft();
+}
+function stopRest(){
+  if(W)W.rest=null;
+  cancelSched();REST_AUDIO=false;
+  $('#rest').classList.remove('on','fin');$('#run').classList.remove('resting');
+}
+function paintRest(){
+  const R=W&&W.rest,bar=$('#rest');
+  if(!R){bar.classList.remove('on','fin');$('#run').classList.remove('resting');return;}
+  bar.classList.add('on');$('#run').classList.add('resting');
+  $('#rgB').textContent=R.b;$('#rgC').textContent=R.c;
+  const dd=$('#rgD');dd.textContent=R.d||'';dd.classList.toggle('hide',!R.d);
+  const now=Date.now(),left=Math.ceil((R.end-now)/1000);
+  if(left>0){
+    bar.classList.remove('fin');
+    $('#rgA').textContent='REPOS · '+R.a;
+    $('#rgT').textContent=left>=100?mmss(left):left;
+    $('#rgRing').style.strokeDashoffset=CIRC*(1-Math.min(1,left/R.tot));
+    $('#rgSkip').textContent='Passer';
+    /* secours si l'audio programmé est indisponible */
+    if(!REST_AUDIO&&left<=3&&R.lastTick!==left&&visible()){R.lastTick=left;beep('tick');}
+    return;
+  }
+  const late=Math.floor((now-R.end)/1000);
+  if(visible()&&!R.seen){
+    R.seen=now;
+    if(!REST_AUDIO&&late<=2)beep('end');
+    buzz([300,120,300,120,300]);
+  }
+  bar.classList.add('fin');
+  $('#rgA').textContent='REPOS TERMINÉ'+(late>=5?' depuis '+fmtAgo(late):'')+' · '+R.a.replace(/^PUIS /,'');
+  $('#rgT').textContent='✓';$('#rgRing').style.strokeDashoffset=0;
+  $('#rgSkip').textContent='OK';
+  if(R.seen&&now-R.seen>8000){stopRest();saveDraft();}
+}
+$('#rgSkip').onclick=()=>{stopRest();saveDraft();};
+$('#rgAdd').onclick=()=>{
+  if(!W||!W.rest)return;
+  const R=W.rest,now=Date.now();
+  if(R.end<=now){R.end=now+30000;R.tot=30;}
+  else{R.end+=30000;R.tot=Math.max(R.tot,Math.ceil((R.end-now)/1000));}
+  R.seen=0;R.lastTick=null;
+  REST_AUDIO=scheduleRestAudio(R.end);saveDraft();paintRest();
+};
+
+/* ---------- Liste des exercices de la séance (ⓘ) : consultation seule ---------- */
+function infoSheet(){
+  if(!W)return;
+  const s=PROG.find(x=>x.id===W.sid),here=stepEx(STEPS[IDX]).map(e=>e.id);
+  let h=`<h2>${esc(s.n)} · ${esc(s.sub)}</h2>${W.exp?'<div class="sh-sub">⚡ Version express</div>':'<div style="height:8px"></div>'}<div class="xl">`;
+  EX.forEach(e=>{
+    const a=W.log[e.id]||[],ok=a.length&&a.every(x=>x.d);
+    h+=`<div class="xi${here.includes(e.id)?' cur':''}${ok?' ok':''}"><span class="k">${e.num}</span><span class="nm">${esc(exName(e))}</span>${ok?'<span class="ck">✓</span>':''}</div>`;
+  });
+  openSheet(h+`</div><button class="btn gho" style="margin-top:14px" onclick="closeSheet()">Fermer</button>`);
+}
+$('#rInfo').onclick=infoSheet;
+
+$('#rPrev').onclick=()=>{if(!W)return;if(IDX>0){IDX--;drawStep();saveDraft();}};
+$('#rNext').onclick=()=>{if(!W)return;if(IDX<STEPS.length-1){IDX++;drawStep();saveDraft();}else finish();};
+$('#rSkip').onclick=()=>{if(!W)return;if(IDX<STEPS.length-1){IDX++;drawStep();saveDraft();}else finish();};
 $('#rClose').onclick=()=>{
   if(!W){quitRun();return;}
-  if(woSets(W)>0){saveDraft();toast('Séance mise en pause — reprends-la depuis l\'accueil',2600);}
+  if(woSets(W)>0){W.closed=1;pauseClock();saveDraft();toast('Séance mise en pause — reprends-la depuis l\'accueil',2600);}
   else{DB.draft=null;save();}
   quitRun();
 };
-function quitRun(){clearInterval(TK);stopRest();stopHold();wlOff();
-  $('#run').classList.remove('on');W=null;go(CUR);}
+function quitRun(){
+  clearInterval(TK_INT);cancelSched();REST_AUDIO=false;wlOff();
+  $('#run').classList.remove('on','resting');$('#rest').classList.remove('on','fin');
+  document.body.classList.remove('running');
+  W=null;go(CUR);
+}
 
+/* durée estimée des séries réellement faites (pour recaler le rythme) */
+function doneEst(){
+  const list=EX.map(e=>({...e,sets:(W.log[e.id]||[]).filter(s=>s.d).length})).filter(e=>e.sets>0);
+  return r2(rawMinutes(list,W.sep));
+}
 function finish(){
   if(!W)return;
   const n=woSets(W);
   if(!n){if(!confirm('Aucune série validée. Quitter la séance ?'))return;
     DB.draft=null;save();quitRun();return;}
-  const vol=woVol(W),mins=Math.round((Date.now()-W.start)/60000);
-  const done=Object.entries(W.log).filter(([id,a])=>a.some(s=>s.d)).length;
+  const vol=woVol(W),mins=Math.round(activeMs()/60000);
+  const done=Object.values(W.log).filter(a=>(a||[]).some(s=>s.d)).length;
+  const tests=Object.entries(W.log).flatMap(([id,a])=>(a||[]).filter(s=>s.d&&s.t).map(s=>({id,g:gapOf(s)})));
   openSheet(`<h2>Séance terminée 💪</h2><div class="sh-sub">${done} exercice${done>1?'s':''} travaillé${done>1?'s':''}.</div>
-    <div class="grid g3" style="margin-bottom:14px">
+    <div class="grid g3" style="margin-bottom:6px">
       <div class="st"><div class="v acc">${n}</div><div class="l">Séries</div></div>
       <div class="st"><div class="v tl">${vol}</div><div class="l">Tonnage (kg)</div></div>
       <div class="st"><div class="v bl">${mins}</div><div class="l">Minutes</div></div>
     </div>
+    <div style="font-size:11px;color:var(--tx3);margin-bottom:14px">Minutes passées dans l'application (le temps hors écran ne compte pas).</div>
+    ${tests.length?`<div class="card"><div class="card-t">Séries test</div>${tests.map(t=>
+      `<div class="exline"><div>${esc(EXI[t.id].n)}</div><div class="r">${t.g==null?'—':(t.g>0?'+':'')+t.g+' %'}</div></div>`).join('')}</div>`:''}
     <div class="card-t">Note (optionnel)</div>
     <textarea class="tin" id="woNote" rows="3" placeholder="Sensations, douleurs, remarques…"></textarea>
     <button class="btn" style="margin-top:14px" onclick="saveWo()">Enregistrer la séance</button>
@@ -1277,64 +1979,135 @@ function finish(){
 }
 function saveWo(){
   if(!W){closeSheet();return;}
+  pauseClock();
   W.end=Date.now();
   const n=$('#woNote');W.note=(n&&n.value.trim())||'';
-  DB.workouts.push(W);DB.draft=null;save();
+  const rec={sid:W.sid,start:W.start,end:W.end,log:W.log,note:W.note,exp:W.exp||0,v:APP_VERSION,pv:'v6',
+    act:W.active||0,est:doneEst(),sep:W.sep||{},alt:W.alt||{}};
+  DB.workouts.push(rec);DB.draft=null;save();
   closeSheet();quitRun();go('home');toast('Séance enregistrée ✓');
 }
 
 /* ==========================================================================
    RÉGLAGES
    ========================================================================== */
+const INP='background:var(--bg3);border-radius:9px;padding:8px;text-align:center;font-weight:700';
 function renderSet(){
   const plan=volumePlanned(), doneW=volumeDone(weekStart());
   let h='';
 
-  /* --- volume --- */
   h+=`<div class="card"><div class="card-t">Volume — semaine en cours</div>`;
   Object.entries(MG).forEach(([k,m])=>{
     const p=plan[k]||0;if(!p)return;
-    const d=doneW[k]||0;
-    const pct=p?Math.min(100,d/p*100):0;
-    const col=!m.t?'#7C8093':d>=m.t?'#27C776':d>=m.t*.6?'#F5A623':'#E94560';
+    const d=doneW[k]||0, pct=Math.min(100,d/p*100);
+    const col=d>=p?'#27C776':d>=p*.5?'#F5A623':'#E94560';
     h+=`<div class="vb"><div class="h"><b>${m.n}</b>
-      <span>${d} / ${p} séries${m.t?` · cible ${m.t}`:''}</span></div>
+      <span>${d} / ${p} séries · ${freqPlanned(k)}×/sem</span></div>
       <div class="bar"><i style="width:${pct}%;background:${col}"></i></div></div>`;
   });
   h+=`<div style="font-size:11.5px;color:var(--tx3);margin-top:9px;line-height:1.55">
-    Réalisé / planifié cette semaine. Cible ACSM 2026 : au moins 10 séries par groupe
-    musculaire et par semaine pour l'hypertrophie.</div></div>`;
+    Séries directes réalisées / planifiées cette semaine. Pas de cible universelle : l'ACSM 2026 décrit
+    une tendance (plus de volume favorise l'hypertrophie), pas un seuil à atteindre.</div></div>`;
 
-  /* --- inventaire disques --- */
   h+=`<div class="card"><div class="card-t">Mon matériel</div>
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
       <div style="flex:1;font-size:13px">Poids d'une barre vide</div>
-      <input type="number" step="0.1" inputmode="decimal" id="barW" value="${DB.bar}"
-        style="width:70px;background:var(--bg3);border-radius:9px;padding:8px;text-align:center;font-weight:700">
+      <input type="number" step="0.1" inputmode="decimal" id="barW" value="${DB.bar}" style="width:70px;${INP}">
       <span style="font-size:11px;color:var(--tx3)">kg</span></div>
     <div style="background:#2A2113;border-left:3px solid var(--gold);border-radius:9px;padding:9px 11px;
       margin-bottom:11px;font-size:11.5px;color:#FFD79A;line-height:1.55">
-      Renseigne ici tes <b>vrais disques</b>. Le calculateur et les suggestions de charge en dépendent
-      directement — une valeur erronée fausse tout le reste.</div>
-    <div style="font-size:12px;color:var(--tx2);margin-bottom:9px">Disques disponibles (nombre total) :</div>
-    <div id="plRows">`;
+      Renseigne ici tes <b>vrais disques</b>. Les combinaisons à monter, la faisabilité des configurations
+      et les suggestions de progression en dépendent directement.</div>
+    <div style="font-size:12px;color:var(--tx2);margin-bottom:9px">Disques disponibles (nombre total) :</div>`;
   (DB.plates||[]).forEach((p,i)=>{
     h+=`<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-      <input type="number" step="0.25" inputmode="decimal" data-pw="${i}" value="${p.w}"
-        style="width:74px;background:var(--bg3);border-radius:9px;padding:8px;text-align:center;font-weight:700">
+      <input type="number" step="0.25" inputmode="decimal" data-pw="${i}" value="${p.w}" style="width:74px;${INP}">
       <span style="font-size:11px;color:var(--tx3)">kg ×</span>
-      <input type="number" inputmode="numeric" data-pn="${i}" value="${p.n}"
-        style="width:64px;background:var(--bg3);border-radius:9px;padding:8px;text-align:center;font-weight:700">
+      <input type="number" inputmode="numeric" data-pn="${i}" value="${p.n}" style="width:64px;${INP}">
       <span style="font-size:11px;color:var(--tx3);flex:1">disques</span>
       <button class="btn gho sm" data-pdel="${i}" style="flex:0 0 auto;padding:7px 11px">✕</button></div>`;
   });
-  h+=`</div><button class="btn sec sm" id="plAdd" style="width:100%">+ Ajouter un type de disque</button>
+  h+=`<button class="btn sec sm" id="plAdd" style="width:100%">+ Ajouter un type de disque</button>
     <div style="font-size:11.5px;color:var(--tx3);margin-top:10px">
       Stock total : <b style="color:var(--teal)">${stockTotal()} kg</b> de disques
-      · charge max pour un haltère : <b style="color:var(--teal)">${bestLoad(999,1).perDb} kg</b>
-      · pour une paire : <b style="color:var(--teal)">${bestLoad(999,2).perDb} kg</b> chacun</div></div>`;
+      · max pour une haltère : <b style="color:var(--teal)">${kgs(maxLoad(1))} kg</b>
+      · pour une paire : <b style="color:var(--teal)">${kgs(maxLoad(2))} kg</b> chacune</div></div>`;
 
-  /* --- calculateur --- */
+  h+=`<div class="card"><div class="card-t">Charges des configurations</div>
+    <div style="font-size:12px;color:var(--tx2);margin-bottom:10px;line-height:1.55">
+    Une configuration = les disques montés pour un groupe d'exercices. Modifier une barre change
+    la charge de <b>tous</b> les exercices qui l'utilisent. Charges impaires possibles : un côté porte
+    1 kg de plus, prise décalée vers le côté lourd.</div>`;
+  PROG.forEach(s=>{
+    h+=`<div class="ssec">${s.n} · ${esc(s.sub)}</div>`;
+    s.cfgs.forEach(c=>{
+      h+=`<div class="cfgset"><div class="ct">Configuration ${c.idx}<span>${kgs(cfgPlatesKg(c))} kg de disques sur ${kgs(stockTotal())}</span></div>`;
+      const rows=c.pair?[['A','Paire (2 haltères)',c.ex.filter(x=>!x.bw)]]
+        :[c.usesA?['A','Barre A',barUsers(c,'A')]:null,c.usesB?['B','Barre B',barUsers(c,'B')]:null].filter(Boolean);
+      rows.forEach(([b,lab,users])=>{
+        h+=`<div class="lrow"><div class="ln"><b>${lab}</b><div>${users.map(x=>esc(x.n)).join(' · ')}</div></div>
+          <input type="number" step="0.5" inputmode="decimal" data-cl="${c.id}" data-bar="${b}" value="${barLoad(c,b)}" style="width:66px;${INP}">
+          <span style="font-size:11px;color:var(--tx3)">kg</span></div>`;
+      });
+      h+=`<div class="cmb">${esc(cfgCombos(c).map(x=>x.lab+' : '+comboText(x.r)).join(' · '))}</div>`;
+      if(!cfgFeasible(c))h+=`<div class="warn">⚠ Cette configuration n'est pas montable exactement avec ton stock.</div>`;
+      h+=`</div>`;
+    });
+  });
+  h+=`<button class="btn gho sm" style="width:100%;margin-top:10px" id="resetLoads">Revenir aux charges du programme</button></div>`;
+
+  h+=`<div class="card"><div class="card-t">Séries par exercice</div>
+    <div style="font-size:12px;color:var(--tx2);margin-bottom:6px;line-height:1.55">
+    Le programme fixe le nombre de séries ; tu peux l'ajuster ici (par exemple le curl pupitre de 2 à 3).
+    Les durées et le volume se recalculent.</div>`;
+  PROG.forEach(s=>{
+    h+=`<div class="ssec">${s.n}</div>`;
+    s.cfgs.forEach(c=>c.ex.forEach(e=>{
+      const v=effSets(e);
+      h+=`<div class="lrow"><div class="ln"><b>${esc(e.n)}</b>${v!==e.sets?`<div style="color:var(--gold)">programme : ${e.sets}</div>`:''}</div>
+        <select class="sel sm" data-so="${e.id}">${[1,2,3,4,5].map(n=>`<option value="${n}"${n===v?' selected':''}>${n}</option>`).join('')}</select></div>`;
+    }));
+  });
+  const lc=EXI.s2_legcurl;
+  h+=`<div class="ssec">Variante</div>
+    <label class="lrow" style="cursor:pointer"><div class="ln"><b>${esc(lc.n)} à une jambe</b>
+      <div>À activer quand tu fais ${lc.rMax} répétitions sur toutes les séries (gauche d'abord).</div></div>
+      <input type="checkbox" id="altLeg"${(DB.alt||{}).s2_legcurl?' checked':''} style="width:22px;height:22px;accent-color:var(--acc)"></label>
+    <button class="btn gho sm" style="width:100%;margin-top:10px" id="resetSets">Revenir aux séries du programme</button></div>`;
+
+  const vol=DB.vol==null?100:DB.vol;
+  h+=`<div class="card"><div class="card-t">Son</div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <span style="font-size:18px">🔈</span>
+      <input type="range" id="volR" min="0" max="100" step="10" value="${vol}" style="flex:1;accent-color:var(--acc)">
+      <span style="font-size:18px">🔊</span><b id="volV" style="width:44px;text-align:right;font-size:13px">${vol} %</b></div>
+    <button class="btn sec sm" style="width:100%;margin-top:11px" id="volT">Tester le son</button>
+    <div style="font-size:11.5px;color:var(--tx3);margin-top:9px;line-height:1.6">
+      Bips aigus et carrés, faits pour s'entendre par-dessus la musique : 3 bips courts avant la fin du repos,
+      puis une double alarme et une vibration. Le son suit le <b>volume multimédia</b> du téléphone :
+      l'application ne peut pas le dépasser.</div></div>`;
+
+  const ci=calInfo();
+  h+=`<div class="card"><div class="card-t">Durées des séances</div>
+    <div style="font-size:12.5px;color:var(--tx2);line-height:1.6">${ci.ok
+      ?`Rythme recalé sur tes <b>${ci.n}</b> dernières séances : tu mets <b>${Math.round(ci.raw*100)} %</b> du temps prévu par le modèle`+
+        (ci.raw!==ci.f?` (correction plafonnée à ${Math.round(ci.f*100)} %)`:'')+`. Les durées affichées en tiennent compte.`
+      :`Durées calculées sur ton rythme mesuré (environ 2 min 10 par série unilatérale, 1 min 10 par série à deux haltères,
+        2 min par changement de disques). Elles se recaleront automatiquement après 2 séances enregistrées avec cette version
+        (${ci.n}/2).`}</div>
+    <div style="font-size:11.5px;color:var(--tx3);margin-top:8px">Le chronomètre de séance ne compte que le temps passé dans l'application.</div></div>`;
+
+  const te=testEvery();
+  h+=`<div class="card"><div class="card-t">Test d'asymétrie</div>
+    <div style="font-size:12px;color:var(--tx2);margin-bottom:10px;line-height:1.55">
+    La 1re série de chaque exercice prioritaire devient une série test : même charge des deux côtés,
+    maximum de répétitions propres. C'est la seule mesure fiable de l'écart, car les séries normales
+    imposent volontairement plus de répétitions à gauche.</div>
+    <select class="sel" id="testEv">
+      ${[[0,'Désactivé'],[7,'Chaque semaine'],[14,'Toutes les 2 semaines (recommandé)'],[21,'Toutes les 3 semaines'],[28,'Toutes les 4 semaines']]
+        .map(([v,l])=>`<option value="${v}"${te===v?' selected':''}>${l}</option>`).join('')}
+    </select></div>`;
+
   h+=`<div class="card"><div class="card-t">Calculateur de disques</div>
     <div style="display:flex;gap:8px;align-items:center;margin-bottom:11px">
       <input type="number" step="0.5" inputmode="decimal" id="calcT" placeholder="Charge visée"
@@ -1346,23 +2119,6 @@ function renderSet(){
     <div id="calcOut" style="font-size:13px;color:var(--tx2);line-height:1.6">
       Saisis une charge pour obtenir la combinaison de disques.</div></div>`;
 
-  /* --- charges par exercice --- */
-  h+=`<div class="card"><div class="card-t">Charges de travail</div>
-    <div style="font-size:12px;color:var(--tx2);margin-bottom:12px;line-height:1.55">
-      Charge proposée par défaut au démarrage de chaque exercice.</div>`;
-  const seen=new Set();
-  PROG.forEach(s=>flatEx(s).forEach(e=>{
-    if(e.bw||seen.has(e.id))return;seen.add(e.id);
-    h+=`<div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid #FFFFFF08">
-      <div style="flex:1;font-size:12.5px;min-width:0">${esc(e.n)}
-        <div style="font-size:10.5px;color:var(--tx3)">${EXI[e.id].sname}</div></div>
-      <input type="number" step="0.5" inputmode="decimal" data-load="${e.id}" value="${exLoad(e)}"
-        style="width:66px;background:var(--bg3);border-radius:9px;padding:8px;text-align:center;font-weight:700">
-      <span style="font-size:11px;color:var(--tx3)">kg</span></div>`;
-  }));
-  h+=`</div>`;
-
-  /* --- sauvegarde --- */
   h+=`<div class="card"><div class="card-t">Sauvegarde des données</div>
     <div style="font-size:12px;color:var(--tx2);margin-bottom:12px;line-height:1.55">
       Exporte régulièrement ton historique. Le JSON est réimportable, le CSV s'ouvre dans un tableur.</div>
@@ -1371,7 +2127,6 @@ function renderSet(){
       <button class="btn sec sm" style="flex:1" onclick="$('#impF').click()">Importer</button></div>
     <input type="file" id="impF" accept=".json,application/json" class="hide"></div>`;
 
-  /* --- application --- */
   const inst=(window.matchMedia&&window.matchMedia('(display-mode: standalone)').matches)||navigator.standalone;
   h+=`<div class="card"><div class="card-t">Application</div>
     <div style="display:flex;align-items:center;gap:9px;margin-bottom:11px;flex-wrap:wrap">
@@ -1390,7 +2145,7 @@ function renderSet(){
   h+=`<div class="card"><div class="card-t">Zone sensible</div>
     <button class="btn dan" onclick="wipe()">Effacer toutes les données</button></div>
     <div style="text-align:center;color:var(--tx3);font-size:11px;padding:14px 0 4px;line-height:1.7">
-      Asymétrie · Suivi — v1.4<br>Programme basé sur l'ACSM Position Stand 2026<br>
+      Asymétrie · Suivi — v${APP_VERSION} · programme v6<br>Basé sur l'ACSM Position Stand 2026<br>
       Données stockées uniquement sur cet appareil</div>`;
 
   $('#setBody').innerHTML=h;
@@ -1398,48 +2153,53 @@ function renderSet(){
 }
 
 function bindSettings(){
-  $('#barW').onchange=e=>{const v=parseFloat(e.target.value);
-    if(!isNaN(v)&&v>=0){DB.bar=v;save();renderSet();}};
-  $$('#setBody [data-pw]').forEach(i=>i.onchange=()=>{
-    const v=parseFloat(i.value);if(isNaN(v)||v<=0)return;
+  $('#barW').onchange=e=>{const v=parseFloat(e.target.value);if(!isNaN(v)&&v>=0){DB.bar=v;save();renderSet();}};
+  $$('#setBody [data-pw]').forEach(i=>i.onchange=()=>{const v=parseFloat(i.value);if(isNaN(v)||v<=0)return;
     DB.plates[+i.dataset.pw].w=v;save();renderSet();});
-  $$('#setBody [data-pn]').forEach(i=>i.onchange=()=>{
-    const v=parseInt(i.value);if(isNaN(v)||v<0)return;
+  $$('#setBody [data-pn]').forEach(i=>i.onchange=()=>{const v=parseInt(i.value);if(isNaN(v)||v<0)return;
     DB.plates[+i.dataset.pn].n=v;save();renderSet();});
-  $$('#setBody [data-pdel]').forEach(b=>b.onclick=()=>{
-    DB.plates.splice(+b.dataset.pdel,1);
-    if(!DB.plates.length)DB.plates=[{w:2,n:2}];
-    save();renderSet();});
+  $$('#setBody [data-pdel]').forEach(b=>b.onclick=()=>{DB.plates.splice(+b.dataset.pdel,1);
+    if(!DB.plates.length)DB.plates=[{w:2,n:2}];save();renderSet();});
   $('#plAdd').onclick=()=>{DB.plates.push({w:1,n:4});save();renderSet();};
 
+  $$('#setBody [data-cl]').forEach(i=>i.onchange=()=>{const v=parseFloat(i.value);
+    if(isNaN(v)||v<(DB.bar||0)||v>60){toast('Charge invalide');renderSet();return;}
+    setBarLoad(CFG[i.dataset.cl],i.dataset.bar,v);toast('Configuration mise à jour');renderSet();});
+  $('#resetLoads').onclick=()=>{if(!confirm('Revenir aux charges prévues par le programme ?'))return;
+    DB.ld={};save();toast('Charges du programme rétablies');renderSet();};
+  $$('#setBody [data-so]').forEach(i=>i.onchange=()=>{const e=EXI[i.dataset.so],v=+i.value;
+    DB.setsOv=DB.setsOv||{};if(v===e.sets)delete DB.setsOv[e.id];else DB.setsOv[e.id]=v;save();
+    toast(`${e.n} : ${v} série${v>1?'s':''}`);renderSet();});
+  $('#resetSets').onclick=()=>{DB.setsOv={};save();toast('Séries du programme rétablies');renderSet();};
+  $('#altLeg').onchange=e=>{applySuggestion({kind:'alt',id:'s2_legcurl',v:e.target.checked?1:0});};
+  $('#volR').oninput=e=>{$('#volV').textContent=e.target.value+' %';};
+  const testSound=()=>{const c=audio();if(!c){toast('Son indisponible sur ce navigateur');return;}
+    if(c.state==='running')playPattern('end');
+    else c.resume().then(()=>playPattern('end')).catch(()=>toast('Son bloqué par le navigateur'));};
+  $('#volR').onchange=e=>{DB.vol=+e.target.value;save();testSound();};
+  $('#volT').onclick=()=>{testSound();buzz([300,120,300]);};
+  $('#testEv').onchange=e=>{DB.testEvery=+e.target.value;save();toast('Fréquence du test mise à jour');};
+
   const doCalc=()=>{
-    const t=parseFloat($('#calcT').value),n=+$('#calcN').value;
-    const out=$('#calcOut');
+    const t=parseFloat($('#calcT').value),n=+$('#calcN').value,out=$('#calcOut');
     if(isNaN(t)||t<=0){out.innerHTML='Saisis une charge pour obtenir la combinaison de disques.';return;}
     const r=bestLoad(t,n);
-    if(r.impossible||r.perDb<(DB.bar||0)){
-      out.innerHTML=`<span style="color:var(--acc)">Impossible : la barre vide pèse déjà ${DB.bar} kg.</span>`;return;}
+    if(r.impossible){out.innerHTML=`<span style="color:var(--acc)">Impossible : la barre vide pèse déjà ${kgs(DB.bar)} kg.</span>`;return;}
     const exact=r.diff<0.01;
     out.innerHTML=`<div style="font-size:22px;font-weight:800;color:${exact?'var(--teal)':'var(--gold)'};letter-spacing:-.6px">
-        ${r.perDb} kg <span style="font-size:12px;font-weight:600;color:var(--tx3)">par haltère</span></div>
+        ${kgs(r.perDb)} kg <span style="font-size:12px;font-weight:600;color:var(--tx3)">par haltère</span></div>
       <div style="margin-top:6px">${comboText(r)}</div>
-      ${exact?'':`<div style="color:var(--gold);margin-top:5px;font-size:12px">
-        Charge exacte impossible avec ton stock — écart de ${r.diff} kg.</div>`}
-      ${n===2?`<div style="color:var(--tx3);margin-top:5px;font-size:11.5px">
-        Total mobilisé : ${Math.round((r.perDb-(DB.bar||0))*2*10)/10} kg de disques sur ${stockTotal()} kg.</div>`:''}`;
+      ${r.off>0?`<div style="color:var(--tx3);margin-top:5px;font-size:11.5px">Décale la prise de quelques millimètres vers le côté lourd.</div>`:''}
+      ${exact?'':`<div style="color:var(--gold);margin-top:5px;font-size:12px">Charge exacte impossible avec ton stock — écart de ${kgs(r.diff)} kg.</div>`}
+      ${n===2?`<div style="color:var(--tx3);margin-top:5px;font-size:11.5px">Total mobilisé : ${kgs((r.perDb-(DB.bar||0))*2)} kg de disques sur ${kgs(stockTotal())} kg.</div>`:''}`;
   };
   $('#calcT').oninput=doCalc;$('#calcN').onchange=doCalc;
-
-  $$('#setBody [data-load]').forEach(i=>i.onchange=()=>{
-    const v=parseFloat(i.value);
-    if(!isNaN(v)&&v>=0){DB.custom[i.dataset.load]=v;save();toast('Charge mise à jour');}});
 
   const ib=$('#instBtn');
   if(ib)ib.onclick=async()=>{
     if(!DEFERRED){toast('Menu ⋮ de Chrome → Ajouter à l\'écran d\'accueil',2600);return;}
     DEFERRED.prompt();const r=await DEFERRED.userChoice;
     if(r.outcome==='accepted')toast('Installation lancée');DEFERRED=null;};
-
   const sp=$('#swPill');
   if(sp){
     if(!('serviceWorker' in navigator))sp.textContent='Hors ligne : non supporté';
@@ -1448,22 +2208,19 @@ function bindSettings(){
       if(r&&r.active){sp.style.background='#16D6A822';sp.style.color='#16D6A8';}
     }).catch(()=>sp.textContent='Hors ligne : indisponible');
   }
-
   $('#impF').onchange=e=>{
     const f=e.target.files[0];if(!f)return;
     const r=new FileReader();
     r.onload=()=>{try{
-      const d=JSON.parse(r.result);if(!d.workouts)throw 0;
+      const d=JSON.parse(r.result);if(!Array.isArray(d.workouts))throw 0;
       if(!confirm(`Importer ${d.workouts.length} séance(s) ? Les données actuelles seront remplacées.`))return;
-      DB=d;if(!DB.custom)DB.custom={};if(!DB.plates)DB.plates=DEF_PLATES.map(p=>({...p}));
-      if(DB.bar==null)DB.bar=DEF_BAR;
-      save();toast('Données importées ✓');renderSet();
+      if(W)quitRun();
+      DB=migrate(d);save();toast('Données importées ✓');renderSet();
     }catch(x){toast('Fichier invalide');}};
     r.readAsText(f);
   };
 }
 
-/* ---------- Export ---------- */
 function dl(content,name,type){
   const b=new Blob([content],{type});const u=URL.createObjectURL(b),a=document.createElement('a');
   a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);
@@ -1471,19 +2228,19 @@ function dl(content,name,type){
 function stamp(){const d=new Date();return `${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}`;}
 function expJSON(){dl(JSON.stringify(DB,null,2),`asymetrie-suivi-${stamp()}.json`,'application/json');toast('JSON exporté');}
 function expCSV(){
-  const rows=[['date','seance','exercice','groupe','serie','reps_G','charge_G','reps_D','charge_D','volume_kg']];
+  const rows=[['date','seance','programme','exercice','groupe','serie','test','reps_G','charge_G','reps_D','charge_D','volume_kg','minutes']];
   doneWo().sort((a,b)=>a.start-b.start).forEach(w=>{
-    const s=PROG.find(x=>x.id===w.sid);
     const d=new Date(w.start).toISOString().slice(0,10);
     Object.entries(w.log||{}).forEach(([eid,arr])=>{
-      const e=EXI[eid];if(!e)return;
-      arr.forEach((x,i)=>{if(!x.d)return;
-        rows.push([d,s?s.n:w.sid,e.n,MG[e.mg]?MG[e.mg].n:e.mg,i+1,
-          x.rL||0,x.wL||0,e.u?(x.rR||0):'',e.u?(x.wR||0):'',Math.round(setVol(x))]);});
+      const e=exW(w,eid);if(!e)return;
+      const U=e.u||e.alt;
+      (arr||[]).forEach((x,i)=>{if(!x||!x.d)return;
+        rows.push([d,sessName(w),w.pv,exName(e),MG[e.mg]?MG[e.mg].n:e.mg,i+1,x.t?'oui':'',
+          x.rL||0,x.wL||0,U?(x.rR||0):'',U?(x.wR||0):'',Math.round(setVol(x)),woMinutes(w)]);});
     });
   });
-  const csv='\uFEFF'+rows.map(r=>r.map(c=>{
-    const v=String(c);return /[";\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;}).join(';')).join('\n');
+  const csv='﻿'+rows.map(r=>r.map(c=>{const v=String(c);
+    return /[";\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;}).join(';')).join('\n');
   dl(csv,`asymetrie-suivi-${stamp()}.csv`,'text/csv;charset=utf-8');toast('CSV exporté');
 }
 function wipe(){
@@ -1498,7 +2255,6 @@ function wipe(){
 let DEFERRED=null;
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();DEFERRED=e;});
 window.addEventListener('appinstalled',()=>{DEFERRED=null;toast('Application installée ✓');});
-
 if('serviceWorker' in navigator){
   window.addEventListener('load',()=>{
     navigator.serviceWorker.register('./sw.js').then(reg=>{
@@ -1525,16 +2281,15 @@ function forceUpdate(){
     });
   });
 }
-
-/* Raccourci depuis l'icône : ?s=s1 */
-(function(){try{
+document.addEventListener('gesturestart',e=>e.preventDefault());
+window.addEventListener('beforeunload',()=>{if(W)saveDraft();});
+go('home');
+/* reprise automatique : séance interrompue (appel, application fermée par le téléphone) il y a moins de 2 h */
+if(canAutoResume())resumeDraft(true);
+else try{
   const p=new URLSearchParams(location.search).get('s');
   if(p&&PROG.some(x=>x.id===p))setTimeout(()=>startWorkout(p),240);
-}catch(e){}})();
-
-document.addEventListener('gesturestart',e=>e.preventDefault());
-window.addEventListener('beforeunload',e=>{if(W&&woSets(W)>0)saveDraft();});
-go('home');
+}catch(e){}
 
 </script>
 </body>

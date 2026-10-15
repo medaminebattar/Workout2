@@ -4,7 +4,7 @@
    total), avec mise à jour en arrière-plan.
    Change CACHE_VERSION à chaque modification de l'app pour forcer la MAJ.
    ========================================================================== */
-const CACHE_VERSION = 'asym-v1.4.0';
+const CACHE_VERSION = 'asym-v2.1.0';
 
 const SHELL = [
   './',

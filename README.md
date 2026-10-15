@@ -1,171 +1,89 @@
-# Asymétrie · Suivi d'entraînement
+# Asymétrie · Suivi d'entraînement — v2.1 (programme v6)
 
-Application de suivi d'entraînement à domicile, conçue pour un kit de 20 kg
-(2 barres + 16 kg de disques + banc) avec correction d'asymétrie gauche/droite.
+Application de suivi d'entraînement à domicile (kit de 2 barres de 2 kg, 4 disques de 2 kg,
+8 disques de 1 kg, un banc), avec correction de l'asymétrie gauche / droite.
+Programme v6, identique au PDF validé : 3 séances de 57 à 59 min, corps entier, hypertrophie.
 
-Programme basé sur l'**ACSM Position Stand 2026** (Currier B.S. et al.,
-*Med. Sci. Sports Exerc.*, 58(4), 851-872).
-
----
-
-## Déploiement sur GitHub Pages
-
-### 1. Créer le dépôt
-
-Sur github.com → **New repository**
-
-- Nom : `asymetrie` (ou ce que tu veux)
-- Visibilité : **Public** (obligatoire pour GitHub Pages en compte gratuit)
-- Ne coche pas « Add a README »
-
-### 2. Envoyer les fichiers
-
-**Option A — par l'interface web (la plus simple)**
-
-1. Sur la page du dépôt → **uploading an existing file**
-2. Glisse `index.html`, `manifest.webmanifest`, `sw.js`, `.nojekyll` et le dossier `icons/`
-3. **Commit changes**
-
-**Option B — en ligne de commande**
-
-```bash
-git init
-git add .
-git commit -m "Application de suivi d'entraînement"
-git branch -M main
-git remote add origin https://github.com/TON-PSEUDO/asymetrie.git
-git push -u origin main
-```
-
-### 3. Activer Pages
-
-Dépôt → **Settings** → **Pages** (menu de gauche)
-
-- **Source** : `Deploy from a branch`
-- **Branch** : `main` · dossier `/ (root)`
-- **Save**
-
-Attends 1 à 2 minutes. L'adresse s'affiche en haut de la page :
-
-```
-https://TON-PSEUDO.github.io/asymetrie/
-```
-
-### 4. Installer sur Android
-
-1. Ouvre cette adresse dans **Chrome** sur ton téléphone
-2. Menu **⋮** → **Ajouter à l'écran d'accueil** (ou **Installer l'application**)
-3. L'icône apparaît sur ton écran d'accueil
-
-L'application s'ouvre alors en plein écran, sans barre de navigateur,
-et fonctionne **entièrement hors ligne** une fois le premier chargement effectué.
+Données 100 % locales : aucun serveur, aucun compte, aucun traçage.
 
 ---
 
-## Vérifier que tout fonctionne
+## Mettre à jour le dépôt GitHub
 
-Dans l'app → **Réglages** → carte **Application** :
+Remplace ces fichiers à la racine du dépôt :
 
-| Indicateur | Signification |
-|---|---|
-| `✓ Installée` | Lancée depuis l'écran d'accueil |
-| `Hors ligne : actif ✓` | Le service worker est en place, l'app marche sans réseau |
+- `index.html`
+- `sw.js` (version de cache `asym-v2.1.0` : c'est elle qui fait télécharger la nouvelle version au téléphone)
+- `manifest.webmanifest`
+- `README.md`
 
-Test réel : active le mode avion et relance l'application. Elle doit se lancer normalement.
+Les icônes ne changent pas. Sur le téléphone : Réglages › Rechercher une mise à jour.
 
----
-
-## Mettre à jour l'application
-
-1. Modifie `index.html` dans le dépôt
-2. **Incrémente `CACHE_VERSION` dans `sw.js`** (ex. `asym-v1.0.0` → `asym-v1.0.1`)
-
-   Cette étape est indispensable, sinon les téléphones garderont l'ancienne version en cache.
-3. Dans l'app : **Réglages** → **Rechercher une mise à jour**
+**Ton historique est conservé.** Chaque ancienne séance est relue avec le programme de son époque
+(v2, v3, v4 ou v5), car les identifiants des exercices avaient changé de sens d'une version à l'autre.
+Les anciennes séances équivalentes (rowing, Romanian Deadlift, Bulgarian, élévations…) apparaissent
+dans les courbes des exercices v6. Une séance en cours dans l'ancienne version est archivée dans
+l'historique avec ses séries validées. L'inventaire par défaut des anciennes versions (8 × 2 kg) est
+remplacé par ton vrai kit (4 × 2 kg + 8 × 1 kg).
 
 ---
+
+## Le programme v6
+
+| Séance | Contenu | Exercices · séries | Changements de disques | Durée | Express |
+|---|---|---|---|---|---|
+| 1 | Push + Quadriceps | 7 · 18 | 2 | ~57 min | 2 ex. · ~20 min |
+| 2 | Pull + Ischio-jambiers + Avant-bras | 7 · 19 | 2 | ~58 min | 2 ex. · ~21 min |
+| 3 | Jambes + Dos + Bras | 7 · 18 | 2 | ~59 min | 2 ex. · ~23 min |
+
+Échauffement de 6 min avant de lancer la séance, non compté.
+
+## Nouveautés de la v2.1
+
+**Pendant un appel ou hors de l'application**
+- Le repos continue en temps réel. Au retour, il affiche le temps qui reste, ou « Repos terminé depuis… ».
+- Le chronomètre de séance se met en pause : seul le temps passé dans l'application compte.
+- Si le téléphone ferme l'application, elle rouvre la séance toute seule, là où tu étais (repos compris),
+  si tu reviens dans les 2 heures. Au-delà, l'accueil propose « Reprendre ».
+
+**Son**
+- Bips aigus et carrés, à volume maximal (4 fois l'amplitude d'avant), faits pour passer par-dessus la musique :
+  3 bips avant la fin du repos, puis une double alarme et une vibration.
+- Les bips sont programmés à l'avance dans le moteur audio, pour sonner à l'heure même si le navigateur
+  ralentit la page.
+- Réglages › Son : curseur de volume et bouton « Tester le son ».
+- Limite : le son suit le volume multimédia du téléphone ; l'application ne peut pas le dépasser.
+
+**Barre de repos**
+- Nom complet de ce qui suit (plus de troncature), charge et cible, et l'annonce du changement de disques.
+- La barre est placée au-dessus des boutons : « Exercice suivant » reste accessible pendant le repos.
+
+**Bouton ⓘ** (en haut pendant la séance) : la liste des exercices de la séance, noms seulement,
+dans l'ordre du PDF (1, 2, 3, A1, A2…). En mode express, uniquement les exercices express.
+
+**Blocs enchaînés** : écran par tours (A1, A2, repos). Pas de repos entre A1 et A2 ; repos du bloc après A2 ;
+le dernier tour ne contient que l'exercice restant. Bouton « Faire séparément » si besoin.
+
+**Réglages**
+- Séries par exercice (par exemple le curl pupitre de 2 à 3) : durées et volume recalculés.
+- Durées recalées sur ton rythme réel après 2 séances (médiane des 6 dernières).
+- Charges impaires (prise décalée) dans les configurations et le calculateur de disques.
+- Leg curl à une jambe : proposé automatiquement à 15 répétitions sur toutes les séries.
+
+## Progression
+
+- **Deux haltères** (fourchette, ex. 8-12) : la charge monte quand le haut est atteint sur toutes les séries.
+- **Unilatéral** (ex. 12 G / 10 D) : minimum 10 G / 8 D ; la charge monte quand gauche ET droite atteignent leur cible.
+- **Haltère partagée** : on la monte quand tous ses exercices sont prêts.
+- **Leg curl** : à 15 partout, passage à une jambe. **Crunch** : à 15 partout, pause de 2 s en haut.
+- Après un changement de charge, l'application ne propose rien de nouveau tant qu'une séance n'a pas été faite à la nouvelle charge.
+
+## Asymétrie
+
+Toutes les 2 semaines, la 1re série de chaque exercice prioritaire devient une série test : même charge
+des deux côtés, gauche d'abord, maximum de répétitions propres. Écart = (droite − gauche) / moyenne.
 
 ## Tes données
 
-- Stockées **uniquement** sur ton téléphone (`localStorage` du domaine GitHub Pages)
-- Jamais envoyées sur un serveur, aucun compte, aucun traçage
-- Le dépôt public ne contient que le code de l'app, **pas tes séances**
-
-**Sauvegarde :** Réglages → **Exporter (.json)**. Fais-le régulièrement.
-Le fichier est lisible et réimportable à tout moment.
-
-⚠️ Désinstaller l'app ou effacer les données de Chrome supprime l'historique.
-L'export est ta seule sauvegarde.
-
----
-
-## Contenu du dépôt
-
-```
-index.html                  Application complète (HTML + CSS + JS, sans dépendance)
-manifest.webmanifest        Métadonnées PWA (nom, icônes, raccourcis)
-sw.js                       Service worker — cache hors ligne
-.nojekyll                   Désactive le traitement Jekyll de GitHub Pages
-icon-192.png                Icône Android
-icon-512.png                Icône haute résolution
-icon-maskable-512.png       Icône adaptative (formes Android)
-apple-touch-icon.png        Icône iOS
-favicon-32.png              Favicon navigateur
-```
-
-Tous les fichiers sont à la **racine** du dépôt — aucun sous-dossier à créer.
-
-Aucune bibliothèque externe, aucun CDN, aucune connexion réseau requise après installation.
-
----
-
-## Fonctionnalités
-
-**Pendant la séance**
-- Configuration de disques affichée avant chaque exercice, avec alerte au changement
-- Combinaison exacte de disques calculée à partir de ton inventaire réel
-- Saisie séparée gauche / droite sur les exercices unilatéraux
-- Chronomètre de repos automatique (vibration + bip)
-- Minuteur intégré pour les tenues : gainage, Farmer Hold, Superman
-- Écran maintenu allumé pendant l'entraînement
-- Reprise automatique si la séance est interrompue
-- Mode express : première configuration uniquement, ~12 min
-- Alerte record personnel
-
-**Suivi**
-- Écart gauche / droite par exercice, avec courbe d'évolution et conseil automatique
-- Tonnage, charge record et progression par exercice
-- Volume hebdomadaire réalisé vs cible ACSM par groupe musculaire
-- Historique filtrable par séance
-- Suggestion de progression automatique (double progression)
-
-**Outils**
-- Calculateur de disques : charge visée → combinaison à monter
-- Inventaire de disques et poids de barre configurables
-- Export JSON (sauvegarde) et CSV (tableur)
-
----
-
-## Le programme
-
-| Séance | Contenu | Exercices | Configurations | Durée |
-|---|---|---|---|---|
-| 1 | Push + Quadriceps | 6 | 3 (4 → 10 → 6 kg) | ~41 min |
-| 2 | Pull + Chaîne postérieure + Grip | 7 | 3 | ~42 min |
-| 3 | Jambes + Dos + Bras | 7 | 2 | ~45 min |
-
-À faire dans l'ordre, avec au moins 48 h entre deux séances.
-Aucun jour fixe imposé.
-
-**Principes appliqués :** exercice prioritaire gauche en début de séance,
-excentrique 4 s côté gauche, 9 séries hebdomadaires pour les groupes majeurs,
-pas d'entraînement à l'échec, regroupement des exercices par charge identique
-(4 changements de disques pour toute la semaine).
-
-**Aucun superset.** Chaque exercice se fait en entier avant de passer au suivant.
-Repos de 90 s sur les mouvements lourds, 60 s partout ailleurs.
-
-**Progression (double progression).** L'application affiche à chaque exercice l'une de
-quatre consignes, calculée sur ta dernière séance : *Garder la charge*, *Continuer*,
-*Progresser* ou *Kit saturé*. Sur les exercices unilatéraux, c'est le côté gauche qui
-décide — la charge ne monte jamais tant qu'il n'a pas atteint sa cible.
+Stockées uniquement sur ton téléphone. Désinstaller l'application ou effacer les données de Chrome
+supprime l'historique : exporte le JSON régulièrement (Réglages › Sauvegarde).
