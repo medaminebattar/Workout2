@@ -278,6 +278,10 @@ body.running .toast.on{transform:translateX(-50%) translateY(0)}
 .round{font-size:10.5px;font-weight:800;color:var(--purple);letter-spacing:1.2px;margin:14px 0 7px;display:flex;align-items:center;gap:8px}
 .round::after{content:'';flex:1;height:1px;background:#9B6CE040}
 .sepb{width:100%;margin-top:14px;font-size:12.5px}
+.addb{width:100%;margin-top:4px;font-size:12.5px;border-style:dashed}
+.addrow{display:flex;gap:8px;margin-top:6px}
+.addrow .addb{flex:1;min-width:0}
+.setr.xset{border:1px dashed #F5A62366}
 .calnote{font-size:11px;color:var(--tx3);text-align:center;line-height:1.55;margin:4px 8px 6px}
 .xl{margin-top:4px}
 .xi{display:flex;align-items:center;gap:11px;padding:11px 4px;border-bottom:1px solid #FFFFFF0A;font-size:14px}
@@ -285,6 +289,7 @@ body.running .toast.on{transform:translateX(-50%) translateY(0)}
 .xi .k{flex:0 0 26px;height:22px;border-radius:7px;background:var(--bg3);color:var(--tx2);font-size:11px;font-weight:800;
   display:flex;align-items:center;justify-content:center}
 .xi .nm{flex:1;min-width:0;line-height:1.35}
+.xi .ld{display:block;font-size:12px;font-weight:600;color:var(--teal);margin-top:2px}
 .xi .ck{color:var(--green);font-weight:800}
 .xi.ok .nm{color:var(--tx2)}
 .xi.cur{background:#E9456014;border-radius:9px}
@@ -406,10 +411,10 @@ window.onerror=function(msg,src,ln,col,err){
   return false;
 };
 /* ==========================================================================
-   ASYMÉTRIE · Suivi d'entraînement — v2.1 (programme v6)
+   ASYMÉTRIE · Suivi d'entraînement — v2.2 (programme v7)
    Données 100 % locales. Aucun serveur, aucun compte, aucun traçage.
    ========================================================================== */
-const APP_VERSION='2.1';
+const APP_VERSION='2.2';
 
 /* ---------- Groupes musculaires ---------- */
 const MG = {
@@ -438,7 +443,9 @@ const TK = {
      bw   : poids de corps   p : prioritaire gauche   e : excentrique 4 s côté gauche
      tk   : famille du test d'asymétrie               xtra : minutes de mise en place
      blk / role : bloc enchaîné (1 puis 2, sans repos) ; le repos du bloc est celui du rôle 2
-     pg   : progression particulière ('pause' : crunch, 'leg' : leg curl → une jambe)   */
+     pg   : progression particulière ('pause' : crunch, 'leg' : leg curl → une jambe, 'pomp' : pompes par niveaux)
+     rot  : deux exercices en alternance d'une séance à l'autre (un seul est fait)
+     xl   : une série en plus, côté gauche seul (au dernier tour du bloc où le partenaire existe, juste après lui) */
 const PROG = [
 { id:'s1', n:'Séance 1', sub:'Push + Quadriceps', col:1, expN:2,
   desc:'Épaules, pectoraux, quadriceps, mollets, abdominaux',
@@ -475,9 +482,10 @@ const PROG = [
       {id:'s3_bss',n:'Bulgarian Split Squat',mg:'quad',bar:'AB',sets:3,repL:10,repR:8,rest:90,u:1,p:1,e:1,tk:'bss',xtra:0.25}]},
     { id:'s3c2', A:10, B:10, ex:[
       {id:'s3_rowbanc',n:'Rowing buste penché appui banc',mg:'dos',bar:'AB',sets:3,rMin:10,rMax:12,rest:90},
-      {id:'s3_couche',n:'Développé couché haltères',mg:'pect',bar:'AB',sets:3,rMin:8,rMax:12,rest:90}]},
+      {id:'s3_couche',n:'Développé couché haltères',mg:'pect',bar:'AB',sets:3,rMin:12,rMax:20,rest:90,rot:'couche'},
+      {id:'s3_pompes',n:'Pompes',mg:'pect',bar:'',sets:3,rMin:8,rMax:15,rest:90,bw:1,rot:'pompes',pg:'pomp'}]},
     { id:'s3c3', A:7, B:4, ex:[
-      {id:'s3_ext',n:'Extension triceps unilatérale au-dessus de la tête',mg:'tri',bar:'B',sets:3,repL:12,repR:10,rest:0,u:1,p:1,tk:'ext',blk:'A',role:1},
+      {id:'s3_ext',n:'Extension triceps unilatérale au-dessus de la tête',mg:'tri',bar:'B',sets:3,repL:12,repR:10,rest:0,u:1,p:1,tk:'ext',blk:'A',role:1,xl:1},
       {id:'s3_curlpup',n:'Curl pupitre unilatéral sur le dossier du banc',mg:'bic',bar:'A',sets:2,repL:12,repR:10,rest:75,u:1,p:1,tk:'curlpup',blk:'A',role:2},
       {id:'s3_mol',n:'Mollets unilatéraux debout sur une marche',mg:'mol',bar:'A',sets:2,repL:15,repR:12,rest:0,u:1,p:1,tk:'mol',blk:'B',role:1},
       {id:'s3_poignetinv',n:'Curl poignet inversé unilatéral (paume vers le bas)',mg:'avb',bar:'B',sets:2,repL:15,repR:12,rest:60,u:1,p:1,tk:'poignetinv',blk:'B',role:2}]}
@@ -573,10 +581,15 @@ const SN={s1_elev:'Élévations latérales',s1_mil:'Militaire unilatéral',s1_in
   s1_ecarte:'Écarté',s1_mol:'Mollets',s1_crunch:'Crunch',s2_row:'Rowing unilatéral',s2_curlinc:'Curl incliné',
   s2_rdl:'Romanian Deadlift',s2_elev:'Élévations latérales',s2_legcurl:'Leg curl',s2_oiseau:'Oiseau',s2_poignet:'Curl poignet',
   s3_bss:'Bulgarian',s3_rowbanc:'Rowing appui banc',s3_couche:'Développé couché',s3_ext:'Extension triceps',
-  s3_curlpup:'Curl pupitre',s3_mol:'Mollets',s3_poignetinv:'Curl poignet inversé'};
+  s3_curlpup:'Curl pupitre',s3_mol:'Mollets',s3_poignetinv:'Curl poignet inversé',s3_pompes:'Pompes'};
+/* niveaux des pompes */
+const PLV=['mains sur les haltères','mains sur les haltères, pause 1 s en bas','pieds sur le banc','pieds sur le banc, pause 1 s en bas'];
 Object.keys(SN).forEach(k=>{if(EXI[k])EXI[k].sn=SN[k];});
 /* numérotation du PDF : 1, 2, 3… et A1 / A2 dans les blocs */
-PROG.forEach(s=>{let k=1;s.cfgs.forEach(c=>c.ex.forEach(e=>{e.num=e.blk?e.blk+e.role:String(k);k++;}));});
+PROG.forEach(s=>{let k=1;s.cfgs.forEach(c=>c.ex.forEach((e,j)=>{
+  const prev=c.ex[j-1];
+  if(e.rot&&prev&&prev.rot){e.num=prev.num;return;}      // exercices en alternance : même numéro
+  e.num=e.blk?e.blk+e.role:String(k);k++;}));});
 
 /* ==========================================================================
    STOCKAGE
@@ -586,7 +599,7 @@ const DEF_PLATES=[{w:2,n:4},{w:1,n:8}];     // ton kit : 4 × 2 kg + 8 × 1 kg =
 const DEF_BAR=2;
 let MEM=null, PERSIST=true, NEED_SAVE=false;
 
-function blank(){return{workouts:[],ld:{},setsOv:{},alt:{},testEvery:14,vol:100,
+function blank(){return{workouts:[],ld:{},setsOv:{},alt:{},lvl:{},testEvery:14,vol:100,
   plates:DEF_PLATES.map(p=>({...p})),bar:DEF_BAR,draft:null,created:Date.now(),mig6:1};}
 
 const V3_DAY='2026-09-11', V4_DAY='2026-09-12';   // dates de mise en service des programmes v3 et v4
@@ -623,7 +636,7 @@ function migrate(d){
   if(!d||typeof d!=='object')d=blank();
   if(!Array.isArray(d.workouts))d.workouts=[];
   d.workouts=d.workouts.filter(w=>w&&typeof w==='object'&&w.log&&typeof w.log==='object');
-  ['ld','setsOv','alt'].forEach(k=>{if(!d[k]||typeof d[k]!=='object')d[k]={};});
+  ['ld','setsOv','alt','lvl'].forEach(k=>{if(!d[k]||typeof d[k]!=='object')d[k]={};});
   if(d.testEvery==null)d.testEvery=14;
   if(d.vol==null)d.vol=100;
   if(Array.isArray(d.plates))d.plates=d.plates.filter(p=>p&&typeof p==='object'&&+p.w>0);
@@ -760,16 +773,35 @@ function woMinutes(w){return Math.round((w.act!=null?w.act:(w.end-w.start))/6000
    EXERCICES EFFECTIFS — réglages appliqués (séries, variante)
    ========================================================================== */
 function effSets(e){const v=(DB.setsOv||{})[e.id];return v>0?v:e.sets;}
-/* alt : variante leg curl à une jambe */
-function effEx(e,alt){const x={...e,sets:effSets(e)};if(e.pg==='leg'&&(alt||DB.alt||{})[e.id])x.alt=1;return x;}
+/* alt : variante leg curl à une jambe ; lvl : niveau des pompes (1 à 4) */
+function lvlOf(id,lv){const v=(lv||DB.lvl||{})[id];return v>=1&&v<=PLV.length?v:1;}
+function effEx(e,alt,lv){const x={...e,sets:effSets(e)};if(e.pg==='leg'&&(alt||DB.alt||{})[e.id])x.alt=1;
+  if(e.pg==='pomp')x.lvl=lvlOf(e.id,lv);return x;}
 const curEx = id=>EXI[id]?effEx(EXI[id]):null;
-const flatEx = (s,alt) => s.cfgs.flatMap(c=>c.ex.map(e=>({...effEx(e,alt),_cfg:c})));
-function sessionEx(s,express,alt){const all=flatEx(s,alt);return express?all.slice(0,s.expN):all;}
+/* alternance (développé couché / pompes) : l'exercice qui n'a pas été fait à la dernière séance */
+function nextRot(sid){
+  const ids=PROG.find(s=>s.id===sid).cfgs.flatMap(c=>c.ex).filter(e=>e.rot);
+  if(!ids.length)return null;
+  const ws=doneWo().filter(w=>w.pv==='v6'&&w.sid===sid).sort((a,b)=>b.start-a.start);
+  for(const w of ws){
+    const hit=ids.find(e=>((w.log||{})[e.id]||[]).some(x=>x&&x.d));
+    if(hit){const i=ids.indexOf(hit);return ids[(i+1)%ids.length].rot;}
+  }
+  return ids[0].rot;
+}
+const flatEx = (s,alt,rot,lv) => {const r=rot||nextRot(s.id);
+  return s.cfgs.flatMap(c=>c.ex.filter(e=>!e.rot||e.rot===r).map(e=>({...effEx(e,alt,lv),_cfg:c})));};
+function sessionEx(s,express,alt,rot,lv){const all=flatEx(s,alt,rot,lv);return express?all.slice(0,s.expN):all;}
 const isU = e => !!(e.u||e.alt);                     // saisie gauche / droite
-function exName(e){return e.alt?e.n+' — une jambe':e.n;}
+function exName(e){return e.alt?e.n+' — une jambe':e.pg==='pomp'?`${e.n} — niveau ${e.lvl||1} : ${PLV[(e.lvl||1)-1]}`:e.n;}
+/* l'autre exercice de l'alternance */
+function rotPartner(e){return e.rot?CFG[e.cid].ex.find(x=>x.rot&&x.id!==e.id)||null:null;}
 /* exercice d'une séance enregistrée, quelle que soit sa version */
 function exW(w,id){
-  if(EXI[id])return w&&w.alt&&w.alt[id]?{...EXI[id],alt:1}:EXI[id];
+  if(EXI[id]){let x=EXI[id];
+    if(w&&w.alt&&w.alt[id])x={...x,alt:1};
+    if(x.pg==='pomp')x={...x,lvl:lvlOf(id,(w&&w.lvl)||{})};
+    return x;}
   const v=w&&w.pv&&OLD[w.pv];return v?(v.ex[id]||null):null;
 }
 function sessName(w){
@@ -926,7 +958,7 @@ function targetText(e){
 /* ==========================================================================
    DURÉES — rythme mesuré sur tes séances (minutes), recalé ensuite sur les nouvelles
    ========================================================================== */
-const PACE={U:2.15,B:1.2,BW:1.0,EXC:0.3,CHG:2.0,TRANS:0.25,SOLO:60};
+const PACE={U:2.15,B:1.2,BW:1.0,EXC:0.3,CHG:2.0,TRANS:0.25,SOLO:60,LO:2.15/2};
 function workMin(e){
   let w=e.bw?(e.alt?PACE.U:PACE.BW):(e.u?PACE.U:PACE.B);
   if(e.e)w+=PACE.EXC;if(e.xtra)w+=e.xtra;return w;
@@ -945,11 +977,13 @@ function rawMinutes(list,sep){
       for(let k=0;k<Math.max(e.sets,n.sets);k++){
         if(k<e.sets)t+=workMin(e);
         if(k<n.sets)t+=workMin(n)+PACE.TRANS;
+        if(e.xl&&k===Math.min(e.sets,n.sets)-1)t+=PACE.LO+PACE.TRANS;   // série gauche seule, sans repos de plus
         t+=r;
       }
       i++;continue;
     }
     t+=e.sets*(workMin(e)+restOf(e)/60);
+    if(e.xl)t+=PACE.LO+Math.max(restOf(e),60)/60;
   }
   return t;
 }
@@ -966,7 +1000,7 @@ function estMinutes(list,sep){return Math.max(1,Math.round(rawMinutes(list,sep)*
 /* ==========================================================================
    HISTORIQUE D'EXERCICE
    ========================================================================== */
-const normalSets = arr => (arr||[]).filter(s=>s&&s.d&&!s.t);
+const normalSets = arr => (arr||[]).filter(s=>s&&s.d&&!s.t&&!s.lo&&!s.x);
 /* toutes les séances d'un exercice v6, anciennes versions équivalentes comprises */
 function histEntries(id){
   const out=[];
@@ -982,8 +1016,8 @@ function lastSame(e){
   const ws=doneWo().filter(w=>w.pv==='v6'&&(w.log||{})[e.id]).sort((a,b)=>b.start-a.start);
   for(const w of ws){
     const arr=normalSets(w.log[e.id]);if(!arr.length)continue;
-    const alt=!!(w.alt||{})[e.id];
-    const same=e.bw?alt===!!e.alt:Math.abs((arr[0].wL||0)-exLoad(e))<0.01;
+    const alt=!!(w.alt||{})[e.id], lv=e.pg==='pomp'?lvlOf(e.id,w.lvl||{}):0;
+    const same=e.bw?(alt===!!e.alt&&lv===(e.pg==='pomp'?e.lvl||1:0)):Math.abs((arr[0].wL||0)-exLoad(e))<0.01;
     return {arr,same,w};
   }
   return null;
@@ -1033,6 +1067,10 @@ function suggestNext(e){
   /* cible atteinte partout */
   if(e.pg==='pause')return {lvl:'up',txt:`${e.rMax} répétitions partout → ajoute une pause de 2 s en haut, puis une descente plus lente. `+
     `La charge du crunch suit l'haltère B de la configuration.`};
+  if(e.pg==='pomp'){const lv=e.lvl||1;
+    return lv<PLV.length?{lvl:'up',txt:`${e.rMax} répétitions sur toutes les séries → passe au niveau ${lv+1} : ${PLV[lv]}, en repartant vers ${e.rMin}.`,
+      apply:{kind:'lvl',id:e.id,v:lv+1,lab:'niveau '+(lv+1)}}
+      :{lvl:'ceiling',txt:`Niveau ${lv} à ${e.rMax} répétitions partout. Leviers, dans cet ordre : 1) descente en 4 s, 2) une série de plus.`};}
   if(e.pg==='leg')return e.alt?{lvl:'ceiling',txt:`${e.rMax} répétitions par jambe partout. ${LEVERS}`}
     :{lvl:'up',txt:`${e.rMax} répétitions sur toutes les séries → passe à une jambe, gauche d'abord.`,
       apply:{kind:'alt',id:e.id,v:1,lab:'leg curl à une jambe'}};
@@ -1048,7 +1086,8 @@ function suggestNext(e){
   }
   const rr=nextUp(cl,nDb,inv);
   if(!rr)return {lvl:'ceiling',txt:`Cible atteinte partout, mais ${share?'le stock disponible pour cette barre est épuisé.'+share
-      :`ton kit est au maximum sur cet exercice (${kgs(maxLoad(nDb))} kg).`} ${LEVERS}`};
+      :`ton kit est au maximum sur cet exercice (${kgs(maxLoad(nDb))} kg).`} ${LEVERS}`+
+      (rotPartner(e)?` Les ${rotPartner(e).n.toLowerCase()}, en alternance, prennent le relais pour la charge.`:'')};
   const coupled=(c.pair?c.ex:barUsers(c,e.bar)).filter(x=>x.id!==e.id&&!x.bw&&x.pg!=='pause').map(x=>curEx(x.id));
   const notReady=coupled.filter(x=>{const s=repStatus(x);return !s||s.st!=='ready';});
   const who=c.pair?'la paire d\'haltères':'la barre '+e.bar;
@@ -1066,6 +1105,8 @@ function applySuggestion(a){
   if(a.kind==='load'){setBarLoad(CFG[a.cid],a.bar,a.v);toast('Charge mise à jour : '+kgs(a.v)+' kg');}
   if(a.kind==='alt'){DB.alt=DB.alt||{};if(a.v)DB.alt[a.id]=1;else delete DB.alt[a.id];save();
     toast(a.v?'Variante une jambe activée':'Variante deux jambes');}
+  if(a.kind==='lvl'){DB.lvl=DB.lvl||{};DB.lvl[a.id]=clamp(a.v,1,PLV.length);save();
+    toast(`${EXI[a.id].n} : niveau ${DB.lvl[a.id]}`);}
 }
 
 /* ==========================================================================
@@ -1136,7 +1177,7 @@ function volumeDone(fromTs){
   doneWo().filter(w=>!fromTs||w.start>=fromTs).forEach(w=>{
     Object.entries(w.log||{}).forEach(([id,arr])=>{
       const e=exW(w,id);if(!e)return;
-      const n=(arr||[]).filter(s=>s&&s.d).length;
+      const n=(arr||[]).filter(s=>s&&s.d&&!s.lo).length;   // séries « gauche seule » : volume d'un seul côté, non comptées
       if(n)v[e.mg]=(v[e.mg]||0)+n;
     });
   });
@@ -1276,6 +1317,7 @@ function sessCard(s,primary){
       <span class="chip acc">${nPrio} prioritaires G</span>
       ${tests?`<span class="chip tst">${tests} série${tests>1?'s':''} test</span>`:''}
       ${last?`<span class="chip ok">Fait le ${fmtDate(last.start)}</span>`:''}
+      ${ex.filter(e=>e.rot).map(e=>`<span class="chip">Cette fois : ${esc(e.sn||e.n)}</span>`).join('')}
     </div>
     <div class="btn-row" style="margin-top:13px">
       <button class="btn ${primary?'':'sec'}" data-start="${s.id}">${primary?'Démarrer la séance':'Démarrer'}</button>
@@ -1296,9 +1338,10 @@ function peek(sid){
     ex.forEach((e,k)=>{
       if(e.blk&&e.role===1){const b=ex[k+1];
         h+=`<div class="pblk">⇄ BLOC ${e.blk} — ${e.blk}1 puis ${e.blk}2 sans repos, puis repos · ${Math.max(e.sets,b?b.sets:0)} tours</div>`;}
+      const p=rotPartner(e);
       h+=`<div class="exline two${e.blk?' inblk':''}"><div><span class="num">${e.num}</span>${e.p?'<span style="color:var(--acc2)">◄ </span>':''}${esc(exName(e))}
         ${e.e?'<span class="tag e" style="margin-left:5px">EXC 4 s</span>':''}</div>
-        <div class="r">${e.sets} × ${targetText(e)} · ${loadText(e)} · ${restText(e)}</div></div>`;
+        <div class="r">${e.sets}${e.xl?' + 1 G':''} × ${targetText(e)} · ${loadText(e)} · ${restText(e)}${p?` · en alternance avec : ${esc(p.n)}`:''}</div></div>`;
     });
   });
   h+=`<button class="btn" style="margin-top:18px" onclick="closeSheet();startWorkout('${s.id}')">Démarrer cette séance</button>
@@ -1345,6 +1388,7 @@ function renderHist(){
 function setText(e,x){
   if(!e||!x)return '—';
   const u=e.ho?' s':'';
+  if(x.lo)return e.bw?`G ${x.rL||0}`:`G ${x.rL||0} × ${kgs(x.wL||0)} kg`;
   if(e.u||e.alt||(x.rR>0&&!e.ho&&e.bw))return e.bw?`G ${x.rL||0}${u} · D ${x.rR||0}${u}`
     :`G ${x.rL||0}${u} × ${kgs(x.wL||0)} kg &nbsp;·&nbsp; D ${x.rR||0}${u} × ${kgs(x.wR||0)} kg`;
   if(e.bw)return `${x.rL||0}${u}`;
@@ -1360,8 +1404,10 @@ function detail(start){
     h+=`<div style="margin-top:13px;font-weight:700;font-size:14px">${e.p?'<span style="color:var(--acc2)">◄ </span>':''}${esc(exName(e))}</div>`;
     let k=0;
     dn.forEach(x=>{
-      const g=x.t?gapOf(x):null;if(!x.t)k++;
-      h+=`<div class="exline"><div style="color:var(--tx2);font-size:12.5px">${x.t?'<b style="color:var(--teal)">Test</b>':'Série '+k}</div>
+      const g=x.t?gapOf(x):null;if(!x.t&&!x.lo&&!x.x)k++;
+      const lab=x.t?'<b style="color:var(--teal)">Test</b>':x.x?'<b style="color:var(--gold)">Série en plus</b>'+(x.lo?' · gauche':'')
+        :x.lo?'<b style="color:var(--acc2)">Gauche seule</b>':'Série '+k;
+      h+=`<div class="exline"><div style="color:var(--tx2);font-size:12.5px">${lab}</div>
         <div class="r">${setText(e,x)}${g!=null?` · écart ${g>0?'+':''}${g}%`:''}</div></div>`;
     });
   });
@@ -1449,7 +1495,7 @@ function renderProg(){
   if(!sel.options.length){
     let h='';
     PROG.forEach(s=>{h+=`<optgroup label="${s.n} · ${esc(s.sub)}">`;
-      flatEx(s).forEach(e=>h+=`<option value="${e.id}">${esc(e.n)}</option>`);h+='</optgroup>';});
+      s.cfgs.flatMap(c=>c.ex).forEach(e=>h+=`<option value="${e.id}">${esc(e.n)}</option>`);h+='</optgroup>';});
     sel.innerHTML=h;
     sel.onchange=()=>{DB._lastEx=sel.value;drawProg(sel.value);};
   }
@@ -1593,13 +1639,32 @@ function buildSteps(){
   return st;
 }
 const stepEx = st => st.k==='b'?[st.a,st.b]:[st.e];
-function rounds(st){return Math.max(W.log[st.a.id].length,W.log[st.b.id].length);}
+/* indices des séries d'un exercice selon leur nature */
+function idxs(id,pred){return (W.log[id]||[]).map((s,i)=>[s,i]).filter(([s])=>pred(s)).map(([,i])=>i);}
+const isNorm = s => !s.lo&&!s.x;
+function normCount(id){return idxs(id,isNorm).length;}
+/* tours d'un bloc : A1 puis A2 ; la série « gauche seule » du programme suit A2 au dernier tour où il existe ;
+   les séries ajoutées viennent à la fin, chacune seule */
+function blockRounds(st){
+  const a=st.a,b=st.b,na=idxs(a.id,isNorm),nb=idxs(b.id,isNorm);
+  const la=idxs(a.id,s=>s.lo&&!s.x),lb=idxs(b.id,s=>s.lo&&!s.x);
+  const R=Math.max(na.length,nb.length),at=Math.max(0,Math.min(na.length,nb.length)-1),out=[];
+  for(let r=0;r<R;r++){
+    const it=[];
+    if(r<na.length)it.push([a,na[r]]);
+    if(r<nb.length)it.push([b,nb[r]]);
+    if(r===at){la.forEach(i=>it.push([a,i]));lb.forEach(i=>it.push([b,i]));}
+    out.push({items:it,n:r+1,R});
+  }
+  if(!R&&(la.length||lb.length))out.push({items:la.map(i=>[a,i]).concat(lb.map(i=>[b,i])),n:1,R:1});
+  [a,b].forEach(e=>idxs(e.id,s=>s.x).forEach(i=>out.push({items:[[e,i]],extra:1})));
+  return out;
+}
+function rounds(st){return Math.max(normCount(st.a.id),normCount(st.b.id));}
 /* ordre d'exécution des séries d'une étape */
 function stepOrder(st){
   if(st.k==='s')return W.log[st.e.id].map((_,i)=>[st.e,i]);
-  const na=W.log[st.a.id].length,nb=W.log[st.b.id].length,out=[];
-  for(let r=0;r<Math.max(na,nb);r++){if(r<na)out.push([st.a,r]);if(r<nb)out.push([st.b,r]);}
-  return out;
+  return blockRounds(st).flatMap(r=>r.items);
 }
 function stepOf(id){return STEPS.findIndex(st=>stepEx(st).some(x=>x.id===id));}
 /* prochaine série à faire, à partir de l'étape from */
@@ -1610,17 +1675,23 @@ function nextPending(from){
   }
   return null;
 }
+function setName(e,i){const s=W.log[e.id][i];return exName(e)+(s&&s.lo?' — gauche seule':'');}
 
 /* séries pré-remplies : charge = configuration actuelle, répétitions = dernière séance à la même charge */
 function buildLog(e){
   const L=exLoad(e), lp=lastSame(e), pn=lp&&lp.same?lp.arr:[], U=isU(e);
-  return Array.from({length:e.sets},(_,i)=>{
+  const out=Array.from({length:e.sets},(_,i)=>{
     const p=pn[i]||pn[pn.length-1]||null;
     let rL,rR=0;
     if(U){rL=p&&p.rL?p.rL:(e.u?e.repL:e.rMin);rR=p&&p.rR?p.rR:(e.u?e.repR:e.rMin);}
     else rL=p&&p.rL?p.rL:e.rMin;
     return {d:0,rL,wL:L,rR:U?rR:0,wR:U?L:0};
   });
+  if(e.xl){
+    const plo=lp&&lp.same?((lp.w.log||{})[e.id]||[]).find(x=>x&&x.d&&x.lo&&!x.x):null;
+    out.push({d:0,rL:plo&&plo.rL?plo.rL:(e.u?e.repL:e.rMin),wL:L,rR:0,wR:0,lo:1});
+  }
+  return out;
 }
 function markTests(){
   const seen={};
@@ -1628,19 +1699,28 @@ function markTests(){
     if(!e.tk||!e.p||seen[e.tk]||(W.skipT||{})[e.tk]||!testDue(e.tk))return;
     seen[e.tk]=1;
     const s=W.log[e.id][0];
-    if(s&&!s.d){s.t=1;s.rL=0;s.rR=0;}
+    if(s&&!s.d&&isNorm(s)){s.t=1;s.rL=0;s.rR=0;}
   });
 }
 /* ajuste les séries enregistrées au programme courant (séries modifiées dans les réglages) */
 function fitLogs(){
   EX.forEach(e=>{
-    let a=W.log[e.id];
+    const a=W.log[e.id];
     if(!Array.isArray(a)){W.log[e.id]=buildLog(e);return;}
-    if(a.length<e.sets)a=W.log[e.id]=a.concat(buildLog(e).slice(a.length));
-    while(a.length>e.sets&&!a[a.length-1].d)a.pop();
+    const nb=buildLog(e),norm=a.filter(isNorm),lo=a.filter(s=>s.lo&&!s.x),xs=a.filter(s=>s.x);
+    while(norm.length<e.sets)norm.push(nb[norm.length]);
+    while(norm.length>e.sets&&!norm[norm.length-1].d)norm.pop();
+    if(e.xl&&!lo.length)lo.push(nb[nb.length-1]);
+    if(!e.xl)for(let k=lo.length-1;k>=0;k--)if(!lo[k].d)lo.splice(k,1);
     const U=isU(e);
-    a.forEach(s=>{if(!s.d){if(U&&!s.rR)s.rR=e.u?e.repR:e.rMin;if(U&&!s.wR)s.wR=s.wL;if(!U){s.rR=0;s.wR=0;}}});
+    norm.concat(xs).forEach(s=>{if(!s.d&&!s.lo){if(U&&!s.rR)s.rR=e.u?e.repR:e.rMin;if(U&&!s.wR)s.wR=s.wL;if(!U){s.rR=0;s.wR=0;}}});
+    W.log[e.id]=norm.concat(lo,xs);
   });
+}
+/* exercice du jour d'une alternance, retrouvé dans une séance en cours */
+function rotFromLog(sid,log){
+  const r=PROG.find(s=>s.id===sid).cfgs.flatMap(c=>c.ex).find(e=>e.rot&&(log||{})[e.id]);
+  return r?r.rot:null;
 }
 
 function saveDraft(){if(!W)return;W.lastSeen=Date.now();DB.draft={...W,idx:IDX};save();}
@@ -1653,13 +1733,14 @@ function resumeDraft(auto){
   const s=PROG.find(x=>x.id===d.sid);if(!s){DB.draft=null;save();return;}
   const now=Date.now();
   W={sid:d.sid,start:d.start||now,end:null,log:d.log||{},note:d.note||'',exp:d.exp||0,
-     pr:d.pr||{},skipT:d.skipT||{},sep:d.sep||{},alt:d.alt||{...(DB.alt||{})},
+     pr:d.pr||{},skipT:d.skipT||{},sep:d.sep||{},alt:d.alt||{...(DB.alt||{})},lvl:d.lvl||{...(DB.lvl||{})},
+     rot:d.rot||rotFromLog(d.sid,d.log)||nextRot(d.sid),
      /* temps actif jusqu'au dernier enregistrement ; le temps hors écran ne compte pas */
      active:(d.active||0)+(d.visSince&&d.lastSeen?Math.max(0,d.lastSeen-d.visSince):0),
      visSince:visible()?now:null,lastSeen:now,rest:d.rest||null};
   if(W.rest&&now-W.rest.end>15*60e3)W.rest=null;
   if(W.rest){W.rest.seen=0;}
-  EX=sessionEx(s,W.exp,W.alt);
+  EX=sessionEx(s,W.exp,W.alt,W.rot,W.lvl);
   fitLogs();
   STEPS=buildSteps();
   IDX=clamp(d.idx||0,0,STEPS.length-1);
@@ -1678,9 +1759,9 @@ function startWorkout(sid,express){
   if(DB.draft&&woSets(DB.draft)>0&&!confirm('Une séance est déjà en cours. La remplacer ?'))return;
   const s=PROG.find(x=>x.id===sid);if(!s)return;
   const now=Date.now();
-  W={sid,start:now,end:null,log:{},note:'',exp:express?1:0,pr:{},skipT:{},sep:{},alt:{...(DB.alt||{})},
-     active:0,visSince:visible()?now:null,lastSeen:now,rest:null};
-  EX=sessionEx(s,express,W.alt);IDX=0;
+  W={sid,start:now,end:null,log:{},note:'',exp:express?1:0,pr:{},skipT:{},sep:{},alt:{...(DB.alt||{})},lvl:{...(DB.lvl||{})},
+     rot:nextRot(sid),active:0,visSince:visible()?now:null,lastSeen:now,rest:null};
+  EX=sessionEx(s,express,W.alt,W.rot,W.lvl);IDX=0;
   EX.forEach(e=>{W.log[e.id]=buildLog(e);});
   markTests();
   STEPS=buildSteps();
@@ -1709,7 +1790,7 @@ function cfgCard(c,changed,ex){
 }
 function exHead(e,lab){
   return `<div class="exh">${lab?`<div class="bl">${lab}</div>`:''}<div class="t">${esc(exName(e))}</div><div class="tags">
-    <span class="tag l">${W.log[e.id].length} séries · ${targetText(e)}</span>
+    <span class="tag l">${normCount(e.id)} séries${e.xl?' + 1 gauche seule':''} · ${targetText(e)}</span>
     <span class="tag l">${e.bw?'Poids de corps':loadText(e)}</span>
     ${lab?'':`<span class="tag l">Repos ${restOf(e)} s</span>`}
     ${e.p?'<span class="tag p">◄ PRIORITÉ GAUCHE</span>':''}
@@ -1721,15 +1802,20 @@ function lastLine(e){
   return `<div class="last">Dernière fois${la.old?' (ancien programme)':''} : ${setText(la.e,la.arr[0])}</div>`;
 }
 function setRow(e,i,lab){
-  const s=W.log[e.id][i],U=isU(e);
+  const s=W.log[e.id][i],U=isU(e)&&!s.lo;
   const val=f=>s.t&&!s[f]?'':s[f];
   const ph=s.t?' placeholder="max"':'';
   const name=lab?`<b>${esc(e.sn||e.n)}</b> · `:'';
-  let h=`<div class="setr ${s.d?'done':''} ${s.t?'test':''}" data-e="${e.id}" data-i="${i}">
-    <div class="top"><div class="n">${s.t?'T':lab||i+1}</div>
-      <div class="hint">${s.t?`${name}<b>SÉRIE TEST</b> · max propre, même charge`
-        :`${name}${lab?'':'Cible : '}${targetText(e)}${e.bw?'':' · '+kgs(exLoad(e))+' kg'}`}</div>
+  const kind=s.t?'<b>SÉRIE TEST</b> · max propre, même charge'
+    :s.lo?`<b>GAUCHE SEULE</b>${s.x?' · série en plus':''} · `+(e.u?`${e.repL} rép.`:targetText(e))
+    :s.x?`<b>SÉRIE EN PLUS</b> · ${targetText(e)}`
+    :`${lab?'':'Cible : '}${targetText(e)}`;
+  const n=s.t?'T':s.lo?'G':s.x?'+':(lab||i+1);
+  let h=`<div class="setr ${s.d?'done':''} ${s.t?'test':''}${s.lo||s.x?' xset':''}" data-e="${e.id}" data-i="${i}">
+    <div class="top"><div class="n">${n}</div>
+      <div class="hint">${name}${kind}${e.bw||s.t?'':' · '+kgs(exLoad(e))+' kg'}</div>
       ${s.t&&!s.d?`<button class="skt" data-skip="${i}" data-e="${e.id}">Passer</button>`:''}
+      ${s.x&&!s.d?`<button class="skt" data-del="${i}" data-e="${e.id}" aria-label="Retirer cette série">Retirer</button>`:''}
       <button class="chk" data-t="${i}" data-e="${e.id}" aria-label="Valider la série"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></button>
     </div>`;
   if(s.t)h+=`<div class="tnote">Gauche d'abord, tempo normal identique des deux côtés${e.e?' (pas d\'excentrique lent sur cette série)':''}. Arrête-toi dès que la technique se dégrade.</div>`;
@@ -1738,17 +1824,29 @@ function setRow(e,i,lab){
     h+=`<div class="inps">
       <div class="side L"><div class="lb">◄ GAUCHE</div><div class="fields">${inp('rL')}${e.bw?'':inp('wL','kg')}</div></div>
       <div class="side R"><div class="lb">DROITE ►</div><div class="fields">${inp('rR')}${e.bw?'':inp('wR','kg')}</div></div></div>`;
+  }else if(s.lo){
+    h+=`<div class="inps"><div class="side L"><div class="lb">◄ GAUCHE SEULE</div><div class="fields">${inp('rL')}${e.bw?'':inp('wL','kg')}</div></div></div>`;
   }else{
     h+=`<div class="inps"><div class="side" style="border-left:3px solid var(--tx3)">
       <div class="lb">SÉRIE</div><div class="fields">${inp('rL')}${e.bw?'':inp('wL','kg')}</div></div></div>`;
   }
   return h+`</div>`;
 }
+function addBtn(e,lab){
+  return `<button class="btn gho sm addb" data-add="${e.id}">+ Ajouter une série${lab?' · '+esc(e.sn||e.n):''}</button>`;
+}
 function singleHtml(e){
   let h=exHead(e);
   if(isU(e))h+=`<div class="rule">Gauche d'abord, puis droite sans pause. Le repos se prend après les deux côtés.</div>`;
+  if(e.xl)h+=`<div class="rule">Série gauche seule après les séries normales : même charge, maximum de répétitions propres.</div>`;
+  if(e.pg==='pomp')h+=`<div class="rule">Corps gainé, descente en 3 s. Mains sur les haltères seulement si elles ne roulent pas ; sinon, mains au sol.</div>`;
+  if(e.id==='s3_couche')h+=`<div class="rule">Charge au maximum du kit : descente en 3 s, 1 s de pause en bas, dernière série à une répétition de l'échec.</div>`;
   h+=sgCard(suggestNext(e),e.id)+lastLine(e);
   W.log[e.id].forEach((_,i)=>{h+=setRow(e,i);});
+  h+=addBtn(e);
+  const p=rotPartner(e);
+  if(p&&!(W.log[e.id]||[]).some(s=>s.d))
+    h+=`<button class="btn gho sm sepb" data-rot="${p.rot}">⇄ Faire plutôt : ${esc(p.n)} (alternance)</button>`;
   if(e.blk&&(W.sep||{})[blkKey(e)]){
     const o=EX.find(x=>x.cid===e.cid&&x.blk===e.blk&&x.id!==e.id);
     if(o)h+=`<button class="btn gho sm sepb" data-unsep="${blkKey(e)}">⇄ Refaire en bloc avec ${esc(o.sn||o.n)}</button>`;
@@ -1756,18 +1854,20 @@ function singleHtml(e){
   return h;
 }
 function blockHtml(st){
-  const a=st.a,b=st.b,R=rounds(st),L=a.blk,na=W.log[a.id].length,nb=W.log[b.id].length;
+  const a=st.a,b=st.b,R=rounds(st),L=a.blk,na=normCount(a.id),nb=normCount(b.id);
   const last=na===nb?'':` Dernier tour : ${esc((na>nb?a:b).sn||(na>nb?a:b).n).toLowerCase()} seul.`;
+  const at=Math.max(1,Math.min(na,nb));
+  const xl=a.xl?` Au tour ${at} : ${L}1, ${L}2, puis ${L}1 gauche seule, puis le repos.`:'';
   let h=`<div class="blkh">⇄ BLOC ${L} · ${R} tours</div>
-    <div class="rule">${L}1 puis ${L}2 sans repos (le temps de changer d'haltère), puis ${b.rest}&nbsp;s de repos.${last}
+    <div class="rule">${L}1 puis ${L}2 sans repos (le temps de changer d'haltère), puis ${b.rest}&nbsp;s de repos.${last}${xl}
     ${isU(a)||isU(b)?' Unilatéral : gauche d\'abord, puis droite sans pause.':''}</div>`;
   h+=`<div class="bh">`+exHead(a,L+'1')+sgCard(suggestNext(a),a.id)+lastLine(a);
   h+=exHead(b,L+'2')+sgCard(suggestNext(b),b.id)+lastLine(b)+`</div>`;
-  for(let r=0;r<R;r++){
-    h+=`<div class="round">TOUR ${r+1}/${R}</div>`;
-    if(r<na)h+=setRow(a,r,L+'1');
-    if(r<nb)h+=setRow(b,r,L+'2');
-  }
+  blockRounds(st).forEach(r=>{
+    h+=`<div class="round">${r.extra?'SÉRIE EN PLUS':`TOUR ${r.n}/${r.R}`}</div>`;
+    r.items.forEach(([e,i])=>{h+=setRow(e,i,e===a?L+'1':L+'2');});
+  });
+  h+=`<div class="addrow">${addBtn(a,1)}${addBtn(b,1)}</div>`;
   h+=`<button class="btn gho sm sepb" data-sep="${blkKey(a)}">Faire séparément : ${esc(a.sn||a.n)}, puis ${esc(b.sn||b.n)}</button>`;
   return h;
 }
@@ -1787,11 +1887,15 @@ function drawStep(){
 
   $$('#rBody [data-t]').forEach(b=>b.onclick=()=>toggleSet(b.dataset.e,+b.dataset.t));
   $$('#rBody [data-skip]').forEach(b=>b.onclick=()=>skipTest(b.dataset.e,+b.dataset.skip));
+  $$('#rBody [data-del]').forEach(b=>b.onclick=()=>delSet(b.dataset.e,+b.dataset.del));
+  $$('#rBody [data-add]').forEach(b=>b.onclick=()=>askAdd(b.dataset.add));
+  $$('#rBody [data-rot]').forEach(b=>b.onclick=()=>switchRot(b.dataset.rot));
   $$('#rBody [data-sep]').forEach(b=>b.onclick=()=>setSep(b.dataset.sep,true));
   $$('#rBody [data-unsep]').forEach(b=>b.onclick=()=>setSep(b.dataset.unsep,false));
   bindApply('#rBody',a=>{
     if(a&&a.kind==='alt'){W.alt={...(DB.alt||{})};refreshEx();}
-    EX.forEach(e=>{const L=exLoad(e);W.log[e.id].forEach(s=>{if(!s.d){s.wL=L;if(isU(e))s.wR=L;}});});
+    if(a&&a.kind==='lvl'){W.lvl={...(DB.lvl||{})};refreshEx();}
+    EX.forEach(e=>{const L=exLoad(e);W.log[e.id].forEach(s=>{if(!s.d){s.wL=L;if(isU(e)&&!s.lo)s.wR=L;}});});
     saveDraft();drawStep();
   });
   $$('#rBody input').forEach(inp=>{
@@ -1803,8 +1907,49 @@ function drawStep(){
 /* recalcule les exercices (variante changée) en gardant l'étape courante */
 function refreshEx(){
   const s=PROG.find(x=>x.id===W.sid),curId=stepEx(STEPS[IDX])[0].id;
-  EX=sessionEx(s,W.exp,W.alt);fitLogs();
+  EX=sessionEx(s,W.exp,W.alt,W.rot,W.lvl);fitLogs();
   STEPS=buildSteps();IDX=Math.max(0,stepOf(curId));
+}
+/* alternance : faire l'autre exercice aujourd'hui (tant qu'aucune série n'est validée) */
+function switchRot(r){
+  if(!W)return;
+  const s=PROG.find(x=>x.id===W.sid),keep=IDX;
+  const curE=EX.find(e=>e.rot);
+  if(curE&&(W.log[curE.id]||[]).some(x=>x.d))return;
+  if(curE)delete W.log[curE.id];
+  W.rot=r;
+  EX=sessionEx(s,W.exp,W.alt,W.rot,W.lvl);fitLogs();
+  STEPS=buildSteps();IDX=clamp(keep,0,STEPS.length-1);
+  const ne=EX.find(e=>e.rot);
+  saveDraft();drawStep();toast(ne?'Aujourd\'hui : '+exName(ne):'');
+}
+/* série en plus : ne compte pas pour la progression */
+function askAdd(id){
+  const e=EX.find(x=>x.id===id);if(!e)return;
+  if(!isU(e)){addSet(id,0);return;}
+  openSheet(`<h2>Ajouter une série</h2><div class="sh-sub">${esc(exName(e))}</div>
+    <button class="btn" onclick="closeSheet();addSet('${id}',0)">Les deux côtés</button>
+    <button class="btn sec" style="margin-top:8px" onclick="closeSheet();addSet('${id}',1)">Gauche seule</button>
+    <button class="btn gho" style="margin-top:8px" onclick="closeSheet()">Annuler</button>
+    <div style="font-size:11.5px;color:var(--tx3);margin-top:12px;line-height:1.5">La série ajoutée compte dans l'historique et le tonnage,
+      mais pas dans la règle de progression.</div>`);
+}
+function addSet(id,lo){
+  if(!W||!W.log[id])return;
+  const e=EX.find(x=>x.id===id);if(!e)return;
+  const a=W.log[id],U=isU(e)&&!lo,L=exLoad(e);
+  const ref=[...a].reverse().find(s=>!s.t&&!s.lo)||{};
+  a.push({d:0,rL:ref.rL||(e.u?e.repL:e.rMin),wL:e.bw?0:(ref.wL||L),
+    rR:U?(ref.rR||(e.u?e.repR:e.rMin)):0,wR:U&&!e.bw?(ref.wR||L):0,x:1,lo:lo?1:0});
+  saveDraft();drawStep();
+  toast(lo?'Série gauche seule ajoutée':'Série ajoutée');
+  const r=$(`#rBody .setr[data-e="${id}"][data-i="${a.length-1}"]`);
+  if(r&&r.scrollIntoView)try{r.scrollIntoView({behavior:'smooth',block:'center'});}catch(x){}
+}
+function delSet(id,i){
+  if(!W||!W.log[id])return;
+  const s=W.log[id][i];if(!s||!s.x||s.d)return;
+  W.log[id].splice(i,1);saveDraft();drawStep();toast('Série retirée');
 }
 function setSep(key,on){
   if(!W)return;
@@ -1834,6 +1979,7 @@ function toggleSet(id,i){
   if(row)row.classList.toggle('done',!!s.d);
   if(s.d){
     buzz(28);
+    if(e.rot){const rb=$('#rBody [data-rot]');if(rb)rb.remove();}   // alternance : choix figé dès la 1re série
     W.pr=W.pr||{};
     const pr=prFor(id),best=Math.max((s.rL||0)*(s.wL||0),(s.rR||0)*(s.wR||0));
     if(!W.pr[id]&&pr.mxVol>0&&best>pr.mxVol){W.pr[id]=1;toast('🏆 Nouveau record sur cet exercice !',2600);buzz([60,50,60,50,120]);}
@@ -1841,16 +1987,20 @@ function toggleSet(id,i){
   }else stopRest();
   saveDraft();
 }
-/* repos après une série : aucun entre A1 et A2 d'un même tour ; sinon repos de l'exercice (ou du bloc) */
+/* repos après une série : aucun à l'intérieur d'un tour de bloc ; sinon repos de l'exercice (ou du bloc) */
 function afterSet(e,i){
   const si=stepOf(e.id),st=STEPS[si];
-  if(st.k==='b'&&e.id===st.a.id){
-    const sb=W.log[st.b.id][i];
-    if(sb&&!sb.d){
-      stopRest();toast('Enchaîne : '+exName(st.b),2200);
-      const r=$(`#rBody .setr[data-e="${st.b.id}"][data-i="${i}"]`);
-      if(r&&r.scrollIntoView)try{r.scrollIntoView({behavior:'smooth',block:'center'});}catch(x){}
-      return;
+  if(st.k==='b'){
+    const R=blockRounds(st).find(r=>r.items.some(([x,j])=>x.id===e.id&&j===i));
+    if(R&&!R.extra){
+      const k=R.items.findIndex(([x,j])=>x.id===e.id&&j===i);
+      const nx=R.items.slice(k+1).find(([x,j])=>!W.log[x.id][j].d);
+      if(nx){
+        stopRest();toast('Enchaîne : '+setName(nx[0],nx[1]),2200);
+        const r=$(`#rBody .setr[data-e="${nx[0].id}"][data-i="${nx[1]}"]`);
+        if(r&&r.scrollIntoView)try{r.scrollIntoView({behavior:'smooth',block:'center'});}catch(x){}
+        return;
+      }
     }
   }
   const nx=nextPending(si);
@@ -1861,12 +2011,17 @@ function afterSet(e,i){
 function restLabel(nx,si){
   const e=nx.e,i=nx.i,st=STEPS[nx.s],s=W.log[e.id][i];
   let a;
-  if(nx.s===si)a=st.k==='b'?`PUIS TOUR ${i+1}/${rounds(st)} · ${e.num}`:`PUIS SÉRIE ${i+1}/${W.log[e.id].length}`;
+  if(s.x)a='PUIS SÉRIE EN PLUS';
+  else if(nx.s===si){
+    if(st.k==='b'){const R=blockRounds(st).find(r=>r.items.some(([x,j])=>x.id===e.id&&j===i));
+      a=`PUIS TOUR ${R?R.n:i+1}/${rounds(st)} · ${e.num}`;}
+    else a=s.lo?'PUIS SÉRIE GAUCHE SEULE':`PUIS SÉRIE ${idxs(e.id,isNorm).indexOf(i)+1}/${normCount(e.id)}`;
+  }
   else if(nx.s>si)a=st.k==='b'?`PUIS BLOC ${e.blk} · ${e.num}`:'PUIS EXERCICE SUIVANT';
   else a='PUIS SÉRIE NON VALIDÉE';
   const from=stepEx(STEPS[si])[0].cid;
-  return {a,b:exName(e),
-    c:(e.bw?'poids de corps':loadText(e))+' · '+(s&&s.t?'série test : max propre':targetText(e)),
+  return {a,b:setName(e,i),
+    c:(e.bw?'poids de corps':loadText(e))+' · '+(s&&s.t?'série test : max propre':s.lo?'gauche seule, max propre':targetText(e)),
     d:e.cid!==from?'🔧 Changement de disques : '+cfgLabel(CFG[e.cid]):''};
 }
 
@@ -1921,14 +2076,15 @@ $('#rgAdd').onclick=()=>{
   REST_AUDIO=scheduleRestAudio(R.end);saveDraft();paintRest();
 };
 
-/* ---------- Liste des exercices de la séance (ⓘ) : consultation seule ---------- */
+/* ---------- Liste des exercices de la séance (ⓘ) : noms et charges, consultation seule ---------- */
 function infoSheet(){
   if(!W)return;
   const s=PROG.find(x=>x.id===W.sid),here=stepEx(STEPS[IDX]).map(e=>e.id);
   let h=`<h2>${esc(s.n)} · ${esc(s.sub)}</h2>${W.exp?'<div class="sh-sub">⚡ Version express</div>':'<div style="height:8px"></div>'}<div class="xl">`;
   EX.forEach(e=>{
     const a=W.log[e.id]||[],ok=a.length&&a.every(x=>x.d);
-    h+=`<div class="xi${here.includes(e.id)?' cur':''}${ok?' ok':''}"><span class="k">${e.num}</span><span class="nm">${esc(exName(e))}</span>${ok?'<span class="ck">✓</span>':''}</div>`;
+    h+=`<div class="xi${here.includes(e.id)?' cur':''}${ok?' ok':''}"><span class="k">${e.num}</span><span class="nm">${esc(exName(e))}`+
+       `<span class="ld">${esc(loadText(e))}</span></span>${ok?'<span class="ck">✓</span>':''}</div>`;
   });
   openSheet(h+`</div><button class="btn gho" style="margin-top:14px" onclick="closeSheet()">Fermer</button>`);
 }
@@ -1952,8 +2108,9 @@ function quitRun(){
 
 /* durée estimée des séries réellement faites (pour recaler le rythme) */
 function doneEst(){
-  const list=EX.map(e=>({...e,sets:(W.log[e.id]||[]).filter(s=>s.d).length})).filter(e=>e.sets>0);
-  return r2(rawMinutes(list,W.sep));
+  const list=EX.map(e=>({...e,xl:0,sets:(W.log[e.id]||[]).filter(s=>s.d&&!s.lo).length})).filter(e=>e.sets>0);
+  const lo=EX.reduce((n,e)=>n+(W.log[e.id]||[]).filter(s=>s.d&&s.lo).length,0);
+  return r2(rawMinutes(list,W.sep)+lo*PACE.LO);
 }
 function finish(){
   if(!W)return;
@@ -1983,7 +2140,7 @@ function saveWo(){
   W.end=Date.now();
   const n=$('#woNote');W.note=(n&&n.value.trim())||'';
   const rec={sid:W.sid,start:W.start,end:W.end,log:W.log,note:W.note,exp:W.exp||0,v:APP_VERSION,pv:'v6',
-    act:W.active||0,est:doneEst(),sep:W.sep||{},alt:W.alt||{}};
+    act:W.active||0,est:doneEst(),sep:W.sep||{},alt:W.alt||{},lvl:W.lvl||{},rot:W.rot||null};
   DB.workouts.push(rec);DB.draft=null;save();
   closeSheet();quitRun();go('home');toast('Séance enregistrée ✓');
 }
@@ -2073,6 +2230,10 @@ function renderSet(){
     <label class="lrow" style="cursor:pointer"><div class="ln"><b>${esc(lc.n)} à une jambe</b>
       <div>À activer quand tu fais ${lc.rMax} répétitions sur toutes les séries (gauche d'abord).</div></div>
       <input type="checkbox" id="altLeg"${(DB.alt||{}).s2_legcurl?' checked':''} style="width:22px;height:22px;accent-color:var(--acc)"></label>
+    <label class="lrow"><div class="ln"><b>Pompes : niveau</b>
+      <div>Proposé automatiquement à ${EXI.s3_pompes.rMax} répétitions sur les 3 séries.</div></div>
+      <select class="sel" id="lvlP" style="width:auto;flex:0 0 auto;max-width:190px">${PLV.map((t,k)=>
+        `<option value="${k+1}"${lvlOf('s3_pompes')===k+1?' selected':''}>${k+1} · ${esc(t)}</option>`).join('')}</select></label>
     <button class="btn gho sm" style="width:100%;margin-top:10px" id="resetSets">Revenir aux séries du programme</button></div>`;
 
   const vol=DB.vol==null?100:DB.vol;
@@ -2145,7 +2306,7 @@ function renderSet(){
   h+=`<div class="card"><div class="card-t">Zone sensible</div>
     <button class="btn dan" onclick="wipe()">Effacer toutes les données</button></div>
     <div style="text-align:center;color:var(--tx3);font-size:11px;padding:14px 0 4px;line-height:1.7">
-      Asymétrie · Suivi — v${APP_VERSION} · programme v6<br>Basé sur l'ACSM Position Stand 2026<br>
+      Asymétrie · Suivi — v${APP_VERSION} · programme v7<br>Basé sur l'ACSM Position Stand 2026<br>
       Données stockées uniquement sur cet appareil</div>`;
 
   $('#setBody').innerHTML=h;
@@ -2172,6 +2333,7 @@ function bindSettings(){
     toast(`${e.n} : ${v} série${v>1?'s':''}`);renderSet();});
   $('#resetSets').onclick=()=>{DB.setsOv={};save();toast('Séries du programme rétablies');renderSet();};
   $('#altLeg').onchange=e=>{applySuggestion({kind:'alt',id:'s2_legcurl',v:e.target.checked?1:0});};
+  $('#lvlP').onchange=e=>{applySuggestion({kind:'lvl',id:'s3_pompes',v:+e.target.value});};
   $('#volR').oninput=e=>{$('#volV').textContent=e.target.value+' %';};
   const testSound=()=>{const c=audio();if(!c){toast('Son indisponible sur ce navigateur');return;}
     if(c.state==='running')playPattern('end');
@@ -2228,15 +2390,17 @@ function dl(content,name,type){
 function stamp(){const d=new Date();return `${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}`;}
 function expJSON(){dl(JSON.stringify(DB,null,2),`asymetrie-suivi-${stamp()}.json`,'application/json');toast('JSON exporté');}
 function expCSV(){
-  const rows=[['date','seance','programme','exercice','groupe','serie','test','reps_G','charge_G','reps_D','charge_D','volume_kg','minutes']];
+  const rows=[['date','seance','programme','exercice','groupe','serie','type','reps_G','charge_G','reps_D','charge_D','volume_kg','minutes']];
   doneWo().sort((a,b)=>a.start-b.start).forEach(w=>{
     const d=new Date(w.start).toISOString().slice(0,10);
     Object.entries(w.log||{}).forEach(([eid,arr])=>{
       const e=exW(w,eid);if(!e)return;
       const U=e.u||e.alt;
+      const UU=x=>U&&!x.lo;
       (arr||[]).forEach((x,i)=>{if(!x||!x.d)return;
-        rows.push([d,sessName(w),w.pv,exName(e),MG[e.mg]?MG[e.mg].n:e.mg,i+1,x.t?'oui':'',
-          x.rL||0,x.wL||0,U?(x.rR||0):'',U?(x.wR||0):'',Math.round(setVol(x)),woMinutes(w)]);});
+        rows.push([d,sessName(w),w.pv,exName(e),MG[e.mg]?MG[e.mg].n:e.mg,i+1,
+          x.t?'test':x.x?(x.lo?'en plus, gauche seule':'en plus'):x.lo?'gauche seule':'',
+          x.rL||0,x.wL||0,UU(x)?(x.rR||0):'',UU(x)?(x.wR||0):'',Math.round(setVol(x)),woMinutes(w)]);});
     });
   });
   const csv='﻿'+rows.map(r=>r.map(c=>{const v=String(c);

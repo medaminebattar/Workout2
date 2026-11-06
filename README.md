@@ -1,8 +1,8 @@
-# Asymétrie · Suivi d'entraînement — v2.1 (programme v6)
+# Asymétrie · Suivi d'entraînement — v2.2 (programme v7)
 
 Application de suivi d'entraînement à domicile (kit de 2 barres de 2 kg, 4 disques de 2 kg,
 8 disques de 1 kg, un banc), avec correction de l'asymétrie gauche / droite.
-Programme v6, identique au PDF validé : 3 séances de 57 à 59 min, corps entier, hypertrophie.
+Programme v7, identique au PDF : 3 séances de 57 à 60 min, corps entier, hypertrophie.
 
 Données 100 % locales : aucun serveur, aucun compte, aucun traçage.
 
@@ -13,7 +13,7 @@ Données 100 % locales : aucun serveur, aucun compte, aucun traçage.
 Remplace ces fichiers à la racine du dépôt :
 
 - `index.html`
-- `sw.js` (version de cache `asym-v2.1.0` : c'est elle qui fait télécharger la nouvelle version au téléphone)
+- `sw.js` (version de cache `asym-v2.2.0` : c'est elle qui fait télécharger la nouvelle version au téléphone)
 - `manifest.webmanifest`
 - `README.md`
 
@@ -27,6 +27,22 @@ l'historique avec ses séries validées. L'inventaire par défaut des anciennes 
 remplacé par ton vrai kit (4 × 2 kg + 8 × 1 kg).
 
 ---
+
+## Nouveautés de la v2.2 (programme v7)
+
+- **Menu ⓘ** : la charge s'affiche sous le nom de chaque exercice.
+- **Extension triceps** : une série en plus, côté gauche seul, au 2e tour du bloc, juste après le curl pupitre.
+- **Séance 3 : développé couché et pompes en alternance**, une fois l'un, une fois l'autre (l'application choisit,
+  bouton « Faire plutôt… » pour inverser avant la 1re série). Développé couché : cible 12-20. Pompes : 4 niveaux,
+  niveau suivant proposé à 15 répétitions partout.
+- **« + Ajouter une série »** sous chaque exercice (les deux côtés ou gauche seule). Elle compte dans l'historique,
+  mais pas dans la règle de progression. « Retirer » tant qu'elle n'est pas validée.
+
+| Séance | Durée | Express |
+|---|---|---|
+| 1 · Push + Quadriceps | ~57 min | ~20 min |
+| 2 · Pull + Ischio-jambiers + Avant-bras | ~58 min | ~21 min |
+| 3 · Jambes + Dos + Bras | ~60 min | ~23 min |
 
 ## Le programme v6
 
